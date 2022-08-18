@@ -19,6 +19,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
+    "autoprefixer": "^10.4.8",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^5.2.7",
@@ -32,8 +33,9 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.2.0",
     "mini-css-extract-plugin": "^2.6.1",
+    "postcss-loader": "^7.0.1",
     "prettier": "2.2.1",
-    "sass": "^1.53.0",
+    "sass": "^1.54.4",
     "sass-loader": "^13.0.2",
     "style-loader": "^2.0.0",
     "ts-loader": "^9.3.1",

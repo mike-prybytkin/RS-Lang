@@ -1,3 +1,5 @@
+import { WordType } from '../words-service/types';
+
 export interface IUserService {
   createUser(email: string, password: string, name: string): Promise<NewUserType | null>;
   loginUser(email: string, password: string): Promise<UserAuthorizationType | null>;
@@ -5,9 +7,13 @@ export interface IUserService {
   updateUser(email: string, password: string, name: string): Promise<UpdateUserType | null>;
   deleteUser(): Promise<void>;
   getNewUserTokens(): Promise<NewTokenType | null>;
-  // updateCar(id: number, name: string, color: string): Promise<void | {totalCount: string | null; data: CarType; }>;
-  // getCars(page: number, limit: number): Promise<void | {totalCount: string | null; data: CarType[]; }>;
-  // deleteCar(id: number): void;
+  createUserWord(wordId: string): Promise<UserWordType | null>;
+  getUserWord(wordId: string): Promise<UserWordType | null>;
+  getAllUserWords(): Promise<UserWordType[] | null>;
+  updateUserWord(wordId: string, difficulty: string, optional: optionalType): Promise<UserWordType | null>;
+  deleteUserWord(wordId: string): Promise<void>;
+  getAggregatedWords(group: number, wordsPerPage: number, filter?: string): Promise<AggregatedWordsType[] | null>;
+  getAggregatedWord(wordId: string): Promise<WordType[] | null>;
 }
 
 export type UserType = {
@@ -65,4 +71,9 @@ export type UserWordType = {
     difficulty: string,
     optional: optionalType,
     wordId: string
+}
+
+export type AggregatedWordsType = {
+  paginatedResults: WordType[],
+  totalCount: {count: number}[]
 }

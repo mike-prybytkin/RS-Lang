@@ -1,4 +1,5 @@
 import FetchService from '../fetch-service/fetch-service';
+import { WordType } from '../words-service/types';
 import {
   IUserService,
   UserType,
@@ -10,6 +11,7 @@ import {
   UserWordBodyType,
   UserWordType,
   optionalType,
+  AggregatedWordsType,
 } from './types';
 
 class UserService extends FetchService implements IUserService {
@@ -96,6 +98,21 @@ class UserService extends FetchService implements IUserService {
   public async deleteUserWord(wordId: string) {
     const endPoint = `users/${this.userId}/words/${wordId}`;
     await this.deleteData(endPoint, this.token);
+  }
+
+  public async getAggregatedWords(group: number, wordsPerPage: number, filter?: string) {
+    let endPoint = `users/${this.userId}/aggregatedWords?group=${group}&wordsPerPage=${wordsPerPage}`;
+    if (filter) {
+      endPoint = `${endPoint}&${filter}`;
+    }
+    const data = await this.getData<AggregatedWordsType[]>(endPoint, this.token);
+    return data;
+  }
+
+  public async getAggregatedWord(wordId: string) {
+    const endPoint = `users/${this.userId}/aggregatedWords/${wordId}`;
+    const data = await this.getData<WordType[]>(endPoint, this.token); // переделать тип WordType - убрать UserWord и создать AggregatedWordType c UserWord
+    return data;
   }
 }
 

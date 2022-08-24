@@ -27,6 +27,7 @@
         "@typescript-eslint/no-explicit-any": 2,
         "eol-last": ["error", "always"],
         "indent": ["error", 2, { "SwitchCase": 1 }],
-        "object-curly-newline": ["error", { "multiline": true }]
+        "object-curly-newline": ["error", { "multiline": true }],
+        "prettier/prettier": [ "error", { "endOfLine": "auto" } ]
     }
 }

@@ -1,6 +1,6 @@
 export interface IUserService {
   token: string;
-  createUser(email: string, password: string): Promise<NewUserType | null>;
+  createUser(name: string, email: string, password: string): Promise<NewUserType | null>;
   loginUser(email: string, password: string): Promise<UserAuthorizationType | null>;
   getUser(id: string): Promise<NewUserType | null>;
   // updateCar(id: number, name: string, color: string): Promise<void | {totalCount: string | null; data: CarType; }>;
@@ -11,6 +11,7 @@ export interface IUserService {
 export type UserType = {
   email: string;
   password: string;
+  name?: string;
 };
 
 export type NewUserType = {

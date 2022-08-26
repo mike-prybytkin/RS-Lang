@@ -1,5 +1,5 @@
 import './style/index.scss';
-import Controller from './controller/controller';
+import AppController from './components/app/app';
 
-const app = new Controller();
-app.init();
+const app = new AppController();
+app.initApp();

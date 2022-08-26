@@ -3,9 +3,9 @@ import { IUserService, UserType, NewUserType, UserAuthorizationType, EmptyBody }
 // import { WordType /*, PostBodyType*/ } from '../car-service/types';
 
 class UserService extends FetchService implements IUserService {
-  public async createUser(email: string, password: string) {
+  public async createUser(name: string, email: string, password: string) {
     const endPoint = 'users';
-    const body = { email, password };
+    const body = { name, email, password };
     const data = await this.postData<NewUserType, UserType>(endPoint, body);
     return data;
   }

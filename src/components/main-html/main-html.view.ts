@@ -1,9 +1,15 @@
 import { BODY } from '../../constants/constants';
 
-class ViewHtml {
-  initViewHtml() {
+class MainHtmlView {
+  initMainHtmlView() {
     this.initStartPage();
     this.initMaterializeCss();
+  }
+
+  bindOnloadBody() {
+    window.onload = () => {
+      this.initMainHtmlView();
+    };
   }
 
   private initStartPage() {
@@ -133,4 +139,4 @@ class ViewHtml {
   }
 }
 
-export default ViewHtml;
+export default MainHtmlView;

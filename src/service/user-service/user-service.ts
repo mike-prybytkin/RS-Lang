@@ -1,59 +1,119 @@
 import FetchService from '../fetch-service/fetch-service';
-import { IUserService, UserType, NewUserType, UserAuthorizationType, EmptyBody } from './types';
-// import { WordType /*, PostBodyType*/ } from '../car-service/types';
+import { WordType } from '../words-service/types';
+import {
+  IUserService,
+  UserType,
+  NewUserType,
+  UserAuthorizationType,
+  UpdateUserType,
+  LoginBodyType,
+  NewTokenType,
+  UserWordBodyType,
+  UserWordType,
+  optionalType,
+  AggregatedWordsType,
+} from './types';
 
 class UserService extends FetchService implements IUserService {
-  public async createUser(name: string, email: string, password: string) {
+  public async createUser(email: string, password: string, name: string) {
     const endPoint = 'users';
-    const body = { name, email, password };
-    const data = await this.postData<NewUserType, UserType>(endPoint, body);
+    const body = { email, password, name };
+    const data = await this.postData<NewUserType, UserType>(endPoint, this.token, body);
     return data;
   }
 
   public async loginUser(email: string, password: string) {
     const endPoint = 'signin';
     const body = { email, password };
-    const data = await this.postData<UserAuthorizationType, UserType>(endPoint, body);
+    const data = await this.postData<UserAuthorizationType, LoginBodyType>(endPoint, this.token, body);
     if (data) {
       this.token = data.token;
+      this.refreshToken = data.refreshToken;
+      this.userId = data.userId;
     }
     return data;
   }
 
-  public async getUser(id: string) {
-    const endPoint = `users/${id}`;
-    const data = await this.getData<NewUserType>(endPoint);
+  public async getUser() {
+    const endPoint = `users/${this.userId}`;
+    const data = await this.getData<NewUserType>(endPoint, this.token);
     return data;
   }
 
-  // public async getUser(group: number, page: number): Promise<WordType[] | string> {
-  //   const endPoint = `words?group=${group}&page=${page}`;
-  //   const data = await this.getData<WordType[]>(endPoint);
-  //   console.log(data);
-  //   return data;
-  // }
+  public async updateUser(email: string, password: string, name: string) {
+    const endPoint = `users/${this.userId}`;
+    const body = { email, password, name };
+    const data = await this.putData<UpdateUserType, UserType>(endPoint, this.token, body);
+    return data;
+  }
 
-  // public async createCar(name: string, color: string) {
-  //     const endPoint = 'garage';
-  //     const body = { name, color };
-  //     return await this.postData<CarType, PostBodyType>(endPoint, body);
-  // }
+  public async deleteUser() {
+    const endPoint = `users/${this.userId}`;
+    await this.deleteData(endPoint, this.token);
+  }
 
-  // public async updateCar(id: number, name: string, color: string) {
-  //     const endPoint = `garage/${id}`;
-  //     const body = { name, color };
-  //     await this.putData<CarType, PostBodyType>(endPoint, body);
-  // }
+  public async getNewUserTokens() {
+    const endPoint = `users/${this.userId}/tokens`;
+    const data = await this.getData<NewTokenType>(endPoint, this.refreshToken);
+    if (data) {
+      this.token = data.token;
+      this.refreshToken = data.refreshToken;
+    }
+    return data;
+  }
 
-  // public async getCars(page = 1, limit = 7) {
-  //     const endPoint = `garage?_page=${page}&_limit=${limit}`;
-  //     return this.getData<CarType[]>(endPoint);
-  // }
+  public async createUserWord(wordId: string) {
+    const endPoint = `users/${this.userId}/words/${wordId}`;
+    const body = {
+      difficulty: 'true',
+      optional: {
+        learned: false,
+        correctAnswersSuccessively: 0,
+        attempts: 0,
+      },
+    };
+    const data = await this.postData<UserWordType, UserWordBodyType>(endPoint, this.token, body);
+    return data;
+  }
 
-  // public async deleteCar(id: number) {
-  //     const endPoint = `garage/${id}`;
-  //     await this.deleteData(endPoint);
-  // }
+  public async getUserWord(wordId: string) {
+    const endPoint = `users/${this.userId}/words/${wordId}`;
+    const data = await this.getData<UserWordType>(endPoint, this.token);
+    return data;
+  }
+
+  public async getAllUserWords() {
+    const endPoint = `users/${this.userId}/words`;
+    const data = await this.getData<UserWordType[]>(endPoint, this.token);
+    return data;
+  }
+
+  public async updateUserWord(wordId: string, difficulty: string, optional: optionalType) {
+    const endPoint = `users/${this.userId}/words/${wordId}`;
+    const body = { difficulty, optional };
+    const data = await this.putData<UserWordType, UserWordBodyType>(endPoint, this.token, body);
+    return data;
+  }
+
+  public async deleteUserWord(wordId: string) {
+    const endPoint = `users/${this.userId}/words/${wordId}`;
+    await this.deleteData(endPoint, this.token);
+  }
+
+  public async getAggregatedWords(group: number, wordsPerPage: number, filter?: string) {
+    let endPoint = `users/${this.userId}/aggregatedWords?group=${group}&wordsPerPage=${wordsPerPage}`;
+    if (filter) {
+      endPoint = `${endPoint}&${filter}`;
+    }
+    const data = await this.getData<AggregatedWordsType[]>(endPoint, this.token);
+    return data;
+  }
+
+  public async getAggregatedWord(wordId: string) {
+    const endPoint = `users/${this.userId}/aggregatedWords/${wordId}`;
+    const data = await this.getData<WordType[]>(endPoint, this.token); // переделать тип WordType - убрать UserWord и создать AggregatedWordType c UserWord
+    return data;
+  }
 }
 
 export default UserService;

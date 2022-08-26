@@ -1,0 +1,91 @@
+@font-face {
+  font-family: 'Lato';
+  src: url('../../assets/fonts/Lato-Regular.ttf');
+}
+@font-face {
+  font-family: 'Lato-Bold';
+  src: url('../../assets/fonts/Lato-Bold.ttf');
+}
+.words__wrapper {
+  font-family: Lato;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 50px 0;
+  gap: 20px 0;
+  justify-content: center;
+  background-color: #fafcfe;
+}
+
+.word {
+  width: 1000px;
+  display: flex;
+  background-color: #fff;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 10px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: rgb(250, 252, 254);
+  &__img {
+    width: 30%;
+  }
+
+  &__descr {
+    margin-left: 20px;
+  }
+
+  &__header {
+    display: flex;
+    font-weight: 400;
+    gap: 0 10px;
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+
+  &__text {
+    font-family: Lato-Bold;
+    &-meaning,
+    &-meaning-translate {
+      color: rgba(0, 0, 0, 0.8);
+      font-size: 16px;
+    }
+    &-example,
+    &-example-translate {
+      color: rgba(0, 0, 0, 0.54);
+      font-size: 14px;
+    }
+    &-example {
+      margin-top: 20px;
+    }
+  }
+  &__transcription {
+    color: rgba(0, 0, 0, 0.54);
+  }
+  &__controls {
+    width: 10%;
+    margin-left: auto;
+    display: flex;
+    justify-content: end;
+  }
+  &__audio {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    background: #fff;
+    &-img{
+      display: block;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    &:hover {
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+}

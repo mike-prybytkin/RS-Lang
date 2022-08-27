@@ -1,0 +1,8 @@
+$tablet-width: 767px;
+$mobile-width: 420px;
+
+@mixin flex ($justify: center, $align: flex-start) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+}

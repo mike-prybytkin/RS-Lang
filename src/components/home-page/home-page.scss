@@ -1,0 +1,43 @@
+.main-wrapper {
+  @include flex(space-around, center );
+  margin-top: 6%;
+
+  @media (max-width: $tablet-width) {
+    margin: 0 auto;
+    flex-direction: column;
+  }
+
+  .home-page {
+    width: 30vw;
+
+    @media (max-width: $tablet-width) {
+      width: 100%;
+      text-align: center;
+    }
+
+    .home-page__quote-1 {
+      margin-bottom: 0;
+
+      .dont {
+        font-weight: bold;
+      }
+
+      .alien {
+        text-decoration: underline;
+      }
+    }
+
+    .home-page__quote-2 {
+      margin-top: 5px;
+      font-style: italic;
+    }
+  }
+
+  .home-page__image {
+    height: 56vh;
+
+    @media (max-width: $mobile-width) {
+      width: 100%;
+    }
+  }
+}

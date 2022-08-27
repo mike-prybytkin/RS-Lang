@@ -7,9 +7,7 @@ class MainHtmlView {
   }
 
   bindOnloadBody() {
-    window.onload = () => {
-      this.initMainHtmlView();
-    };
+    this.initMainHtmlView();
   }
 
   private initStartPage() {
@@ -28,7 +26,7 @@ class MainHtmlView {
         <div class="nav-wrapper red lighten-5">
           <a href="#!" class="brand-logo grey-text text-darken-4"><img class="hide-on-small-only school-logo"
               src="./assets/rs-lang-logo.svg" alt="rs lang logo" title="RS Lang">RS-Lang</a>
-          <a href="#modal-log-in" class="modal-trigger right deep-orange darken-1 waves-effect waves-light btn login-button"><i class="material-icons left">account_box</i>Вход</a>
+          <a href="#modal-log-in" class="modal-trigger right deep-orange darken-1 waves-effect waves-light btn login-button-header"><i class="material-icons left">account_box</i>Вход</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i
               class="material-icons grey-text text-darken-4">menu</i></a>
           <ul class="nav-items right hide-on-med-and-down">
@@ -66,11 +64,11 @@ class MainHtmlView {
             </div>
             <div class="input-field">
               <i class="material-icons prefix">lock_open</i>
-              <input id="password-log-in" type="password" minlength="4" class="validate">
+              <input id="password-log-in" type="password" minlength="8" class="validate">
               <label for="password-log-in">Password</label>
               <span class="helper-text" data-error="invalid password" data-success="perfectly"></span>
             </div>
-            <a href="#" class="modal-close center log-in-button deep-orange darken-1 waves-effect waves-light btn">Вход</a>
+            <a href="#" class="modal-close center log-in-button disabled deep-orange darken-1 waves-effect waves-light btn">Вход</a>
           </div>
 
           <div id="registration-swipe" class="center">
@@ -88,17 +86,17 @@ class MainHtmlView {
             </div>
             <div class="input-field">
               <i class="material-icons prefix">lock_open</i>
-              <input id="password-registration" type="password" minlength="4" class="validate">
+              <input id="password-registration" type="password" minlength="8" class="validate">
               <label for="password-registration">Password</label>
               <span class="helper-text" data-error="invalid password" data-success="perfectly"></span>
             </div>
             <div class="input-field">
               <i class="material-icons prefix">lock_open</i>
-              <input id="password-registration-confirm" type="password" minlength="4" class="validate">
+              <input id="password-registration-confirm" type="password" minlength="8" class="validate">
               <label for="password-registration-confirm">Confirm Password</label>
               <span class="helper-text" data-error="invalid password" data-success="perfectly"></span>
             </div>
-            <a href="#" class="modal-close center register-button deep-orange darken-1 waves-effect waves-light btn">Регистрация</a>
+            <a href="#" class="modal-close center registration-button disabled deep-orange darken-1 waves-effect waves-light btn">Регистрация</a>
           </div>
 
         </div>

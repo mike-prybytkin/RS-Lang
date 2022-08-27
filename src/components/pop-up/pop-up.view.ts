@@ -9,6 +9,7 @@ import {
   PASSWORD_LOG_IN,
   MODAL_LOG_IN,
   CLOSE_POP_UP_BUTTON,
+  LOGIN_BUTTON_HEADER,
 } from '../../constants/constants';
 
 class PopUpView {
@@ -34,8 +35,8 @@ class PopUpView {
   }
 
   updateFormElement() {
-    const modalWindow = document.getElementById(MODAL_LOG_IN) as HTMLElement;
-    modalWindow.addEventListener('focusout', () => {
+    const loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
+    loginButtonHeader.addEventListener('focusout', () => {
       this.userName = document.getElementById(USER_NAME) as HTMLFormElement;
       this.emailRegistration = document.getElementById(EMAIL_REGISTRATION) as HTMLFormElement;
       this.passwordRegistration = document.getElementById(PASSWORD_REGISTRATION) as HTMLFormElement;
@@ -48,8 +49,14 @@ class PopUpView {
   registrationUser() {
     const registrationButton = document.querySelector(REGISTRATON_BUTTON) as HTMLElement;
     registrationButton.addEventListener('click', () => {
-      console.log('fdfdfdf');
       this.clearRegistrationForm();
+    });
+  }
+
+  logInUser() {
+    const logInButton = document.querySelector(LOG_IN_BUTTON) as HTMLElement;
+    logInButton.addEventListener('click', () => {
+      this.clearLogInForm();
     });
   }
 
@@ -84,15 +91,6 @@ class PopUpView {
     });
   }
 
-  private clearLogInForm() {
-    this.emailLogIn.value = '';
-    this.passwordLogIn.value = '';
-    this.emailLogIn.classList.remove('valid');
-    this.passwordLogIn.classList.remove('valid');
-    this.emailLogIn.classList.remove('invalid');
-    this.passwordLogIn.classList.remove('invalid');
-  }
-
   private clearRegistrationForm() {
     this.userName.value = '';
     this.emailRegistration.value = '';
@@ -109,6 +107,15 @@ class PopUpView {
     this.passwordRegistration.classList.remove('invalid');
     this.passwordRegistrationConf.classList.remove('invalid');
     this.passwordRegistration.classList.remove('invalid');
+  }
+
+  private clearLogInForm() {
+    this.emailLogIn.value = '';
+    this.passwordLogIn.value = '';
+    this.emailLogIn.classList.remove('valid');
+    this.passwordLogIn.classList.remove('valid');
+    this.emailLogIn.classList.remove('invalid');
+    this.passwordLogIn.classList.remove('invalid');
   }
 
   closeModalWindow() {

@@ -9,6 +9,7 @@ class PopUpController {
 
   init() {
     this.view.registrationUser();
+    this.view.logInUser();
     this.view.checkRegistrationForm();
     this.view.checkLogInForm();
     this.view.updateFormElement();

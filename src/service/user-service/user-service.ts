@@ -67,7 +67,7 @@ class UserService extends FetchService implements IUserService {
     const body = {
       difficulty: 'true',
       optional: {
-        learned: false,
+        // learned: false,
         correctAnswersSuccessively: 0,
         attempts: 0,
       },
@@ -106,6 +106,7 @@ class UserService extends FetchService implements IUserService {
       endPoint = `${endPoint}&${filter}`;
     }
     const data = await this.getData<AggregatedWordsType[]>(endPoint, this.token);
+    console.log(data);
     return data;
   }
 

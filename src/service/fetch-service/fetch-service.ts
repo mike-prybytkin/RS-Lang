@@ -3,9 +3,9 @@ import { IFetchService, RequestType } from './types';
 class FetchService implements IFetchService {
   readonly baseUrl = 'https://rs-lang-prodaction.herokuapp.com';
 
-  token: string;
+  public token: string;
 
-  userId: string;
+  public userId: string;
 
   refreshToken: string;
 

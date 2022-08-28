@@ -1,8 +1,8 @@
-import UserService from '../../../service/user-service/user-service';
-import { IUserService } from '../../../service/user-service/types';
+import UserService from '../../service/user-service/user-service';
+import { IUserService } from '../../service/user-service/types';
 import { IAudioCallModel } from './types';
-import { WordType, IWordsService } from '../../../service/words-service/types';
-import WordsService from '../../../service/words-service/words-service';
+import { WordType, IWordsService, Answer } from '../../service/words-service/types';
+import WordsService from '../../service/words-service/words-service';
 
 class AudioCallModel implements IAudioCallModel {
   words: WordType[];
@@ -15,6 +15,8 @@ class AudioCallModel implements IAudioCallModel {
 
   countVariantsAnswers: number;
 
+  statistic!: WordType[];
+
   constructor() {
     this.words = [];
     this.userService = new UserService();
@@ -24,6 +26,7 @@ class AudioCallModel implements IAudioCallModel {
   }
 
   async getWords(group: number, pageNumber: number | undefined) {
+    this.statistic = [];
     if (pageNumber) {
       //   this.words = await this.getWordsFromVocabulary(group, pageNumber);
     } else {
@@ -63,6 +66,13 @@ class AudioCallModel implements IAudioCallModel {
 
   getWordsPage(page: number) {
     return this.words.slice(page * this.countVariantsAnswers, page * this.countVariantsAnswers + 3);
+  }
+
+  updateStatistic(word: WordType, answer: Answer) {
+    const wordStatistic = word;
+    wordStatistic.answer = answer;
+    this.statistic.push(wordStatistic);
+    console.log(this.statistic);
   }
 }
 

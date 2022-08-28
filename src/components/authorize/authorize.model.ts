@@ -1,17 +1,19 @@
-import { IAuthorizeModel, UserData, StorageKey } from './types';
+import LocalStorageService from '../../service/localStorage-service/localStorage-service';
+import UserService from '../../service/user-service/user-service';
 
-class AuthorizeModel implements IAuthorizeModel {
-  getUserLocalStorage(key: StorageKey) {
-    const storageString: string = localStorage.getItem(key) ?? '';
-    return storageString ? JSON.parse(storageString) : null;
+class AuthorizeModel {
+  private authorize;
+
+  private userService;
+
+  constructor() {
+    this.authorize = new LocalStorageService();
+    this.userService = new UserService();
   }
 
-  setUserLocalStorage(key: StorageKey, data: UserData) {
-    localStorage.setItem(key, JSON.stringify(data));
-  }
-
-  removeUserLocalStorage(key: StorageKey) {
-    localStorage.removeItem(key);
+  createUser(email: string, password: string, name: string) {
+    const result = this.userService.createUser(email, password, name);
+    return result;
   }
 }
 

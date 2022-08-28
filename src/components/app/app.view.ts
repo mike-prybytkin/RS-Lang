@@ -1,22 +1,14 @@
 import { BODY } from '../../constants/constants';
 
-class MainHtmlView {
-  initMainHtmlView() {
+class AppView {
+  initAppView() {
     this.initStartPage();
-    this.initMaterializeCss();
-  }
-
-  bindOnloadBody() {
-    this.initMainHtmlView();
+    M.AutoInit(); // init materializecss library
   }
 
   private initStartPage() {
     const body = document.querySelector(BODY) as HTMLElement;
     body.innerHTML = this.pageStructure();
-  }
-
-  private initMaterializeCss() {
-    M.AutoInit();
   }
 
   private pageStructure() {
@@ -74,7 +66,7 @@ class MainHtmlView {
           <div id="registration-swipe" class="center">
             <div class="input-field">
               <i class="material-icons prefix">account_circle</i>
-              <input id="user_name" type="text" minlength="4" class="validate">
+              <input id="user_name" type="text" minlength="2" class="validate">
               <label for="user_name">Name</label>
               <span class="helper-text" data-error="invalid name" data-success="perfectly"></span>
             </div>
@@ -110,10 +102,12 @@ class MainHtmlView {
     <main class="main">
       <div class="main-wrapper">
         <div class="home-page">
-          <h3 class="home-page__quote-1 grey-text text-darken-4"><span class="dont">Don't</span> be an <span class="alien">alien</span> in a foreign country</h3>
-          <p class="home-page__quote-2">Не будь инопланетянином в чужой стране</p>
+          <div class="home-page__title">
+            <h3 class="home-page__quote-1 grey-text text-darken-4"><span class="dont">Don't</span> be an <span class="alien">alien</span> in a foreign country</h3>
+            <p class="home-page__quote-2">Не будь инопланетянином в чужой стране</p>
+          </div>
+          <img class="home-page__image" src="./assets/home-page.svg" alt="home page">
         </div>
-        <img class="home-page__image" src="./assets/home-page.svg" alt="home page">
       </div>
     </main>
 
@@ -137,4 +131,4 @@ class MainHtmlView {
   }
 }
 
-export default MainHtmlView;
+export default AppView;

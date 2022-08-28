@@ -16,12 +16,6 @@ export interface IUserService {
   getAggregatedWord(wordId: string): Promise<WordType[] | null>;
 }
 
-export type UserType = {
-  email: string;
-  password: string;
-  name: string;
-};
-
 export type NewUserType = {
   id: string;
   email: string;

@@ -1,17 +1,14 @@
-interface IAuthorizeModel {
-  getUserLocalStorage(key: StorageKey): UserData;
-  setUserLocalStorage(key: StorageKey, data: UserData): void;
-  removeUserLocalStorage(key: StorageKey): void;
+import { UserType } from '../../shared/shared';
+
+interface IAuthorizeView {
+  updateFormElement(): void;
+  registrationUser(handler: IContextHandler): void;
+  logInUser(): void; // потом поменять
+  checkRegistrationForm(): void;
+  checkLogInForm(): void;
+  closeModalWindow(): void;
 }
 
-interface UserData {
-  message: string;
-  token: string;
-  refreshToken: string;
-  userId: string;
-  name: string;
-}
+type IContextHandler = (this: void, data: UserType) => void;
 
-type StorageKey = 'user';
-
-export { IAuthorizeModel, UserData, StorageKey };
+export { IContextHandler, IAuthorizeView };

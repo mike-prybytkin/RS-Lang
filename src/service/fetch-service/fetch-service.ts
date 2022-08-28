@@ -25,7 +25,7 @@ class FetchService implements IFetchService {
       }
       const response = await fetch(`${url}`, requestConfig);
       const data = await response.json();
-      console.log(data, this.token, this.userId, this.refreshToken, request);
+      // console.log(data, this.token, this.userId, this.refreshToken, request);
       return data;
     } catch (error) {
       console.log('error', request);

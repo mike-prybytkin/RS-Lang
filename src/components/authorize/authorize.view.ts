@@ -1,3 +1,6 @@
+import { IContextHandler, IAuthorizeView } from './types';
+// import { UserType } from '../../shared/shared';
+
 import {
   REGISTRATON_BUTTON,
   USER_NAME,
@@ -12,7 +15,7 @@ import {
   LOGIN_BUTTON_HEADER,
 } from '../../constants/constants';
 
-class PopUpView {
+class AuthorizeView implements IAuthorizeView {
   private userName;
 
   private emailRegistration;
@@ -46,9 +49,14 @@ class PopUpView {
     });
   }
 
-  registrationUser() {
+  registrationUser(handler: IContextHandler) {
     const registrationButton = document.querySelector(REGISTRATON_BUTTON) as HTMLElement;
     registrationButton.addEventListener('click', () => {
+      handler({
+        email: this.emailRegistration.value,
+        password: this.passwordRegistration.value,
+        name: this.userName.value,
+      });
       this.clearRegistrationForm();
     });
   }
@@ -91,6 +99,13 @@ class PopUpView {
     });
   }
 
+  showToastMessage(message: string, color: string) {
+    const toastHTML = `<span>${message}</span>`;
+    M.toast({ html: toastHTML });
+    const toast = document.querySelector('.toast') as HTMLElement;
+    toast.style.backgroundColor = color;
+  }
+
   private clearRegistrationForm() {
     this.userName.value = '';
     this.emailRegistration.value = '';
@@ -127,4 +142,4 @@ class PopUpView {
   }
 }
 
-export default PopUpView;
+export default AuthorizeView;

@@ -12,7 +12,7 @@ async function example() {
   // await userTest.createUser('fake@mail.ru', '12345678', 'Ilya');
   //   await userTest.loginUser('fake@mail.ru', '12345678');
   await audioCall.model.userService.loginUser('fake@mail.ru', '12345678');
-  await audioCall.init(1);
+  await audioCall.init();
   // await userTest.getUser();
   // await userTest.updateUser('fake@mail.ru', '12345678', 'vasya');
   // await userTest.updateUser('fake@mail.ru', '12345678', 'Ilya');

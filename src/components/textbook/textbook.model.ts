@@ -1,4 +1,4 @@
-// import { WordType } from "../../service/words-service/types";
+import { WordType } from '../../service/words-service/types';
 import WordsService from '../../service/words-service/words-service';
 
 class TextbookModel {
@@ -16,8 +16,8 @@ class TextbookModel {
     this.wordsService = new WordsService();
   }
 
-  getWords(group: number, page: number) {
-    return this.wordsService.getWords(group, page);
+  async getWords(group = 0, page = 0): Promise<WordType[]> {
+    return (await this.wordsService.getWords(group, page)) as WordType[];
   }
 }
 

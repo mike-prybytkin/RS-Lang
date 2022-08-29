@@ -1,39 +1,37 @@
 import TextbookView from './textbook.view';
-import { WordType } from '../../service/words-service/types';
+// import { WordType } from '../../service/words-service/types';
 import TextbookModel from './textbook.model';
 
 class TextbookController {
   private textbookView;
 
-  private textbooksModel;
+  private textbookModel;
 
   constructor() {
     this.textbookView = new TextbookView();
-    this.textbooksModel = new TextbookModel();
+    this.textbookModel = new TextbookModel();
   }
 
   init() {
     this.textbookView.renderBaseStructure();
-    this.textbookView.renderPage(this.getWords());
-    this.textbookView.initializeDropdown();
+    this.textbookView.renderPage(this.textbookModel.getWords());
+    this.textbookView.initializeGroupDropdown();
+    this.textbookView.initializePageDropdown(30);
     this.changeGroup();
+    this.changePage();
     this.nextPage();
     this.prevPage();
-  }
-
-  private getWords(group = 0, page = 0): Promise<WordType[]> {
-    return this.textbooksModel.getWords(group, page) as Promise<WordType[]>;
   }
 
   private nextPage() {
     const nextPage = document.querySelector('.next-btn') as HTMLElement;
     nextPage.addEventListener('click', () => {
-      if (this.textbooksModel.currPage < this.textbooksModel.maxPage) {
-        this.textbooksModel.currPage += 1;
+      if (this.textbookModel.currPage < this.textbookModel.maxPage) {
+        this.textbookModel.currPage += 1;
         this.textbookView.updatePage(
-          this.textbooksModel.currGroup,
-          this.textbooksModel.currPage,
-          this.getWords(this.textbooksModel.currGroup, this.textbooksModel.currPage)
+          this.textbookModel.currGroup,
+          this.textbookModel.currPage,
+          this.textbookModel.getWords(this.textbookModel.currGroup, this.textbookModel.currPage)
         );
       }
     });
@@ -42,12 +40,12 @@ class TextbookController {
   private prevPage() {
     const prevPage = document.querySelector('.prev-btn') as HTMLElement;
     prevPage.addEventListener('click', () => {
-      if (this.textbooksModel.currPage > this.textbooksModel.minPage) {
-        this.textbooksModel.currPage -= 1;
+      if (this.textbookModel.currPage > this.textbookModel.minPage) {
+        this.textbookModel.currPage -= 1;
         this.textbookView.updatePage(
-          this.textbooksModel.currGroup,
-          this.textbooksModel.currPage,
-          this.getWords(this.textbooksModel.currGroup, this.textbooksModel.currPage)
+          this.textbookModel.currGroup,
+          this.textbookModel.currPage,
+          this.textbookModel.getWords(this.textbookModel.currGroup, this.textbookModel.currPage)
         );
       }
     });
@@ -57,13 +55,26 @@ class TextbookController {
     const groupDropdown = document.querySelectorAll('.group');
     groupDropdown.forEach((item) => {
       item.addEventListener('click', () => {
-        console.log(item.textContent?.split(' ')[1]);
-        this.textbooksModel.currGroup = Number(item.textContent?.split(' ')[1]) - 1;
-        this.textbooksModel.currPage = 0;
+        this.textbookModel.currGroup = Number(item.textContent?.split(' ')[1]) - 1;
+        this.textbookModel.currPage = 0;
         this.textbookView.updatePage(
-          this.textbooksModel.currGroup,
-          this.textbooksModel.currPage,
-          this.getWords(this.textbooksModel.currGroup, this.textbooksModel.currPage)
+          this.textbookModel.currGroup,
+          this.textbookModel.currPage,
+          this.textbookModel.getWords(this.textbookModel.currGroup, this.textbookModel.currPage)
+        );
+      });
+    });
+  }
+
+  private changePage() {
+    const pageDropdown = document.querySelectorAll('.page__item');
+    pageDropdown.forEach((item) => {
+      item.addEventListener('click', () => {
+        this.textbookModel.currPage = Number(item.textContent?.split(' ')[1]) - 1;
+        this.textbookView.updatePage(
+          this.textbookModel.currGroup,
+          this.textbookModel.currPage,
+          this.textbookModel.getWords(this.textbookModel.currGroup, this.textbookModel.currPage)
         );
       });
     });

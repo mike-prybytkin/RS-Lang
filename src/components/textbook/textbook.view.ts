@@ -6,15 +6,6 @@ import FetchService from '../../service/fetch-service/fetch-service';
 const { baseUrl } = new FetchService();
 
 class TextbookView {
-  // private wordsWrapper;
-
-  // private cardTemplate;
-
-  // constructor() {
-  //   this.wordsWrapper = document.querySelector('.words__wrapper') as HTMLElement;
-  //   this.cardTemplate = document.querySelector('#card__template') as HTMLTemplateElement;
-  // }
-
   async renderPage(words: Promise<WordType[]>) {
     const wordsWrapper = document.querySelector('.words__wrapper') as HTMLElement;
     const cardTemplate = document.querySelector('#card__template') as HTMLTemplateElement;
@@ -52,19 +43,22 @@ class TextbookView {
     document.body.innerHTML = `
   <div class="container">
   <div class="controls">
-  <a class='dropdown-trigger btn deep-orange' href='#' data-target='dropdown1'>Раздел 1</a>
-  <ul id='dropdown1' class='dropdown-content'>
-    <li><a href="#!" class="group">Раздел 1</a></li>
-    <li><a href="#!" class="group">Раздел 2</a></li>
-    <li><a href="#!" class="group">Раздел 3</a></li>
-    <li><a href="#!" class="group">Раздел 4</a></li>
-    <li><a href="#!" class="group">Раздел 5</a></li>
-    <li><a href="#!" class="group">Раздел 6</a></li>
+  <a class='group-dropdown-trigger waves-effect waves-light btn deep-orange' href='#' data-target='group-dropdown'>Раздел 1</a>
+  <ul id='group-dropdown' class='dropdown-content'>
+    <li><a href="#!" class="deep-orange white-text group">Раздел 1</a></li>
+    <li><a href="#!" class="deep-orange white-text group">Раздел 2</a></li>
+    <li><a href="#!" class="deep-orange white-text group">Раздел 3</a></li>
+    <li><a href="#!" class="deep-orange white-text group">Раздел 4</a></li>
+    <li><a href="#!" class="deep-orange white-text group">Раздел 5</a></li>
+    <li><a href="#!" class="deep-orange white-text group">Раздел 6</a></li>
   </ul>
   <div class="page">
-    <button class="waves-effect waves-light btn-small deep-orange prev-btn"><</button>
-    <span class="current-page">Страница 1</span>
-    <button class="waves-effect waves-light btn-small deep-orange next-btn">></button>
+    <button class="waves-effect waves-light btn deep-orange prev-btn"><</button>
+    <a class='page-dropdown-trigger waves-effect waves-light btn deep-orange current-page' href='#' data-target='page-dropdown'>Страница 1</a>
+    <ul id='page-dropdown' class='dropdown-content'>
+      
+    </ul>
+    <button class="waves-effect waves-light btn deep-orange next-btn">></button>
   </div>
 </div>
   <div class="words__wrapper">
@@ -113,16 +107,27 @@ class TextbookView {
     });
   }
 
-  initializeDropdown() {
+  initializeGroupDropdown() {
     document.addEventListener('DOMContentLoaded', () => {
-      const elems = document.querySelectorAll('.dropdown-trigger');
+      const elems = document.querySelectorAll('.group-dropdown-trigger');
       M.Dropdown.init(elems);
     });
   }
 
+  initializePageDropdown(pageCount: number) {
+    document.addEventListener('DOMContentLoaded', () => {
+      const elems = document.querySelectorAll('.page-dropdown-trigger');
+      M.Dropdown.init(elems);
+    });
+    const pageDropdown = document.getElementById('page-dropdown') as HTMLElement;
+    for (let i = 1; i <= pageCount; i += 1) {
+      pageDropdown.innerHTML += `<li><a href="#!" class="deep-orange white-text page__item">Страница ${i}</a></li>`;
+    }
+  }
+
   changeControlsCaption(group: number, page: number) {
     const currentPage = document.querySelector('.current-page') as HTMLElement;
-    const currentGroup = document.querySelector('.dropdown-trigger.btn') as HTMLLinkElement;
+    const currentGroup = document.querySelector('.group-dropdown-trigger.btn') as HTMLLinkElement;
     currentGroup.textContent = `Раздел ${group + 1}`;
     currentPage.textContent = `Страница ${page + 1}`;
   }

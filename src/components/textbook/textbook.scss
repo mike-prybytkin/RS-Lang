@@ -100,3 +100,14 @@
     }
   }
 }
+.group:hover,
+.page:hover {
+  background-color: #fc7349 !important;
+}
+#page-dropdown {
+  max-height: 500px !important;
+}
+
+.current-page {
+  width: 150px;
+}

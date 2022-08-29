@@ -1,7 +1,15 @@
-export type UserType = {
+type UserType = {
   email: string;
   password: string;
   name: string;
 };
 
-export default UserType;
+interface UserData {
+  message: string;
+  token: string;
+  refreshToken: string;
+  userId: string;
+  name: string;
+}
+
+export { UserType, UserData };

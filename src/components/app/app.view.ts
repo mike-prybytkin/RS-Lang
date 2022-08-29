@@ -1,6 +1,7 @@
 import { BODY } from '../../constants/constants';
+import { IAppView } from './types';
 
-class AppView {
+class AppView implements IAppView {
   initAppView() {
     this.initStartPage();
     M.AutoInit(); // init materializecss library
@@ -16,26 +17,26 @@ class AppView {
     <header class="header">
       <nav>
         <div class="nav-wrapper red lighten-5">
-          <a href="#!" class="brand-logo grey-text text-darken-4"><img class="hide-on-small-only school-logo"
+          <a href="#home" class="brand-logo grey-text text-darken-4"><img class="hide-on-small-only school-logo"
               src="./assets/rs-lang-logo.svg" alt="rs lang logo" title="RS Lang">RS-Lang</a>
-          <a href="#modal-log-in" class="modal-trigger right deep-orange darken-1 waves-effect waves-light btn login-button-header"><i class="material-icons left">account_box</i>Вход</a>
+          <a href="#modal-log-in" class="modal-trigger right deep-orange darken-1 waves-effect waves-light btn login-button-header"><i class="material-icons left">exit_to_app</i>Вход</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i
               class="material-icons grey-text text-darken-4">menu</i></a>
           <ul class="nav-items right hide-on-med-and-down">
-            <li><a class="grey-text text-darken-4 textbook" href="#">Учебник</a></li>
-            <li><a class="grey-text text-darken-4 dictionary" href="#">Словарь</a></li>
-            <li><a class="grey-text text-darken-4 games" href="#">Игры</a></li>
-            <li><a class="grey-text text-darken-4 statistic" href="#">Статистика</a></li>
-            <li><a class="grey-text text-darken-4 about" href="#">О проекте</a></li>
+            <li><a class="grey-text text-darken-4 textbook" href="#textbook">Учебник</a></li>
+            <li><a class="grey-text text-darken-4 dictionary" href="#dictionary">Словарь</a></li>
+            <li><a class="grey-text text-darken-4 games" href="#games">Игры</a></li>
+            <li><a class="grey-text text-darken-4 statistic" href="#statistic">Статистика</a></li>
+            <li><a class="grey-text text-darken-4 about" href="#about">О проекте</a></li>
           </ul>
         </div>
       </nav>
       <ul class="sidenav sidenav-close" id="mobile-demo">
-        <li><a class="textbook" href="#"><i class="material-icons">book</i>Учебник</a></li>
-        <li><a class="dictionary" href="#"><i class="material-icons">description</i>Словарь</a></li>
-        <li><a class="games" href="#"><i class="material-icons">games</i>Игры</a></li>
-        <li><a class="statistic" href="#"><i class="material-icons">assessment</i>Статистика</a></li>
-        <li><a class="about" href="#"><i class="material-icons">business_center</i>О проекте</a></li>
+        <li><a class="textbook" href="#textbook"><i class="material-icons">book</i>Учебник</a></li>
+        <li><a class="dictionary" href="#dictionary"><i class="material-icons">description</i>Словарь</a></li>
+        <li><a class="games" href="#games"><i class="material-icons">games</i>Игры</a></li>
+        <li><a class="statistic" href="#statistic"><i class="material-icons">assessment</i>Статистика</a></li>
+        <li><a class="about" href="#about"><i class="material-icons">business_center</i>О проекте</a></li>
         <li><img class="hide-on-med-only mobile-school-logo" src="./assets/rs-lang-logo.svg" alt="rs lang logo"
             title="RS Lang"></a></li>
       </ul>

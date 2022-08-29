@@ -18,7 +18,7 @@ class UserService extends FetchService implements IUserService {
   public async createUser(email: string, password: string, name: string) {
     const endPoint = 'users';
     const body = { email, password, name };
-    const data = await this.postData<UpdateUserType, UserType>(endPoint, this.token, body);
+    const data = await this.postData<NewUserType, UserType>(endPoint, this.token, body);
     return data;
   }
 

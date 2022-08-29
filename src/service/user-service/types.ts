@@ -19,12 +19,13 @@ export interface IUserService {
 export type NewUserType = {
   id: string;
   email: string;
+  name: string;
 };
 
 export type LoginBodyType = {
   email: string;
   password: string;
-}
+};
 
 export type UserAuthorizationType = {
   message: string;
@@ -46,28 +47,28 @@ export type NewTokenType = {
 };
 
 export type UserWordBodyType = {
-  difficulty: string,
-      optional: {
-        learned: boolean,
-        correctAnswersSuccessively: number,
-        attempts: number
-      }
+  difficulty: string;
+  optional: {
+    learned: boolean;
+    correctAnswersSuccessively: number;
+    attempts: number;
+  };
 };
 
 export type optionalType = {
-  learned: boolean,
-  correctAnswersSuccessively: number,
-  attempts: number
-}
+  learned: boolean;
+  correctAnswersSuccessively: number;
+  attempts: number;
+};
 
 export type UserWordType = {
-    id: string,
-    difficulty: string,
-    optional: optionalType,
-    wordId: string
-}
+  id: string;
+  difficulty: string;
+  optional: optionalType;
+  wordId: string;
+};
 
 export type AggregatedWordsType = {
-  paginatedResults: WordType[],
-  totalCount: {count: number}[]
-}
+  paginatedResults: WordType[];
+  totalCount: { count: number }[];
+};

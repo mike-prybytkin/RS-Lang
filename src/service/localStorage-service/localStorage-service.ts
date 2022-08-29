@@ -1,7 +1,8 @@
-import { ILocalStorageService, UserData, StorageKey } from './types';
+import { ILocalStorageService, StorageKey } from './types';
+import { UserData } from '../../shared/shared';
 
 class LocalStorageService implements ILocalStorageService {
-  getItemLocalStorage(key: StorageKey) {
+  getItemLocalStorage(key: StorageKey): UserData {
     const storageString: string = localStorage.getItem(key) ?? '';
     return storageString ? JSON.parse(storageString) : null;
   }

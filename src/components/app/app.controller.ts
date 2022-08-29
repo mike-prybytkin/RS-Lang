@@ -1,7 +1,8 @@
 import AuthorizeController from '../authorize/authorize.controller';
 import AppView from './app.view';
+import { IAppController } from './types';
 
-class AppController {
+class AppController implements IAppController {
   private authorizeController;
 
   private view;

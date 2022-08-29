@@ -1,5 +1,4 @@
-import { IContextHandler, IAuthorizeView } from './types';
-// import { UserType } from '../../shared/shared';
+import { RenderLogoutHendler, LogInHandler, RegistrationHandler, IAuthorizeView } from './types';
 
 import {
   REGISTRATON_BUTTON,
@@ -49,7 +48,7 @@ class AuthorizeView implements IAuthorizeView {
     });
   }
 
-  registrationUser(handler: IContextHandler) {
+  registrationUser(handler: RegistrationHandler) {
     const registrationButton = document.querySelector(REGISTRATON_BUTTON) as HTMLElement;
     registrationButton.addEventListener('click', () => {
       handler({
@@ -61,10 +60,34 @@ class AuthorizeView implements IAuthorizeView {
     });
   }
 
-  logInUser() {
+  logInUser(handler: LogInHandler) {
     const logInButton = document.querySelector(LOG_IN_BUTTON) as HTMLElement;
     logInButton.addEventListener('click', () => {
+      handler({
+        email: this.emailLogIn.value,
+        password: this.passwordLogIn.value,
+      });
       this.clearLogInForm();
+    });
+  }
+
+  renderLoginUser(name: string) {
+    const loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
+    loginButtonHeader.innerHTML = '<i class="material-icons left">account_box</i>выход';
+    loginButtonHeader.classList.remove('modal-trigger');
+    loginButtonHeader.classList.add('logout-user', 'tooltipped');
+    loginButtonHeader.setAttribute('data-position', 'bottom');
+    loginButtonHeader.setAttribute('data-tooltip', `${name}, Вы хотите выйти?`);
+    M.AutoInit();
+  }
+
+  renderLogoutUser(handler: RenderLogoutHendler) {
+    const loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
+    loginButtonHeader.addEventListener('click', () => {
+      if (loginButtonHeader.classList.contains('logout-user')) {
+        handler();
+        document.location.reload();
+      }
     });
   }
 

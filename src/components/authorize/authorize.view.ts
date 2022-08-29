@@ -2,7 +2,7 @@ import { RenderLogoutHendler, LogInHandler, RegistrationHandler, IAuthorizeView 
 
 import {
   REGISTRATON_BUTTON,
-  USER_NAME,
+  USER_NAME_SELECTOR,
   EMAIL_REGISTRATION,
   PASSWORD_REGISTRATION,
   PASSWORD_REGISTRATION_CONFIRM,
@@ -12,6 +12,12 @@ import {
   MODAL_LOG_IN,
   CLOSE_POP_UP_BUTTON,
   LOGIN_BUTTON_HEADER,
+  MODAL_TRIGGER,
+  LOGOUT_USER,
+  TOOLTIPPED,
+  LOGOUT_TEMPLATE_BUTTON,
+  LOGOUT_MESSAGE,
+  TOAST,
 } from '../../constants/constants';
 
 class AuthorizeView implements IAuthorizeView {
@@ -28,7 +34,7 @@ class AuthorizeView implements IAuthorizeView {
   private passwordLogIn;
 
   constructor() {
-    this.userName = document.getElementById(USER_NAME) as HTMLFormElement;
+    this.userName = document.getElementById(USER_NAME_SELECTOR) as HTMLFormElement;
     this.emailRegistration = document.getElementById(EMAIL_REGISTRATION) as HTMLFormElement;
     this.passwordRegistration = document.getElementById(PASSWORD_REGISTRATION) as HTMLFormElement;
     this.passwordRegistrationConf = document.getElementById(PASSWORD_REGISTRATION_CONFIRM) as HTMLFormElement;
@@ -39,7 +45,7 @@ class AuthorizeView implements IAuthorizeView {
   updateFormElement() {
     const loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
     loginButtonHeader.addEventListener('focusout', () => {
-      this.userName = document.getElementById(USER_NAME) as HTMLFormElement;
+      this.userName = document.getElementById(USER_NAME_SELECTOR) as HTMLFormElement;
       this.emailRegistration = document.getElementById(EMAIL_REGISTRATION) as HTMLFormElement;
       this.passwordRegistration = document.getElementById(PASSWORD_REGISTRATION) as HTMLFormElement;
       this.passwordRegistrationConf = document.getElementById(PASSWORD_REGISTRATION_CONFIRM) as HTMLFormElement;
@@ -73,18 +79,18 @@ class AuthorizeView implements IAuthorizeView {
 
   renderLoginUser(name: string) {
     const loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
-    loginButtonHeader.innerHTML = '<i class="material-icons left">account_box</i>выход';
-    loginButtonHeader.classList.remove('modal-trigger');
-    loginButtonHeader.classList.add('logout-user', 'tooltipped');
+    loginButtonHeader.innerHTML = LOGOUT_TEMPLATE_BUTTON;
+    loginButtonHeader.classList.remove(MODAL_TRIGGER);
+    loginButtonHeader.classList.add(LOGOUT_USER, TOOLTIPPED);
     loginButtonHeader.setAttribute('data-position', 'bottom');
-    loginButtonHeader.setAttribute('data-tooltip', `${name}, Вы хотите выйти?`);
+    loginButtonHeader.setAttribute('data-tooltip', `${name}, ${LOGOUT_MESSAGE}`);
     M.AutoInit();
   }
 
   renderLogoutUser(handler: RenderLogoutHendler) {
     const loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
     loginButtonHeader.addEventListener('click', () => {
-      if (loginButtonHeader.classList.contains('logout-user')) {
+      if (loginButtonHeader.classList.contains(LOGOUT_USER)) {
         handler();
         document.location.reload();
       }
@@ -125,7 +131,7 @@ class AuthorizeView implements IAuthorizeView {
   showToastMessage(message: string, color: string) {
     const toastHTML = `<span>${message}</span>`;
     M.toast({ html: toastHTML });
-    const toast = document.querySelector('.toast') as HTMLElement;
+    const toast = document.querySelector(TOAST) as HTMLElement;
     toast.style.backgroundColor = color;
   }
 

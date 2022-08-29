@@ -3,6 +3,14 @@ import AuthorizeModel from './authorize.model';
 import { UserType } from '../../shared/shared';
 import { LoginBodyType } from '../../service/user-service/types';
 import { IAuthorizeController } from './types';
+import {
+  SUCSESS_REGISTRATION_MESSAGE,
+  FAILING_REGISTRATION_MESSAGE,
+  SUCSESS_LOGIN_MESSAGE,
+  FAILING_LOGIN_MESSAGE,
+  SUCSESS_COLOR,
+  FAILING_COLOR,
+} from '../../constants/constants';
 
 class AuthorizeController implements IAuthorizeController {
   private view;
@@ -29,9 +37,9 @@ class AuthorizeController implements IAuthorizeController {
     const promise = this.model.createUser(data.email, data.password, data.name);
     promise.then((response) => {
       if (response) {
-        this.view.showToastMessage(`${response.name}, Вы успешно зарегистрировались!`, 'green');
+        this.view.showToastMessage(`${response.name}, ${SUCSESS_REGISTRATION_MESSAGE}`, `${SUCSESS_COLOR}`);
       } else {
-        this.view.showToastMessage('Извините, такой email уже зарегистрирован', 'red');
+        this.view.showToastMessage(`${FAILING_REGISTRATION_MESSAGE}`, `${FAILING_COLOR}`);
       }
     });
   };
@@ -40,11 +48,11 @@ class AuthorizeController implements IAuthorizeController {
     const promise = this.model.logInUser(data.email, data.password);
     promise.then((response) => {
       if (response) {
-        this.view.showToastMessage(`Здравствуйте ${response.name}!`, 'green');
+        this.view.showToastMessage(`${SUCSESS_LOGIN_MESSAGE} ${response.name}!`, `${SUCSESS_COLOR}`);
         this.model.setLocalStorage(response);
         this.view.renderLoginUser(response.name);
       } else {
-        this.view.showToastMessage('Упс, такого пользователя не существует...', 'red');
+        this.view.showToastMessage(`${FAILING_LOGIN_MESSAGE}`, `${FAILING_COLOR}`);
       }
     });
   };

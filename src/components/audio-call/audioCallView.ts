@@ -95,7 +95,7 @@ class AudioCallView implements IAudioCallView {
     playAudio: (element: HTMLImageElement) => void
   ) {
     document.addEventListener('keydown', (event: KeyboardEvent) => {
-      const element = this.getAnswerByKey(event.key) as HTMLButtonElement;
+      const element = this.getElementByKey(event.key) as HTMLButtonElement;
       let imageAudio: HTMLImageElement;
       if (element || event.key === ' ') {
         switch (event.key) {
@@ -120,7 +120,7 @@ class AudioCallView implements IAudioCallView {
     });
   }
 
-  getAnswerByKey(key: string) {
+  getElementByKey(key: string) {
     return document.querySelector(`#button${key}`) as HTMLButtonElement;
   }
 
@@ -178,8 +178,6 @@ class AudioCallView implements IAudioCallView {
       const temp = item;
       temp.disabled = true;
     });
-    // const imageWordContainer = document.querySelector(Selector.IMAGE_WORD_CONTAINER) as HTMLDivElement;
-    // imageWordContainer.removeEventListener('click', audioHandler);
   }
 
   private pageStructure() {

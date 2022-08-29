@@ -10,7 +10,7 @@ export interface IUserService {
   createUserWord(wordId: string): Promise<UserWordType | null>;
   getUserWord(wordId: string): Promise<UserWordType | null>;
   getAllUserWords(): Promise<UserWordType[] | null>;
-  updateUserWord(wordId: string, difficulty: string, optional: optionalType): Promise<UserWordType | null>;
+  updateUserWord(wordId: string, difficulty: string, optional: OptionalType): Promise<UserWordType | null>;
   deleteUserWord(wordId: string): Promise<void>;
   getAggregatedWords(group: number, wordsPerPage: number, filter?: string): Promise<AggregatedWordsType[] | null>;
   getAggregatedWord(wordId: string): Promise<WordType[] | null>;
@@ -60,7 +60,7 @@ export type UserWordBodyType = {
   };
 };
 
-export type optionalType = {
+export type OptionalType = {
   learned: boolean;
   correctAnswersSuccessively: number;
   attempts: number;
@@ -69,7 +69,7 @@ export type optionalType = {
 export type UserWordType = {
   id: string;
   difficulty: string;
-  optional: optionalType;
+  optional: OptionalType;
   wordId: string;
 };
 

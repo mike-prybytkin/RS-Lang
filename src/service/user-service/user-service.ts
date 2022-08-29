@@ -10,7 +10,7 @@ import {
   NewTokenType,
   UserWordBodyType,
   UserWordType,
-  optionalType,
+  OptionalType,
   AggregatedWordsType,
 } from './types';
 
@@ -88,7 +88,7 @@ class UserService extends FetchService implements IUserService {
     return data;
   }
 
-  public async updateUserWord(wordId: string, difficulty: string, optional: optionalType) {
+  public async updateUserWord(wordId: string, difficulty: string, optional: OptionalType) {
     const endPoint = `users/${this.userId}/words/${wordId}`;
     const body = { difficulty, optional };
     const data = await this.putData<UserWordType, UserWordBodyType>(endPoint, this.token, body);

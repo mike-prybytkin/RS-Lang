@@ -2,8 +2,6 @@ import AudioCallModel from './audioCallModel';
 import AudioCallView from './audioCallView';
 import { IAudioCallController } from './types';
 import { WordType } from '../../service/words-service/types';
-// import { Selector } from '../../constants/constants';
-// import AppController from '../app/app';
 
 class AudioCallController implements IAudioCallController {
   view: AudioCallView;
@@ -39,7 +37,7 @@ class AudioCallController implements IAudioCallController {
   runStart = (event: Event) => {
     const buttonLevel = event.currentTarget as HTMLButtonElement;
     const group = +buttonLevel.id.slice(-1) - 1;
-    this.start(group);
+    this.start(group, 7);
   };
 
   async start(group: number, pageNumber?: number) {
@@ -48,19 +46,13 @@ class AudioCallController implements IAudioCallController {
     this.gamePage = 0;
     await this.model.getWords(group, pageNumber);
     this.createPage();
-
-    // if (group && pageNumber) {
-    //     this.words = this.getWordsFromVocabulary(group, pageNumber)
-    // } else {
-    //     this.words = this.getWordsFromHomePage()
-    // }
   }
 
   createPage() {
     const wordsPage = this.model.getWordsPage(this.gamePage);
-    console.log(wordsPage);
-    const correctIndex = this.model.getRandomInteger(0, 2);
-    this.correctWord = wordsPage[correctIndex];
+    [this.correctWord] = wordsPage;
+    wordsPage.sort(() => Math.random() - 0.5);
+    const correctIndex = wordsPage.findIndex((item) => item.id === this.correctWord.id);
     this.addSourceAudio(wordsPage[correctIndex].audio);
     this.view.renderGamePage(correctIndex, wordsPage);
     this.view.addAudioListener(this.playAudio);
@@ -74,10 +66,6 @@ class AudioCallController implements IAudioCallController {
     this.audio.play();
     this.audio.addEventListener('ended', () => {
       this.view.changeAudioImage();
-      // this.view.addAnswerListener(this.checkAnswer);
-      // this.view.addIgnoranceListener(this.addUnknownWord);
-      // this.view.addNavigationListener(this.nextPage);
-      // this.view.addKeyDownListener();
     });
   }
 
@@ -105,7 +93,6 @@ class AudioCallController implements IAudioCallController {
       this.gamePage += 1;
       this.createPage();
     } else {
-      console.log(this.model.statistic); // render statistic
       const countMistake = this.model.statistic.filter((item) => item.answer === 'wrong-answer').length;
       const countSuccess = this.model.statistic.filter((item) => item.answer === 'correct-answer').length;
       this.view.renderStatisticPage(this.model.statistic, countMistake, countSuccess);
@@ -127,17 +114,6 @@ class AudioCallController implements IAudioCallController {
   goHomePage = () => {
     window.location.reload(); // исправить на вызов функции, которая передасться при создании моего класса
   };
-
-  // keyHandler = (event: KeyboardEvent) => {
-  //   const keyAnswer = event.code;
-  //   switch (keyAnswer) {
-  //     case '1':
-  //       this.view.getAnswerByKey(keyAnswer);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
 }
 
 export default AudioCallController;

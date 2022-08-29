@@ -28,16 +28,19 @@ class AudioCallModel implements IAudioCallModel {
   async getWords(group: number, pageNumber: number | undefined) {
     this.statistic = [];
     if (pageNumber) {
-      //   this.words = await this.getWordsFromVocabulary(group, pageNumber);
+      await this.getWordsFromVocabulary(group, pageNumber);
     } else {
       await this.getWordsFromMenu(group);
     }
   }
 
-  async getWordsFromVocabulary(group: number, pageNumber: number | undefined) {
-    // заглушка
-    console.log(group, pageNumber);
-    return [];
+  async getWordsFromVocabulary(group: number, pageNumber: number) {
+    if (group + 1) {
+      // кейс для незареганного юзера
+      const data = await this.wordsService.getWords(group, pageNumber);
+      if (data) this.words = data.sort(() => Math.random() - 0.5);
+    }
+    console.log(this.words);
   }
 
   async getWordsFromMenu(group: number) {
@@ -65,7 +68,12 @@ class AudioCallModel implements IAudioCallModel {
   }
 
   getWordsPage(page: number) {
-    return this.words.slice(page * this.countVariantsAnswers, page * this.countVariantsAnswers + 3);
+    console.log(this.words[page].word, page);
+    let randomIndexVariantAnswer = this.getRandomInteger(0, 18);
+    while (randomIndexVariantAnswer === page || randomIndexVariantAnswer + 1 === page) {
+      randomIndexVariantAnswer = this.getRandomInteger(0, 18);
+    }
+    return [this.words[page]].concat(this.words.slice(randomIndexVariantAnswer, randomIndexVariantAnswer + 2));
   }
 
   updateStatistic(word: WordType, answer: Answer) {

@@ -1,8 +1,8 @@
 import FetchService from '../fetch-service/fetch-service';
 import { WordType } from '../words-service/types';
+import { UserType } from '../../shared/shared';
 import {
   IUserService,
-  UserType,
   NewUserType,
   UserAuthorizationType,
   UpdateUserType,

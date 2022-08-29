@@ -1,35 +1,38 @@
 .main-wrapper {
-  @include flex(space-around, center );
-  margin-top: 6%;
-
-  @media (max-width: $tablet-width) {
-    margin: 0 auto;
-    flex-direction: column;
-  }
-
   .home-page {
-    width: 30vw;
+    @include flex(space-around, center );
+    width: 100%;
+    margin-top: 6%;
 
     @media (max-width: $tablet-width) {
-      width: 100%;
-      text-align: center;
+      margin: 0 auto;
+      flex-direction: column;
     }
 
-    .home-page__quote-1 {
-      margin-bottom: 0;
+    .home-page__title {
+      width: 30vw;
 
-      .dont {
-        font-weight: bold;
+      @media (max-width: $tablet-width) {
+        width: 100%;
+        text-align: center;
       }
 
-      .alien {
-        text-decoration: underline;
-      }
-    }
+      .home-page__quote-1 {
+        margin-bottom: 0;
 
-    .home-page__quote-2 {
-      margin-top: 5px;
-      font-style: italic;
+        .dont {
+          font-weight: bold;
+        }
+
+        .alien {
+          text-decoration: underline;
+        }
+      }
+
+      .home-page__quote-2 {
+        margin-top: 5px;
+        font-style: italic;
+      }
     }
   }
 

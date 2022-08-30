@@ -1,7 +1,14 @@
 import { BODY } from '../../constants/constants';
 import { IAppView } from './types';
+import HomePageView from '../home-page/home-page.view';
 
 class AppView implements IAppView {
+  private homePage;
+
+  constructor() {
+    this.homePage = new HomePageView();
+  }
+
   initAppView() {
     this.initStartPage();
     M.AutoInit(); // init materializecss library
@@ -17,7 +24,7 @@ class AppView implements IAppView {
     <header class="header">
       <nav>
         <div class="nav-wrapper red lighten-5">
-          <a href="#home" class="brand-logo grey-text text-darken-4"><img class="hide-on-small-only school-logo"
+          <a href="#home" class="switch-to-home-page brand-logo grey-text text-darken-4"><img class="hide-on-small-only school-logo"
               src="./assets/rs-lang-logo.svg" alt="rs lang logo" title="RS Lang">RS-Lang</a>
           <a href="#modal-log-in" class="modal-trigger right deep-orange darken-1 waves-effect waves-light btn login-button-header"><i class="material-icons left">exit_to_app</i>Вход</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i
@@ -102,13 +109,7 @@ class AppView implements IAppView {
 
     <main class="main">
       <div class="main-wrapper">
-        <div class="home-page">
-          <div class="home-page__title">
-            <h3 class="home-page__quote-1 grey-text text-darken-4"><span class="dont">Don't</span> be an <span class="alien">alien</span> in a foreign country</h3>
-            <p class="home-page__quote-2">Не будь инопланетянином в чужой стране</p>
-          </div>
-          <img class="home-page__image" src="./assets/home-page.svg" alt="home page">
-        </div>
+        ${this.homePage.homePageTemplate()}
       </div>
     </main>
 

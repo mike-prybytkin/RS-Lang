@@ -24,6 +24,7 @@ const FAILING_LOGIN_MESSAGE = 'Упс, такого пользователя н�
 const SUCSESS_COLOR = 'green';
 const FAILING_COLOR = 'red';
 const TOAST = '.toast';
+const SWITCH_TO_HOME_PAGE = '.switch-to-home-page';
 
 export {
   BODY,
@@ -52,4 +53,5 @@ export {
   SUCSESS_COLOR,
   FAILING_COLOR,
   TOAST,
+  SWITCH_TO_HOME_PAGE,
 };

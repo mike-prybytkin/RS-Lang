@@ -1,11 +1,9 @@
-import { UserData } from '../../shared/shared';
-
 interface ILocalStorageService {
-  getItemLocalStorage(key: StorageKey): UserData;
-  setItemLocalStorage(key: StorageKey, data: UserData): void;
+  getItemLocalStorage<T>(key: StorageKey): T;
+  setItemLocalStorage<T>(key: StorageKey, data: T): void;
   removeItemLocalStorage(key: StorageKey): void;
 }
 
-type StorageKey = 'user';
+type StorageKey = 'user' | 'dark-theme';
 
 export { ILocalStorageService, StorageKey };

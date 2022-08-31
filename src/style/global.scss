@@ -1,4 +1,7 @@
+$dark-theme-background-color: #5d5d5d;
+
 $tablet-width: 767px;
+$tablet-mobile-width: 600px;
 $mobile-width: 420px;
 
 @mixin flex ($justify: center, $align: flex-start) {

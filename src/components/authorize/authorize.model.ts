@@ -1,6 +1,6 @@
 import LocalStorageService from '../../service/localStorage-service/localStorage-service';
 import UserService from '../../service/user-service/user-service';
-import { UserData } from '../../shared/shared';
+import { UserData, UserType } from '../../shared/shared';
 
 class AuthorizeModel {
   private localStorageService;
@@ -30,7 +30,7 @@ class AuthorizeModel {
     this.localStorageService.removeItemLocalStorage('user');
   }
 
-  getLocalStorage() {
+  getLocalStorage(): UserType {
     return this.localStorageService.getItemLocalStorage('user');
   }
 }

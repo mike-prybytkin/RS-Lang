@@ -8,6 +8,10 @@ body {
   flex-direction: column;
 }
 
+body.dark-theme {
+  background-color: $dark-theme-background-color;
+}
+
 .nav-wrapper,
 .main-wrapper,
 .footer-wrapper {
@@ -15,6 +19,7 @@ body {
 }
 
 .nav-wrapper {
+  position: relative;
   .brand-logo {
     @include flex(flex-start, center );
     font-family: 'Atomic Age', cursive;

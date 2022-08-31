@@ -25,8 +25,30 @@ const SUCSESS_COLOR = 'green';
 const FAILING_COLOR = 'red';
 const TOAST = '.toast';
 const SWITCH_TO_HOME_PAGE = '.switch-to-home-page';
+const SWITCH_THEME_BUTTON = '.switch-theme-button';
+const THEME_ICON = '.theme-icon';
+const LIGHT_THEME_ICON = 'wb_sunny';
+const DARK_THEME_ICON = 'brightness_3';
+const LIGHT_THEME_TEXT = 'text-darken-4';
+const DARK_THEME_TEXT = 'text-lighten-2';
+const APP_TEXT = 'grey-text';
+const NAV_AND_BURGER_WRAPPERS = 'app-navigation';
+const NAV_AND_BURGER_LIGHT = ['red', 'lighten-5'];
+const NAV_AND_BURGER_DARK = ['brown', 'lighten-1'];
+const DARK_THEME = 'dark-theme';
 
 export {
+  DARK_THEME,
+  NAV_AND_BURGER_DARK,
+  NAV_AND_BURGER_LIGHT,
+  NAV_AND_BURGER_WRAPPERS,
+  APP_TEXT,
+  DARK_THEME_TEXT,
+  LIGHT_THEME_TEXT,
+  THEME_ICON,
+  LIGHT_THEME_ICON,
+  DARK_THEME_ICON,
+  SWITCH_THEME_BUTTON,
   BODY,
   MAIN_WRAPPER,
   LOGIN_BUTTON_HEADER,

@@ -5,8 +5,11 @@ export interface IWordsService {
   getWordById(id: string): Promise<WordType | null>;
 }
 
+export type Answer = 'correct-answer' | 'wrong-answer';
+
 export type WordType = {
   id: string;
+  _id: string;
   group: number;
   page: number;
   word: string;
@@ -21,4 +24,5 @@ export type WordType = {
   textMeaningTranslate: string;
   textExampleTranslate: string;
   userWord: UserWordBodyType;
+  answer: Answer;
 };

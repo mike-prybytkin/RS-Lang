@@ -14,18 +14,26 @@ class SwitchThemeController implements ISwitchThemeController {
 
   init() {
     this.view.buttonListener(this.switchTheme);
+    this.checkTheme();
   }
 
   switchTheme = () => {
     const checkStorage = this.model.getLocalStorage();
     if (checkStorage) {
-      this.view.lightTheme();
+      this.view.darkTheme();
       this.model.removeLocalStorage();
     } else {
-      this.view.darkTheme();
+      this.view.lightTheme();
       this.model.setLocalStorage(true);
     }
   };
+
+  checkTheme() {
+    const checkStorage = this.model.getLocalStorage();
+    if (!checkStorage) {
+      this.view.darkTheme();
+    }
+  }
 }
 
 export default SwitchThemeController;

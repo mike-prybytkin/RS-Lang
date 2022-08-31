@@ -35,8 +35,10 @@ const APP_TEXT = 'grey-text';
 const NAV_AND_BURGER_WRAPPERS = 'app-navigation';
 const NAV_AND_BURGER_LIGHT = ['red', 'lighten-5'];
 const NAV_AND_BURGER_DARK = ['brown', 'lighten-1'];
+const DARK_THEME = 'dark-theme';
 
 export {
+  DARK_THEME,
   NAV_AND_BURGER_DARK,
   NAV_AND_BURGER_LIGHT,
   NAV_AND_BURGER_WRAPPERS,

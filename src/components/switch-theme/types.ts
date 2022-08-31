@@ -7,6 +7,7 @@ interface ISwitchThemeView {
 interface ISwitchThemeController {
   init(): void;
   switchTheme(): void;
+  checkTheme(): void;
 }
 
 interface ISwitchThemeModel {

@@ -18,10 +18,13 @@ class AudioCallController implements IAudioCallController {
 
   pageNumber!: number;
 
+  countPages: number;
+
   constructor() {
     this.view = new AudioCallView();
     this.model = new AudioCallModel();
     this.gamePage = 0;
+    this.countPages = 0;
     this.audio = new Audio();
     this.audio.addEventListener('ended', () => {
       this.view.changeAudioImage();
@@ -37,7 +40,7 @@ class AudioCallController implements IAudioCallController {
   runStart = (event: Event) => {
     const buttonLevel = event.currentTarget as HTMLButtonElement;
     const group = +buttonLevel.id.slice(-1) - 1;
-    this.start(group, 7);
+    this.start(group, 24);
   };
 
   async start(group: number, pageNumber?: number) {
@@ -45,11 +48,17 @@ class AudioCallController implements IAudioCallController {
     if (pageNumber) this.pageNumber = pageNumber;
     this.gamePage = 0;
     await this.model.getWords(group, pageNumber);
-    this.createPage();
+    this.countPages = this.model.learnWords.length;
+    if (this.countPages) {
+      this.createPage();
+    } else {
+      console.log('Sorry');
+    }
   }
 
   createPage() {
     const wordsPage = this.model.getWordsPage(this.gamePage);
+    console.log(wordsPage);
     [this.correctWord] = wordsPage;
     wordsPage.sort(() => Math.random() - 0.5);
     const correctIndex = wordsPage.findIndex((item) => item.id === this.correctWord.id);
@@ -89,7 +98,7 @@ class AudioCallController implements IAudioCallController {
   };
 
   nextPage = () => {
-    if (this.gamePage < this.model.countWords - 1) {
+    if (this.gamePage < this.countPages - 1) {
       this.gamePage += 1;
       this.createPage();
     } else {

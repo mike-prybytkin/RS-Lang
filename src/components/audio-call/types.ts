@@ -1,7 +1,7 @@
 import { WordType } from '../../service/words-service/types';
 
 export interface IAudioCallModel {
-  words: WordType[];
+  learnWords: WordType[];
 }
 export interface IAudioCallController {}
 

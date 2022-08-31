@@ -9,6 +9,7 @@ export type Answer = 'correct-answer' | 'wrong-answer';
 
 export type WordType = {
   id: string;
+  _id: string;
   group: number;
   page: number;
   word: string;

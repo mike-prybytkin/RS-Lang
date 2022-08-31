@@ -62,14 +62,30 @@ class UserService extends FetchService implements IUserService {
     return data;
   }
 
-  public async createUserWord(wordId: string) {
+  public async createDifficultUserWord(wordId: string) {
     const endPoint = `users/${this.userId}/words/${wordId}`;
     const body = {
       difficulty: 'true',
       optional: {
-        // learned: false,
-        correctAnswersSuccessively: 0,
-        attempts: 0,
+        learned: false,
+        successAnswersSequence: 0,
+        successAttempt: 0,
+        wrongAttempt: 0,
+      },
+    };
+    const data = await this.postData<UserWordType, UserWordBodyType>(endPoint, this.token, body);
+    return data;
+  }
+
+  public async createLearnedUserWord(wordId: string) {
+    const endPoint = `users/${this.userId}/words/${wordId}`;
+    const body = {
+      difficulty: 'false',
+      optional: {
+        learned: true,
+        successAnswersSequence: 0,
+        successAttempt: 0,
+        wrongAttempt: 0,
       },
     };
     const data = await this.postData<UserWordType, UserWordBodyType>(endPoint, this.token, body);
@@ -103,10 +119,9 @@ class UserService extends FetchService implements IUserService {
   public async getAggregatedWords(group: number, wordsPerPage: number, filter?: string) {
     let endPoint = `users/${this.userId}/aggregatedWords?group=${group}&wordsPerPage=${wordsPerPage}`;
     if (filter) {
-      endPoint = `${endPoint}&${filter}`;
+      endPoint = `${endPoint}&filter=${filter}`;
     }
     const data = await this.getData<AggregatedWordsType[]>(endPoint, this.token);
-    console.log(data);
     return data;
   }
 

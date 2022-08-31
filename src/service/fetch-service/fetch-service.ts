@@ -34,7 +34,6 @@ class FetchService implements IFetchService {
   }
 
   private getRequestConfig<B>(requestType: RequestType, body: B, token: string) {
-    // убрать copyPast
     const config = {
       body: JSON.stringify(body),
       headers: {

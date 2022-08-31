@@ -21,7 +21,7 @@ class HomePageView implements IHomePageView {
     <div class="home-page">
       <div class="home-page__title">
         <h3 class="home-page__quote-1 grey-text text-darken-4"><span class="dont">Don't</span> be an <span class="alien">alien</span> in a foreign country</h3>
-        <p class="home-page__quote-2">Не будь инопланетянином в чужой стране</p>
+        <p class="home-page__quote-2 grey-text text-darken-4">Не будь инопланетянином в чужой стране</p>
       </div>
       <img class="home-page__image" src="./assets/home-page.svg" alt="home page">
     </div>

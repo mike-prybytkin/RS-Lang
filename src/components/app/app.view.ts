@@ -23,7 +23,8 @@ class AppView implements IAppView {
     return `
     <header class="header">
       <nav>
-        <div class="nav-wrapper red lighten-5">
+        <div class="nav-wrapper app-navigation red lighten-5">
+          <button class="switch-theme-button btn-floating btn-small waves-effect waves-light deep-orange darken-1"><i class="material-icons theme-icon">wb_sunny</i></button>
           <a href="#home" class="switch-to-home-page brand-logo grey-text text-darken-4"><img class="hide-on-small-only school-logo"
               src="./assets/rs-lang-logo.svg" alt="rs lang logo" title="RS Lang">RS-Lang</a>
           <a href="#modal-log-in" class="modal-trigger right deep-orange darken-1 waves-effect waves-light btn login-button-header"><i class="material-icons left">exit_to_app</i>Вход</a>
@@ -38,12 +39,12 @@ class AppView implements IAppView {
           </ul>
         </div>
       </nav>
-      <ul class="sidenav sidenav-close" id="mobile-demo">
-        <li><a class="textbook" href="#textbook"><i class="material-icons">book</i>Учебник</a></li>
-        <li><a class="dictionary" href="#dictionary"><i class="material-icons">description</i>Словарь</a></li>
-        <li><a class="games" href="#games"><i class="material-icons">games</i>Игры</a></li>
-        <li><a class="statistic" href="#statistic"><i class="material-icons">assessment</i>Статистика</a></li>
-        <li><a class="about" href="#about"><i class="material-icons">business_center</i>О проекте</a></li>
+      <ul class="sidenav sidenav-close app-navigation red lighten-5" id="mobile-demo">
+        <li><a class="grey-text text-darken-4 textbook" href="#textbook"><i class="material-icons">book</i>Учебник</a></li>
+        <li><a class="grey-text text-darken-4 dictionary" href="#dictionary"><i class="material-icons">description</i>Словарь</a></li>
+        <li><a class="grey-text text-darken-4 games" href="#games"><i class="material-icons">games</i>Игры</a></li>
+        <li><a class="grey-text text-darken-4 statistic" href="#statistic"><i class="material-icons">assessment</i>Статистика</a></li>
+        <li><a class="grey-text text-darken-4 about" href="#about"><i class="material-icons">business_center</i>О проекте</a></li>
         <li><img class="hide-on-med-only mobile-school-logo" src="./assets/rs-lang-logo.svg" alt="rs lang logo"
             title="RS Lang"></a></li>
       </ul>

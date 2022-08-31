@@ -15,7 +15,7 @@ class TextbookController {
   init() {
     this.textbookView.renderBaseStructure();
     this.textbookView.renderPage(this.textbookModel.getWords());
-    this.textbookView.initializeGroupDropdown();
+    this.textbookView.initializeGroupDropdown(6);
     this.textbookView.initializePageDropdown(30);
     this.changeGroup();
     this.changePage();
@@ -52,7 +52,7 @@ class TextbookController {
   }
 
   private changeGroup() {
-    const groupDropdown = document.querySelectorAll('.group');
+    const groupDropdown = document.querySelectorAll('.group__item');
     groupDropdown.forEach((item) => {
       item.addEventListener('click', () => {
         this.textbookModel.currGroup = Number(item.textContent?.split(' ')[1]) - 1;

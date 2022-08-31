@@ -2,10 +2,17 @@
 import './textbook.scss';
 import { WordType } from '../../service/words-service/types';
 import FetchService from '../../service/fetch-service/fetch-service';
+import LocalStorageService from '../../service/localStorage-service/localStorage-service';
 
 const { baseUrl } = new FetchService();
-
+const lsS = new LocalStorageService();
 class TextbookView {
+  private user;
+
+  constructor() {
+    this.user = lsS.getItemLocalStorage('user');
+  }
+
   async renderPage(words: Promise<WordType[]>) {
     const wordsWrapper = document.querySelector('.words__wrapper') as HTMLElement;
     const cardTemplate = document.querySelector('#card__template') as HTMLTemplateElement;
@@ -35,22 +42,17 @@ class TextbookView {
       (wordAudio as HTMLElement).addEventListener('click', () => {
         this.playAudio([word.audio, word.audioMeaning, word.audioExample]);
       });
+      this.renderPageWithUser();
       wordsWrapper.append(card);
     });
   }
 
   renderBaseStructure() {
-    document.body.innerHTML = `
+    (document.querySelector('.main-wrapper') as HTMLElement).innerHTML = `
   <div class="container">
   <div class="controls">
   <a class='group-dropdown-trigger waves-effect waves-light btn deep-orange' href='#' data-target='group-dropdown'>Раздел 1</a>
   <ul id='group-dropdown' class='dropdown-content'>
-    <li><a href="#!" class="deep-orange white-text group">Раздел 1</a></li>
-    <li><a href="#!" class="deep-orange white-text group">Раздел 2</a></li>
-    <li><a href="#!" class="deep-orange white-text group">Раздел 3</a></li>
-    <li><a href="#!" class="deep-orange white-text group">Раздел 4</a></li>
-    <li><a href="#!" class="deep-orange white-text group">Раздел 5</a></li>
-    <li><a href="#!" class="deep-orange white-text group">Раздел 6</a></li>
   </ul>
   <div class="page">
     <button class="waves-effect waves-light btn deep-orange prev-btn"><</button>
@@ -81,6 +83,8 @@ class TextbookView {
       <button class="btn-floating pulse deep-orange word__audio">
         <img src="../../assets/icons/play.png" class="word__audio-img">
       </button>
+      <button class="waves-effect waves-light btn deep-orange word__btn word__hard">В сложные</button>
+      <button class="waves-effect waves-light btn deep-orange word__btn word__studied">Изучено</button>
     </div>
   </div>
 </template>
@@ -107,18 +111,18 @@ class TextbookView {
     });
   }
 
-  initializeGroupDropdown() {
-    document.addEventListener('DOMContentLoaded', () => {
-      const elems = document.querySelectorAll('.group-dropdown-trigger');
-      M.Dropdown.init(elems);
-    });
+  initializeGroupDropdown(groupCount: number) {
+    const elems = document.querySelectorAll('.group-dropdown-trigger');
+    M.Dropdown.init(elems);
+    const groupDropdown = document.getElementById('group-dropdown') as HTMLElement;
+    for (let i = 1; i <= groupCount; i += 1) {
+      groupDropdown.innerHTML += `<li><a href="#!" class="deep-orange white-text group__item">Раздел ${i}</a></li>`;
+    }
   }
 
   initializePageDropdown(pageCount: number) {
-    document.addEventListener('DOMContentLoaded', () => {
-      const elems = document.querySelectorAll('.page-dropdown-trigger');
-      M.Dropdown.init(elems);
-    });
+    const elems = document.querySelectorAll('.page-dropdown-trigger');
+    M.Dropdown.init(elems);
     const pageDropdown = document.getElementById('page-dropdown') as HTMLElement;
     for (let i = 1; i <= pageCount; i += 1) {
       pageDropdown.innerHTML += `<li><a href="#!" class="deep-orange white-text page__item">Страница ${i}</a></li>`;
@@ -135,6 +139,17 @@ class TextbookView {
   updatePage(group: number, page: number, words: Promise<WordType[]>) {
     this.renderPage(words);
     this.changeControlsCaption(group, page);
+    const audioPlayer = document.querySelector('.audio') as HTMLAudioElement;
+    audioPlayer.pause();
+  }
+
+  renderPageWithUser() {
+    if (this.user) {
+      const wordBtn = document.querySelectorAll('.word__btn');
+      wordBtn.forEach((btn) => {
+        btn.classList.add('word__btn_active');
+      });
+    }
   }
 }
 

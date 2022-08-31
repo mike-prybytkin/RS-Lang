@@ -29,6 +29,7 @@ export type UserType = {
 export type NewUserType = {
   id: string;
   email: string;
+  name: string;
 };
 
 export type LoginBodyType = {

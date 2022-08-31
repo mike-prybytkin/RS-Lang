@@ -10,7 +10,7 @@ import {
   NewTokenType,
   UserWordBodyType,
   UserWordType,
-  optionalType,
+  OptionalType,
   AggregatedWordsType,
 } from './types';
 
@@ -62,14 +62,30 @@ class UserService extends FetchService implements IUserService {
     return data;
   }
 
-  public async createUserWord(wordId: string) {
+  public async createDifficultUserWord(wordId: string) {
     const endPoint = `users/${this.userId}/words/${wordId}`;
     const body = {
       difficulty: 'true',
       optional: {
         learned: false,
-        correctAnswersSuccessively: 0,
-        attempts: 0,
+        successAnswersSequence: 0,
+        successAttempt: 0,
+        wrongAttempt: 0,
+      },
+    };
+    const data = await this.postData<UserWordType, UserWordBodyType>(endPoint, this.token, body);
+    return data;
+  }
+
+  public async createLearnedUserWord(wordId: string) {
+    const endPoint = `users/${this.userId}/words/${wordId}`;
+    const body = {
+      difficulty: 'false',
+      optional: {
+        learned: true,
+        successAnswersSequence: 0,
+        successAttempt: 0,
+        wrongAttempt: 0,
       },
     };
     const data = await this.postData<UserWordType, UserWordBodyType>(endPoint, this.token, body);
@@ -88,7 +104,7 @@ class UserService extends FetchService implements IUserService {
     return data;
   }
 
-  public async updateUserWord(wordId: string, difficulty: string, optional: optionalType) {
+  public async updateUserWord(wordId: string, difficulty: string, optional: OptionalType) {
     const endPoint = `users/${this.userId}/words/${wordId}`;
     const body = { difficulty, optional };
     const data = await this.putData<UserWordType, UserWordBodyType>(endPoint, this.token, body);
@@ -103,7 +119,7 @@ class UserService extends FetchService implements IUserService {
   public async getAggregatedWords(group: number, wordsPerPage: number, filter?: string) {
     let endPoint = `users/${this.userId}/aggregatedWords?group=${group}&wordsPerPage=${wordsPerPage}`;
     if (filter) {
-      endPoint = `${endPoint}&${filter}`;
+      endPoint = `${endPoint}&filter=${filter}`;
     }
     const data = await this.getData<AggregatedWordsType[]>(endPoint, this.token);
     return data;

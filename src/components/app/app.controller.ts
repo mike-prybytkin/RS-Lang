@@ -4,7 +4,6 @@ import SwitchThemeController from '../switch-theme/switch-theme.controller';
 import AppView from './app.view';
 import { IAppController } from './types';
 import AudioCallController from '../audio-call/audioCallController';
-// import { IAudioCallController } from '../audio-call/types';
 import SprintController from '../sprint/sprintController';
 
 class AppController implements IAppController {
@@ -27,6 +26,8 @@ class AppController implements IAppController {
     this.authorizeController = new AuthorizeController(this.audioCall, this.sprint);
     this.homePageController = new HomePageController();
     this.switchThemeController = new SwitchThemeController();
+    this.view.listnerGamesButton();
+    this.view.callAudioChallengeGame(this.audioCall.init);
   }
 
   initApp() {

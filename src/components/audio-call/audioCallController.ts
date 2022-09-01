@@ -32,12 +32,13 @@ class AudioCallController implements IAudioCallController {
     this.view.addKeyDownListener(this.checkAnswer, this.addUnknownWord, this.playAudio);
   }
 
-  init() {
+  init = () => {
     this.view.renderStartPage();
     this.view.addStartListeners(this.runStart);
-  }
+  };
 
   runStart = (event: Event) => {
+    this.view.addPreloader();
     const buttonLevel = event.currentTarget as HTMLButtonElement;
     const group = +buttonLevel.id.slice(-1) - 1;
     this.start(group);

@@ -61,7 +61,6 @@ class AuthorizeController implements IAuthorizeController {
         this.view.renderLoginUser(response.name);
         this.audioCall.model.userService.writeUserData(response);
         this.sprint.model.userService.writeUserData(response);
-        this.sprint.init(); // !!!!!!!!!!!!Удалить
       } else {
         this.view.showToastMessage(`${FAILING_LOGIN_MESSAGE}`, `${FAILING_COLOR}`);
       }

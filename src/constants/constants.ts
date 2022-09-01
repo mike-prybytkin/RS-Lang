@@ -36,6 +36,9 @@ const NAV_AND_BURGER_WRAPPERS = 'app-navigation';
 const NAV_AND_BURGER_LIGHT = ['red', 'lighten-5'];
 const NAV_AND_BURGER_DARK = ['brown', 'lighten-1'];
 const DARK_THEME = 'dark-theme';
+const GAMES_BUTTON = '.games';
+const AUDIO_CHALLENGE_GAME_BTN = 'audio-challenge-game';
+const SPRINT_GAME_BTN = 'sprint-game';
 
 export {
   DARK_THEME,
@@ -76,6 +79,9 @@ export {
   FAILING_COLOR,
   TOAST,
   SWITCH_TO_HOME_PAGE,
+  GAMES_BUTTON,
+  AUDIO_CHALLENGE_GAME_BTN,
+  SPRINT_GAME_BTN,
 };
 
 export enum Selector {

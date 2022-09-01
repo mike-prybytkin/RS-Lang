@@ -18,6 +18,8 @@ export interface IUserService {
   deleteUserWord(wordId: string): Promise<void>;
   getAggregatedWords(group: number, wordsPerPage: number, filter?: string): Promise<AggregatedWordsType[] | null>;
   getAggregatedWord(wordId: string): Promise<WordType[] | null>;
+  writeUserData(userData: UserAuthorizationType): void;
+  removeUserData(): void;
 }
 
 export type UserType = {

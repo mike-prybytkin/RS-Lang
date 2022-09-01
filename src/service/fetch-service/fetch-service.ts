@@ -1,3 +1,4 @@
+import { UserAuthorizationType } from '../user-service/types';
 import { IFetchService, RequestType } from './types';
 
 class FetchService implements IFetchService {
@@ -10,9 +11,17 @@ class FetchService implements IFetchService {
   refreshToken: string;
 
   constructor() {
-    this.token = '';
-    this.userId = '';
-    this.refreshToken = '';
+    const userDataJson = localStorage.getItem('user');
+    if (userDataJson) {
+      const userData: UserAuthorizationType = JSON.parse(userDataJson);
+      this.token = userData.token;
+      this.userId = userData.userId;
+      this.refreshToken = userData.refreshToken;
+    } else {
+      this.token = '';
+      this.userId = '';
+      this.refreshToken = '';
+    }
   }
 
   private async typedFetch<T, B>(endPoint: string, request: RequestType, token: string, body?: B): Promise<T | null> {

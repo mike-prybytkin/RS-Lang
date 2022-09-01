@@ -3,11 +3,14 @@ import './textbook.scss';
 import { WordType } from '../../service/words-service/types';
 import FetchService from '../../service/fetch-service/fetch-service';
 import LocalStorageService from '../../service/localStorage-service/localStorage-service';
+import UserService from '../../service/user-service/user-service';
+import { UserAuthorizationType, UserWordType } from '../../service/user-service/types';
 
+const userService = new UserService();
 const { baseUrl } = new FetchService();
 const lsS = new LocalStorageService();
 class TextbookView {
-  private user;
+  private user: UserAuthorizationType;
 
   constructor() {
     this.user = lsS.getItemLocalStorage('user');
@@ -22,6 +25,7 @@ class TextbookView {
     wordsWrapper.append(audio);
     (await words).forEach((word) => {
       const card = cardTemplate.content.cloneNode(true) as HTMLTemplateElement;
+      const wordcard = card.querySelector('.word');
       const wordImage = card.querySelector('.word__img');
       const wordText = card.querySelector('.word__text');
       const wordTextTranslate = card.querySelector('.word__text-translate');
@@ -31,7 +35,9 @@ class TextbookView {
       const wordTextExample = card.querySelector('.word__text-example');
       const wordTextExampleTranslate = card.querySelector('.word__text-example-translate');
       const wordAudio = card.querySelector('.word__audio');
+      const wordHard = card.querySelector('.word__hard');
       (wordImage as HTMLImageElement).src = `${baseUrl}/${word.image}`;
+      (wordcard as HTMLElement).dataset.id = word.id;
       (wordText as HTMLElement).innerHTML = word.word;
       (wordTranscription as HTMLElement).innerHTML = word.transcription;
       (wordTextTranslate as HTMLElement).innerHTML = word.wordTranslate;
@@ -41,6 +47,9 @@ class TextbookView {
       (wordTextExampleTranslate as HTMLElement).innerHTML = word.textExampleTranslate;
       (wordAudio as HTMLElement).addEventListener('click', () => {
         this.playAudio([word.audio, word.audioMeaning, word.audioExample]);
+      });
+      (wordHard as HTMLElement).addEventListener('click', () => {
+        this.addWordInDifficult(word.id);
       });
       wordsWrapper.append(card);
     });
@@ -153,6 +162,26 @@ class TextbookView {
       });
     }
   }
+
+  async addWordInDifficult(wordId: string) {
+    if (await userService.getUserWord1(this.user.userId, this.user.token, wordId)) {
+      console.log('Данное слово уже добавлено в сложные');
+    } else {
+      // userService.createDifficultUserWord1(this.user.userId, this.user.token, wordId);
+    }
+  }
+
+  changeStyleDifficultWord = (userWords: UserWordType[]) => {
+    const wordCards = document.querySelectorAll('.word');
+    userWords.forEach((word) => {
+      wordCards.forEach((card) => {
+        console.log(word.id, (card as HTMLElement).dataset.id);
+        if (word.id === (card as HTMLElement).dataset.id) {
+          console.log(word.id, (card as HTMLElement).dataset.id);
+        }
+      });
+    });
+  };
 }
 
 export default TextbookView;

@@ -1,11 +1,14 @@
 import TextbookView from './textbook.view';
 // import { WordType } from '../../service/words-service/types';
 import TextbookModel from './textbook.model';
+import UserService from '../../service/user-service/user-service';
 
 class TextbookController {
   private textbookView;
 
   private textbookModel;
+
+  private userService = new UserService();
 
   constructor() {
     this.textbookView = new TextbookView();
@@ -21,6 +24,7 @@ class TextbookController {
     this.changePage();
     this.nextPage();
     this.prevPage();
+    this.changeStyleDifficultWords();
   }
 
   private nextPage() {
@@ -78,6 +82,10 @@ class TextbookController {
         );
       });
     });
+  }
+
+  private async changeStyleDifficultWords() {
+    this.textbookView.changeStyleDifficultWord(await this.textbookModel.getUserDifficultWord());
   }
 }
 

@@ -4,6 +4,7 @@ import SwitchThemeController from '../switch-theme/switch-theme.controller';
 import AppView from './app.view';
 import { IAppController } from './types';
 import AudioCallController from '../audio-call/audioCallController';
+
 class AppController implements IAppController {
   private authorizeController;
 
@@ -21,6 +22,8 @@ class AppController implements IAppController {
     this.authorizeController = new AuthorizeController(this.audioCall);
     this.homePageController = new HomePageController();
     this.switchThemeController = new SwitchThemeController();
+    this.view.listnerGamesButton();
+    this.view.callAudioChallengeGame(this.audioCall.init);
   }
 
   initApp() {

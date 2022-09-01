@@ -1,12 +1,12 @@
 import SprintModel from './sprintModel';
 import SprintView from './sprintView';
-import { ISprintController, ISprintView, ISprintModel } from './types';
+import { ISprintController /* ISprintView, ISprintModel */ } from './types';
 import { WordType } from '../../service/words-service/types';
 
 class SprintController implements ISprintController {
-  view: ISprintView;
+  view: SprintView;
 
-  model: ISprintModel;
+  model: SprintModel;
 
   gamePage: number;
 
@@ -29,7 +29,7 @@ class SprintController implements ISprintController {
     // this.audio.addEventListener('ended', () => {
     //   this.view.changeAudioImage();
     // });
-    this.view.addKeyDownListener(this.checkAnswer, this.addUnknownWord/*, this.playAudio*/);
+    this.view.addKeyDownListener(this.checkAnswer, this.addUnknownWord /* , this.playAudio */);
   }
 
   init() {
@@ -40,14 +40,14 @@ class SprintController implements ISprintController {
   runStart = (event: Event) => {
     const buttonLevel = event.currentTarget as HTMLButtonElement;
     const group = +buttonLevel.id.slice(-1) - 1;
-    this.start(group);
+    this.start(group, 9);
   };
 
   async start(group: number, pageNumber?: number) {
     this.group = group;
     if (pageNumber) this.pageNumber = pageNumber;
     this.gamePage = 0;
-    await this.model.getWords(group, pageNumber);
+    await this.model.getWords(group, pageNumber); // stay here
     this.countPages = this.model.learnWords.length;
     if (this.countPages) {
       this.createPage();

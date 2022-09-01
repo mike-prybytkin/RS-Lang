@@ -44,7 +44,7 @@ class AudioCallModel implements IAudioCallModel {
   async getWordsFromVocabulary(group: number, pageNumber: number) {
     if (this.userService.token) {
       // кейс для незареганного юзера
-      const words = await this.wordsService.getWords(group, pageNumber);
+      const words = await this.wordsService.getWords(group, pageNumber - 1);
       if (words) this.learnWords = words.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
     } else {
       // кейс для зареганного юзера

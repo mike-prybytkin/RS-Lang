@@ -12,6 +12,7 @@ import {
   FAILING_COLOR,
 } from '../../constants/constants';
 import { IAudioCallController } from '../audio-call/types';
+import { ISprintController } from '../sprint/types';
 
 class AuthorizeController implements IAuthorizeController {
   private view;
@@ -20,10 +21,13 @@ class AuthorizeController implements IAuthorizeController {
 
   audioCall: IAudioCallController;
 
-  constructor(audioCall: IAudioCallController) {
+  sprint: ISprintController;
+
+  constructor(audioCall: IAudioCallController, sprint: ISprintController) {
     this.view = new AuthorizeView();
     this.model = new AuthorizeModel();
     this.audioCall = audioCall;
+    this.sprint = sprint;
   }
 
   init() {
@@ -56,7 +60,8 @@ class AuthorizeController implements IAuthorizeController {
         this.model.setLocalStorage(response);
         this.view.renderLoginUser(response.name);
         this.audioCall.model.userService.writeUserData(response);
-        this.audioCall.init(); // !!!!!!!!!!!!Удалить
+        this.sprint.model.userService.writeUserData(response);
+        this.sprint.init(); // !!!!!!!!!!!!Удалить
       } else {
         this.view.showToastMessage(`${FAILING_LOGIN_MESSAGE}`, `${FAILING_COLOR}`);
       }

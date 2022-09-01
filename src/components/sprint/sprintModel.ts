@@ -27,7 +27,7 @@ class SprintModel implements ISprintModel {
     this.learnWords = [];
     this.userService = new UserService();
     this.wordsService = new WordsService();
-    this.countLearnWords = 10;
+    this.countLearnWords = 600;
     this.wordsPerPage = 20;
     this.countVariantsAnswers = 3;
   }
@@ -44,8 +44,19 @@ class SprintModel implements ISprintModel {
   async getWordsFromVocabulary(group: number, pageNumber: number) {
     if (this.userService.token) {
       // кейс для незареганного юзера
-      const words = await this.wordsService.getWords(group, pageNumber);
+      const words = await this.wordsService.getWords(group, pageNumber - 1);
       if (words) this.learnWords = words.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
+      const learnWords = Array.from({ length: 30 }, (_it, index) => this.wordsService.getWords(group, index));
+      const deficit = await Promise.all(learnWords).then((value) => {
+        return value
+          .sort((a, b) => (a && b ? b[0].page - a[0].page : 0))
+          .filter((item) => (item ? item[0].page < pageNumber - 1 : false))
+          .map((item) => (item ? item.sort(() => Math.random() - 0.5) : item));
+      });
+      deficit.forEach((item) => {
+        if (item) this.learnWords.concat(item);
+      });
+      console.log(this.learnWords);
     } else {
       // кейс для зареганного юзера
       const filter = this.createFilterLearned(pageNumber - 1);
@@ -57,10 +68,9 @@ class SprintModel implements ISprintModel {
     }
     const dataVariant = await this.userService.getAggregatedWords(group, 600);
     if (dataVariant) {
-      this.variantsWords = dataVariant[0].paginatedResults
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 50)
-        .filter((item) => !this.learnWords.find((word) => word.word === item.word));
+      this.variantsWords = dataVariant[0].paginatedResults.sort(() => Math.random() - 0.5);
+      /* .slice(0, 50)
+      .filter((item) => !this.learnWords.find((word) => word.word === item.word)) */
     }
   }
 

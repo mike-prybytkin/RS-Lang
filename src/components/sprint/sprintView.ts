@@ -91,12 +91,12 @@ class SprintView implements ISprintView {
 
   addKeyDownListener(
     checkAnswer: (variantAnswer: HTMLButtonElement) => void,
-    addUnknownWord: () => void/*,
-    playAudio: (element: HTMLImageElement) => void*/
+    addUnknownWord: () => void /* ,
+    playAudio: (element: HTMLImageElement) => void */
   ) {
     document.addEventListener('keydown', (event: KeyboardEvent) => {
       const element = this.getElementByKey(event.key) as HTMLButtonElement;
-      let imageAudio: HTMLImageElement;
+      // let imageAudio: HTMLImageElement;
       if (element || event.key === ' ') {
         switch (event.key) {
           case '1':
@@ -108,9 +108,9 @@ class SprintView implements ISprintView {
             addUnknownWord();
             break;
           case ' ':
-            imageAudio = !this.hasAnswer
-              ? (document.querySelector(Selector.ImageAudio) as HTMLImageElement)
-              : (document.querySelector(Selector.CorrectImageAudio) as HTMLImageElement);
+            // imageAudio = !this.hasAnswer
+            //   ? (document.querySelector(Selector.ImageAudio) as HTMLImageElement)
+            //   : (document.querySelector(Selector.CorrectImageAudio) as HTMLImageElement);
             // if (imageAudio) playAudio(imageAudio);
             break;
           default:

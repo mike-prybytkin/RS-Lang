@@ -249,6 +249,24 @@ class AudioCallView implements IAudioCallView {
     </div>
     `;
   }
+
+  addPreloader() {
+    const preloaderTemplate = `
+    <div class="spinner-layer spinner-blue">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+    </div>
+    `;
+    this.container = document.querySelector(Selector.MainWrapper) as HTMLElement;
+    const preloader = document.createElement('div');
+    preloader.className = 'preloader-wrapper big active';
+    preloader.innerHTML = preloaderTemplate;
+    this.container.append(preloader);
+  }
 }
 
 export default AudioCallView;

@@ -216,6 +216,7 @@
     justify-content: center;
     row-gap: 50px;
     text-align: center;
+    position: relative;
 }
 
 .start-title {
@@ -266,4 +267,10 @@
 
 #level6 {
     background-color: #980000;
+}
+
+.preloader-wrapper.active {
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 25px);
 }

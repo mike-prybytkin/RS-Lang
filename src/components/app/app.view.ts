@@ -1,4 +1,4 @@
-import { BODY, GAMES_BUTTON, MAIN_WRAPPER, AUDIO_CHALLENGE_GAME_BTN } from '../../constants/constants';
+import { BODY, GAMES_BUTTON, MAIN_WRAPPER, AUDIO_CHALLENGE_GAME_BTN, SPRINT_GAME_BTN } from '../../constants/constants';
 import { IAppView, RenderGamesPageHendler } from './types';
 import HomePageView from '../home-page/home-page.view';
 
@@ -33,6 +33,18 @@ class AppView implements IAppView {
       this.mainWrapper.addEventListener('click', (event) => {
         const target = event.target as HTMLElement;
         if (target.classList.contains(AUDIO_CHALLENGE_GAME_BTN) || target.closest(`.${AUDIO_CHALLENGE_GAME_BTN}`)) {
+          hendler();
+        }
+      });
+    });
+  }
+
+  callSprintGame(hendler: RenderGamesPageHendler) {
+    document.addEventListener('DOMContentLoaded', () => {
+      this.mainWrapper = document.querySelector(MAIN_WRAPPER) as HTMLElement;
+      this.mainWrapper.addEventListener('click', (event) => {
+        const target = event.target as HTMLElement;
+        if (target.classList.contains(SPRINT_GAME_BTN) || target.closest(`.${SPRINT_GAME_BTN}`)) {
           hendler();
         }
       });

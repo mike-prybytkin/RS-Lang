@@ -3,6 +3,7 @@ import HomePageController from '../home-page/home-page.controller';
 import SwitchThemeController from '../switch-theme/switch-theme.controller';
 import AppView from './app.view';
 import { IAppController } from './types';
+import AudioCallController from '../audio-call/audioCallController';
 
 class AppController implements IAppController {
   private authorizeController;
@@ -11,6 +12,8 @@ class AppController implements IAppController {
 
   private switchThemeController;
 
+  private audioCallController;
+
   private view;
 
   constructor() {
@@ -18,6 +21,9 @@ class AppController implements IAppController {
     this.authorizeController = new AuthorizeController();
     this.homePageController = new HomePageController();
     this.switchThemeController = new SwitchThemeController();
+    this.audioCallController = new AudioCallController();
+    this.view.listnerGamesButton();
+    this.view.callAudioChallengeGame(this.audioCallController.init);
   }
 
   initApp() {

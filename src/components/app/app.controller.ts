@@ -4,8 +4,6 @@ import SwitchThemeController from '../switch-theme/switch-theme.controller';
 import AppView from './app.view';
 import { IAppController } from './types';
 import AudioCallController from '../audio-call/audioCallController';
-import { IAudioCallController } from '../audio-call/types';
-
 class AppController implements IAppController {
   private authorizeController;
 
@@ -15,7 +13,7 @@ class AppController implements IAppController {
 
   private view;
 
-  audioCall: IAudioCallController;
+  audioCall: AudioCallController;
 
   constructor() {
     this.view = new AppView();

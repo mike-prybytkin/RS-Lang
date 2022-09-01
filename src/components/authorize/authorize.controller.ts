@@ -56,7 +56,6 @@ class AuthorizeController implements IAuthorizeController {
         this.model.setLocalStorage(response);
         this.view.renderLoginUser(response.name);
         this.audioCall.model.userService.writeUserData(response);
-        this.audioCall.init(); // !!!!!!!!!!!!Удалить
       } else {
         this.view.showToastMessage(`${FAILING_LOGIN_MESSAGE}`, `${FAILING_COLOR}`);
       }

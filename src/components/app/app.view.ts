@@ -1,12 +1,30 @@
-import { BODY } from '../../constants/constants';
+import { BODY, GAMES_BUTTON, MAIN_WRAPPER } from '../../constants/constants';
 import { IAppView } from './types';
 import HomePageView from '../home-page/home-page.view';
 
 class AppView implements IAppView {
   private homePage;
 
+  private body!: HTMLElement;
+
+  private mainWrapper!: HTMLElement;
+
   constructor() {
     this.homePage = new HomePageView();
+    this.body = document.querySelector(BODY) as HTMLElement;
+    this.mainWrapper = document.querySelector(MAIN_WRAPPER) as HTMLElement;
+  }
+
+  listnerGamesButton() {
+    document.addEventListener('DOMContentLoaded', () => {
+      const gamesButtons = document.querySelectorAll(GAMES_BUTTON) as NodeList;
+      for (let i = 0; i < gamesButtons.length; i += 1) {
+        gamesButtons[i].addEventListener('click', () => {
+          this.mainWrapper = document.querySelector(MAIN_WRAPPER) as HTMLElement;
+          this.mainWrapper.innerHTML = this.gamePageTemplate();
+        });
+      }
+    });
   }
 
   initAppView() {
@@ -15,8 +33,23 @@ class AppView implements IAppView {
   }
 
   private initStartPage() {
-    const body = document.querySelector(BODY) as HTMLElement;
-    body.innerHTML = this.pageStructure();
+    this.body = document.querySelector(BODY) as HTMLElement;
+    this.body.innerHTML = this.pageStructure();
+  }
+
+  private gamePageTemplate() {
+    return `
+    <div class="games-page">
+      <h3 class="games-page__header grey-text text-darken-4">Выберите <span>игру</span></h3>
+      <div class="games-page__buttons">
+        <a href="#games/audio-challenge" class="right deep-orange darken-1 waves-effect waves-light btn btn-large audio-challenge-game"><i class="large material-icons left">volume_up</i>Аудиовызов</a>
+        <a href="#games/sprint" class="right deep-orange darken-1 waves-effect waves-light btn btn-large sprint-game"><i class="large material-icons left">directions_run</i>Спринт</a>
+      </div>
+      <div class="games-page__image-block">
+        <img class="games-page__image" src="./assets/gamer.svg" alt="gamer">
+      </div>
+    </div>
+    `;
   }
 
   private pageStructure() {

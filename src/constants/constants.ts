@@ -36,6 +36,7 @@ const NAV_AND_BURGER_WRAPPERS = 'app-navigation';
 const NAV_AND_BURGER_LIGHT = ['red', 'lighten-5'];
 const NAV_AND_BURGER_DARK = ['brown', 'lighten-1'];
 const DARK_THEME = 'dark-theme';
+const GAMES_BUTTON = '.games';
 
 export {
   DARK_THEME,
@@ -76,6 +77,7 @@ export {
   FAILING_COLOR,
   TOAST,
   SWITCH_TO_HOME_PAGE,
+  GAMES_BUTTON,
 };
 
 export enum Selector {

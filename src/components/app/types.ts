@@ -6,4 +6,6 @@ interface IAppController {
   initApp(): void;
 }
 
-export { IAppView, IAppController };
+type RenderGamesPageHendler = (this: void) => void;
+
+export { IAppView, IAppController, RenderGamesPageHendler };

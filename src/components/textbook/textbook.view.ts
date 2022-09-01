@@ -23,7 +23,7 @@ class TextbookView {
     const audio = document.createElement('audio');
     audio.classList.add('audio');
     wordsWrapper.append(audio);
-    (await words).forEach((word) => {
+    (await words).forEach(async (word) => {
       const card = cardTemplate.content.cloneNode(true) as HTMLTemplateElement;
       const wordcard = card.querySelector('.word');
       const wordImage = card.querySelector('.word__img');
@@ -51,6 +51,19 @@ class TextbookView {
       (wordHard as HTMLElement).addEventListener('click', () => {
         this.addWordInDifficult(word.id);
       });
+      // const allDifficultWordByUser = await this.getUserDifficultWord();
+      this.getUserDifficultWord().then((res) => {
+        res.forEach((item) => {
+          if ((wordcard as HTMLElement).dataset.id === item.wordId) {
+            (wordcard as HTMLElement).classList.add('word-difficult');
+          }
+        });
+      });
+      // allDifficultWordByUser.forEach((difficultWord) => {
+      //   if ((wordcard as HTMLElement).dataset.id === difficultWord.wordId) {
+      //     (wordcard as HTMLElement).classList.add('word-difficult');
+      //   }
+      // });
       wordsWrapper.append(card);
     });
     this.renderPageWithUser();
@@ -175,13 +188,17 @@ class TextbookView {
     const wordCards = document.querySelectorAll('.word');
     userWords.forEach((word) => {
       wordCards.forEach((card) => {
-        console.log(word.id, (card as HTMLElement).dataset.id);
-        if (word.id === (card as HTMLElement).dataset.id) {
-          console.log(word.id, (card as HTMLElement).dataset.id);
+        if (word.wordId === (card as HTMLElement).dataset.id) {
+          card.classList.add('word-difficult');
+          // console.log(word.wordId, (card as HTMLElement).dataset.id);
         }
       });
     });
   };
+
+  async getUserDifficultWord() {
+    return (await userService.getAllUserWords1(this.user.userId, this.user.token)) as UserWordType[];
+  }
 }
 
 export default TextbookView;

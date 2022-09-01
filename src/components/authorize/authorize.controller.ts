@@ -11,15 +11,19 @@ import {
   SUCSESS_COLOR,
   FAILING_COLOR,
 } from '../../constants/constants';
+import { IAudioCallController } from '../audio-call/types';
 
 class AuthorizeController implements IAuthorizeController {
   private view;
 
   private model;
 
-  constructor() {
+  audioCall: IAudioCallController;
+
+  constructor(audioCall: IAudioCallController) {
     this.view = new AuthorizeView();
     this.model = new AuthorizeModel();
+    this.audioCall = audioCall;
   }
 
   init() {
@@ -51,6 +55,8 @@ class AuthorizeController implements IAuthorizeController {
         this.view.showToastMessage(`${SUCSESS_LOGIN_MESSAGE} ${response.name}!`, `${SUCSESS_COLOR}`);
         this.model.setLocalStorage(response);
         this.view.renderLoginUser(response.name);
+        this.audioCall.model.userService.writeUserData(response);
+        this.audioCall.init(); // !!!!!!!!!!!!Удалить
       } else {
         this.view.showToastMessage(`${FAILING_LOGIN_MESSAGE}`, `${FAILING_COLOR}`);
       }
@@ -59,6 +65,7 @@ class AuthorizeController implements IAuthorizeController {
 
   private logOutUser = () => {
     this.model.removeLocalStorage();
+    this.audioCall.model.userService.removeUserData();
   };
 
   private checkLogInUser() {

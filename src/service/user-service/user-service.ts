@@ -26,11 +26,11 @@ class UserService extends FetchService implements IUserService {
     const endPoint = 'signin';
     const body = { email, password };
     const data = await this.postData<UserAuthorizationType, LoginBodyType>(endPoint, this.token, body);
-    if (data) {
-      this.token = data.token;
-      this.refreshToken = data.refreshToken;
-      this.userId = data.userId;
-    }
+    // if (data) {
+    //   this.token = data.token;
+    //   this.refreshToken = data.refreshToken;
+    //   this.userId = data.userId;
+    // }
     return data;
   }
 
@@ -129,6 +129,18 @@ class UserService extends FetchService implements IUserService {
     const endPoint = `users/${this.userId}/aggregatedWords/${wordId}`;
     const data = await this.getData<WordType[]>(endPoint, this.token); // переделать тип WordType - убрать UserWord и создать AggregatedWordType c UserWord
     return data;
+  }
+
+  writeUserData(userData: UserAuthorizationType) {
+    this.token = userData.token;
+    this.userId = userData.userId;
+    this.refreshToken = userData.refreshToken;
+  }
+
+  removeUserData() {
+    this.token = '';
+    this.userId = '';
+    this.refreshToken = '';
   }
 }
 

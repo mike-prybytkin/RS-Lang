@@ -1,16 +1,16 @@
-import AudioCallModel from './audioCallModel';
-import AudioCallView from './audioCallView';
-import { IAudioCallController } from './types';
+import SprintModel from './sprintModel';
+import SprintView from './sprintView';
+import { ISprintController, ISprintView, ISprintModel } from './types';
 import { WordType } from '../../service/words-service/types';
 
-class AudioCallController implements IAudioCallController {
-  view: AudioCallView;
+class SprintController implements ISprintController {
+  view: ISprintView;
 
-  model: AudioCallModel;
+  model: ISprintModel;
 
   gamePage: number;
 
-  audio: HTMLAudioElement;
+  // audio: HTMLAudioElement;
 
   correctWord!: WordType;
 
@@ -21,15 +21,15 @@ class AudioCallController implements IAudioCallController {
   countPages: number;
 
   constructor() {
-    this.view = new AudioCallView();
-    this.model = new AudioCallModel();
+    this.view = new SprintView();
+    this.model = new SprintModel();
     this.gamePage = 0;
     this.countPages = 0;
-    this.audio = new Audio();
-    this.audio.addEventListener('ended', () => {
-      this.view.changeAudioImage();
-    });
-    this.view.addKeyDownListener(this.checkAnswer, this.addUnknownWord, this.playAudio);
+    // this.audio = new Audio();
+    // this.audio.addEventListener('ended', () => {
+    //   this.view.changeAudioImage();
+    // });
+    this.view.addKeyDownListener(this.checkAnswer, this.addUnknownWord/*, this.playAudio*/);
   }
 
   init() {
@@ -62,31 +62,31 @@ class AudioCallController implements IAudioCallController {
     [this.correctWord] = wordsPage;
     wordsPage.sort(() => Math.random() - 0.5);
     const correctIndex = wordsPage.findIndex((item) => item.id === this.correctWord.id);
-    this.addSourceAudio(wordsPage[correctIndex].audio);
+    // this.addSourceAudio(wordsPage[correctIndex].audio);
     this.view.renderGamePage(correctIndex, wordsPage);
-    this.view.addAudioListener(this.playAudio);
+    // this.view.addAudioListener(this.playAudio);
     this.view.addAnswerListener(this.checkAnswer);
     this.view.addIgnoranceListener(this.addUnknownWord);
     this.view.addNavigationListener(this.nextPage);
   }
 
-  addSourceAudio(endpoint: string) {
-    this.audio.src = `${this.view.baseUrl}/${endpoint}`;
-    this.audio.play();
-    this.audio.addEventListener('ended', () => {
-      this.view.changeAudioImage();
-    });
-  }
+  // addSourceAudio(endpoint: string) {
+  //   this.audio.src = `${this.view.baseUrl}/${endpoint}`;
+  //   this.audio.play();
+  //   this.audio.addEventListener('ended', () => {
+  //     this.view.changeAudioImage();
+  //   });
+  // }
 
-  playAudio = (element: HTMLImageElement) => {
-    const elementNewSrc = element;
-    elementNewSrc.src = './assets/audio.svg';
-    this.audio.addEventListener('ended', () => {
-      const image = element;
-      image.src = './assets/play.svg';
-    });
-    this.audio.play();
-  };
+  // playAudio = (element: HTMLImageElement) => {
+  //   const elementNewSrc = element;
+  //   elementNewSrc.src = './assets/audio.svg';
+  //   this.audio.addEventListener('ended', () => {
+  //     const image = element;
+  //     image.src = './assets/play.svg';
+  //   });
+  //   this.audio.play();
+  // };
 
   checkAnswer = (variantAnswer: HTMLButtonElement) => {
     const style = variantAnswer.classList.contains('correct') ? 'correct-answer' : 'wrong-answer';
@@ -125,4 +125,4 @@ class AudioCallController implements IAudioCallController {
   };
 }
 
-export default AudioCallController;
+export default SprintController;

@@ -1,8 +1,8 @@
-import { IAudioCallView } from './types';
+import { ISprintView } from './types';
 import { WordType } from '../../service/words-service/types';
 import { Selector, TOAST } from '../../constants/constants';
 
-class AudioCallView implements IAudioCallView {
+class SprintView implements ISprintView {
   container!: HTMLElement;
 
   hasAnswer = false;
@@ -72,27 +72,27 @@ class AudioCallView implements IAudioCallView {
     }
   }
 
-  addAudioListener(handler: (element: HTMLImageElement) => void) {
-    const imageWordContainer = document.querySelectorAll(
-      `${Selector.IMAGE_WORD_CONTAINER}, ${Selector.AUDIO_ICON_CONTAINER}`
-    ) as NodeListOf<HTMLParagraphElement>;
-    imageWordContainer.forEach((item) => {
-      item.addEventListener('click', (event) => {
-        const element = event.target as HTMLImageElement;
-        handler(element);
-      });
-    });
-  }
+  // addAudioListener(handler: (element: HTMLImageElement) => void) {
+  //   const imageWordContainer = document.querySelectorAll(
+  //     `${Selector.IMAGE_WORD_CONTAINER}, ${Selector.AUDIO_ICON_CONTAINER}`
+  //   ) as NodeListOf<HTMLParagraphElement>;
+  //   imageWordContainer.forEach((item) => {
+  //     item.addEventListener('click', (event) => {
+  //       const element = event.target as HTMLImageElement;
+  //       handler(element);
+  //     });
+  //   });
+  // }
 
-  changeAudioImage() {
-    const image = document.querySelector(Selector.ImageAudio) as HTMLImageElement;
-    if (image) image.src = './assets/play.svg';
-  }
+  // changeAudioImage() {
+  //   const image = document.querySelector(Selector.ImageAudio) as HTMLImageElement;
+  //   if (image) image.src = './assets/play.svg';
+  // }
 
   addKeyDownListener(
     checkAnswer: (variantAnswer: HTMLButtonElement) => void,
-    addUnknownWord: () => void,
-    playAudio: (element: HTMLImageElement) => void
+    addUnknownWord: () => void/*,
+    playAudio: (element: HTMLImageElement) => void*/
   ) {
     document.addEventListener('keydown', (event: KeyboardEvent) => {
       const element = this.getElementByKey(event.key) as HTMLButtonElement;
@@ -111,7 +111,7 @@ class AudioCallView implements IAudioCallView {
             imageAudio = !this.hasAnswer
               ? (document.querySelector(Selector.ImageAudio) as HTMLImageElement)
               : (document.querySelector(Selector.CorrectImageAudio) as HTMLImageElement);
-            if (imageAudio) playAudio(imageAudio);
+            // if (imageAudio) playAudio(imageAudio);
             break;
           default:
             break;
@@ -187,7 +187,7 @@ class AudioCallView implements IAudioCallView {
     toast.style.backgroundColor = 'red';
   }
 
-  private pageStructure() {
+  pageStructure() {
     return `
     <div class="audio-call-container">
     <div class="studied-word-container">
@@ -223,7 +223,7 @@ class AudioCallView implements IAudioCallView {
     `;
   }
 
-  private statisticStructure() {
+  statisticStructure() {
     return `
     <div class="statistic-container">
       <h1 class="statistic-title">Статистика игры</h1>
@@ -241,7 +241,7 @@ class AudioCallView implements IAudioCallView {
     `;
   }
 
-  private startPageStructure() {
+  startPageStructure() {
     return `
     <div class="start-page-container">
       <h1 class="start-title">Выберите уровень сложности</h1>
@@ -258,4 +258,4 @@ class AudioCallView implements IAudioCallView {
   }
 }
 
-export default AudioCallView;
+export default SprintView;

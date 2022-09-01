@@ -1,5 +1,7 @@
 interface IAppView {
   initAppView(): void;
+  listnerGamesButton(): void;
+  callAudioChallengeGame(hendler: RenderGamesPageHendler): void;
 }
 
 interface IAppController {

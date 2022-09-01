@@ -23,6 +23,7 @@ class AppController implements IAppController {
     this.switchThemeController = new SwitchThemeController();
     this.audioCallController = new AudioCallController();
     this.view.listnerGamesButton();
+    this.view.callAudioChallengeGame(this.audioCallController.init);
   }
 
   initApp() {

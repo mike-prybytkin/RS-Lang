@@ -42,9 +42,9 @@ class TextbookView {
       (wordAudio as HTMLElement).addEventListener('click', () => {
         this.playAudio([word.audio, word.audioMeaning, word.audioExample]);
       });
-      this.renderPageWithUser();
       wordsWrapper.append(card);
     });
+    this.renderPageWithUser();
   }
 
   renderBaseStructure() {
@@ -62,6 +62,8 @@ class TextbookView {
     </ul>
     <button class="waves-effect waves-light btn deep-orange next-btn">></button>
   </div>
+  <button class="waves-effect waves-light btn deep-orange game__btn game__btn-audiocall">Аудиовызов</button>
+  <button class="waves-effect waves-light btn deep-orange game__btn game__btn-sprint">Спринт</button>
 </div>
   <div class="words__wrapper">
 </div></div>
@@ -80,11 +82,11 @@ class TextbookView {
       <div class="word__text-example-translate"></div>
     </div>
     <div class="word__controls">
-      <button class="btn-floating pulse deep-orange word__audio">
+      <button class="deep-orange word__audio">
         <img src="../../assets/icons/play.png" class="word__audio-img">
       </button>
-      <button class="waves-effect waves-light btn deep-orange word__btn word__hard">В сложные</button>
-      <button class="waves-effect waves-light btn deep-orange word__btn word__studied">Изучено</button>
+      <button class="deep-orange word__btn word__hard">В сложные</button>
+      <button class="deep-orange word__btn word__studied">Изучено</button>
     </div>
   </div>
 </template>

@@ -2,7 +2,7 @@ import { UserType, UserData } from '../../shared/shared';
 import { LoginBodyType, NewUserType, UserAuthorizationType } from '../../service/user-service/types';
 
 interface IAuthorizeView {
-  updateFormElement(): void;
+  clearFormElements(): void;
   registrationUser(handler: RegistrationHandler): void;
   logInUser(handler: LogInHandler): void;
   checkRegistrationForm(): void;

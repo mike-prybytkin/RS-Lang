@@ -21,6 +21,7 @@ class AppController implements IAppController {
 
   constructor() {
     this.view = new AppView();
+    this.view.initAppView();
     this.audioCall = new AudioCallController();
     this.sprint = new SprintController();
     this.authorizeController = new AuthorizeController(this.audioCall, this.sprint);
@@ -32,7 +33,6 @@ class AppController implements IAppController {
   }
 
   initApp() {
-    this.view.initAppView();
     this.authorizeController.init();
     this.switchThemeController.init();
   }

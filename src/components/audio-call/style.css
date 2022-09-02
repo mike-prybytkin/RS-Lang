@@ -323,6 +323,17 @@
     left: calc(50% - 25px);
 }
 
+.game-controls {
+    position: absolute;
+    width: 300px;
+    bottom: 45px;
+    left: calc(50% - 150px);
+}
+
+.game-controls p {
+    margin: 0;
+}
+
 @media (max-width: 768px) {
 
     .text-answer {
@@ -331,5 +342,12 @@
 
     .statistic-title {
         font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+
+    .game-controls {
+        bottom: 75px;
     }
   }

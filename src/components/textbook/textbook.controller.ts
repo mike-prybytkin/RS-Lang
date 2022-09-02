@@ -24,7 +24,6 @@ class TextbookController {
     this.changePage();
     this.nextPage();
     this.prevPage();
-    this.changeStyleDifficultWords();
   }
 
   private nextPage() {
@@ -82,10 +81,6 @@ class TextbookController {
         );
       });
     });
-  }
-
-  private async changeStyleDifficultWords() {
-    this.textbookView.changeStyleDifficultWord(await this.textbookModel.getUserDifficultWord());
   }
 }
 

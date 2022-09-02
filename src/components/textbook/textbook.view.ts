@@ -51,19 +51,6 @@ class TextbookView {
       (wordHard as HTMLElement).addEventListener('click', () => {
         this.addWordInDifficult(word.id);
       });
-      // const allDifficultWordByUser = await this.getUserDifficultWord();
-      this.getUserDifficultWord().then((res) => {
-        res.forEach((item) => {
-          if ((wordcard as HTMLElement).dataset.id === item.wordId) {
-            (wordcard as HTMLElement).classList.add('word-difficult');
-          }
-        });
-      });
-      // allDifficultWordByUser.forEach((difficultWord) => {
-      //   if ((wordcard as HTMLElement).dataset.id === difficultWord.wordId) {
-      //     (wordcard as HTMLElement).classList.add('word-difficult');
-      //   }
-      // });
       wordsWrapper.append(card);
     });
     this.renderPageWithUser();
@@ -167,11 +154,25 @@ class TextbookView {
     audioPlayer.pause();
   }
 
-  renderPageWithUser() {
+  async renderPageWithUser() {
     if (this.user) {
       const wordBtn = document.querySelectorAll('.word__btn');
       wordBtn.forEach((btn) => {
         btn.classList.add('word__btn_active');
+      });
+      const difWord = (await this.getUserDifficultWord()) as UserWordType[];
+      const wordCards = [...document.querySelectorAll('.word')];
+      const hardWord: string[] = [];
+      wordCards.forEach((crd) => {
+        difWord.forEach((wrd) => {
+          if ((crd as HTMLElement).dataset.id === wrd.wordId) {
+            hardWord.push(String((crd as HTMLElement).dataset.id));
+          }
+        });
+      });
+      console.log(hardWord);
+      hardWord.forEach((wordId) => {
+        (document.querySelector(`[data-id="${wordId}"]`) as HTMLElement).classList.add('word-difficult');
       });
     }
   }
@@ -180,7 +181,8 @@ class TextbookView {
     if (await userService.getUserWord1(this.user.userId, this.user.token, wordId)) {
       console.log('Данное слово уже добавлено в сложные');
     } else {
-      // userService.createDifficultUserWord1(this.user.userId, this.user.token, wordId);
+      userService.createDifficultUserWord1(this.user.userId, this.user.token, wordId);
+      (document.querySelector(`[data-id="${wordId}"]`) as HTMLElement).classList.add('word-difficult');
     }
   }
 
@@ -196,8 +198,8 @@ class TextbookView {
     });
   };
 
-  async getUserDifficultWord() {
-    return (await userService.getAllUserWords1(this.user.userId, this.user.token)) as UserWordType[];
+  getUserDifficultWord() {
+    return userService.getAllUserWords1(this.user.userId, this.user.token);
   }
 }
 

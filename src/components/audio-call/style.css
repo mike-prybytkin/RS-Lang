@@ -21,6 +21,11 @@
     height: 150px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 75px;
+    transition: all 0.2s;
+}
+
+.image-audio:hover {
+    box-shadow: 0px 0px 24px -6px #f4511e;
 }
 
 .image-word {
@@ -84,7 +89,8 @@
     font-weight: 500;
     border-radius: 10px;
     padding: 0 7px;
-    border: solid 2px #bf360c;
+    border: solid 2px #f4511e;
+    transition: all 0.2s;
 }
 
 .text-variant-container:disabled {
@@ -93,6 +99,7 @@
 
 .text-variant-container:hover {
     cursor: pointer;
+    box-shadow: inset 0px 0px 2px 1px #f4511e;
 }
 
 .navigation, 
@@ -102,6 +109,10 @@
 
 .navigation {
     display: none;
+}
+
+.navigation .text-navigation {
+    background-color: #f4511e;
 }
 
 .text-navigation, 
@@ -114,6 +125,12 @@
     font-size: 18px;
     font-weight: 400;
     border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.text-navigation:hover, 
+.text-ignorance:hover {
+    box-shadow: 0px 5px 11px -4px rgba(0,0,0,1);
 }
 
 .correct-answer {
@@ -229,11 +246,13 @@
     font-weight: 500;
     color:rgb(75, 75, 75);
     width: 200px;
+    transition: all 0.2s;
 }
 
 .statistic-play-again-button:hover, 
 .statistic-home-page-button:hover {
     cursor: pointer;
+    box-shadow: 0px 5px 11px -4px rgba(0,0,0,1);
 }
 
 .start-page-container {
@@ -266,10 +285,12 @@
     background-color: rgba(255, 255, 255, 0.7);
     font-size: 2.5rem;
     border: none;
+    transition: all 0.2s;
 }
 
 .difficulty-level:hover {
     cursor: pointer;
+    box-shadow: 0px 0px 24px -6px #f4511e;
 }
 
 #level1 {
@@ -302,6 +323,17 @@
     left: calc(50% - 25px);
 }
 
+.game-controls {
+    position: absolute;
+    width: 300px;
+    bottom: 45px;
+    left: calc(50% - 150px);
+}
+
+.game-controls p {
+    margin: 0;
+}
+
 @media (max-width: 768px) {
 
     .text-answer {
@@ -310,5 +342,12 @@
 
     .statistic-title {
         font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+
+    .game-controls {
+        bottom: 75px;
     }
   }

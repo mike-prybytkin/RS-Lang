@@ -11,43 +11,33 @@ class AppView implements IAppView {
 
   constructor() {
     this.homePage = new HomePageView();
-    this.body = document.querySelector(BODY) as HTMLElement;
-    this.mainWrapper = document.querySelector(MAIN_WRAPPER) as HTMLElement;
   }
 
   listnerGamesButton() {
-    document.addEventListener('DOMContentLoaded', () => {
-      const gamesButtons = document.querySelectorAll(GAMES_BUTTON) as NodeList;
-      for (let i = 0; i < gamesButtons.length; i += 1) {
-        gamesButtons[i].addEventListener('click', () => {
-          this.mainWrapper = document.querySelector(MAIN_WRAPPER) as HTMLElement;
-          this.mainWrapper.innerHTML = this.gamePageTemplate();
-        });
+    const gamesButtons = document.querySelectorAll(GAMES_BUTTON) as NodeList;
+    this.mainWrapper = document.querySelector(MAIN_WRAPPER) as HTMLElement;
+    for (let i = 0; i < gamesButtons.length; i += 1) {
+      gamesButtons[i].addEventListener('click', () => {
+        this.mainWrapper.innerHTML = this.gamePageTemplate();
+      });
+    }
+  }
+
+  callAudioChallengeGame(hendler: RenderGamesPageHendler) {
+    this.mainWrapper.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.classList.contains(AUDIO_CHALLENGE_GAME_BTN) || target.closest(`.${AUDIO_CHALLENGE_GAME_BTN}`)) {
+        hendler();
       }
     });
   }
 
-  callAudioChallengeGame(hendler: RenderGamesPageHendler) {
-    document.addEventListener('DOMContentLoaded', () => {
-      this.mainWrapper = document.querySelector(MAIN_WRAPPER) as HTMLElement;
-      this.mainWrapper.addEventListener('click', (event) => {
-        const target = event.target as HTMLElement;
-        if (target.classList.contains(AUDIO_CHALLENGE_GAME_BTN) || target.closest(`.${AUDIO_CHALLENGE_GAME_BTN}`)) {
-          hendler();
-        }
-      });
-    });
-  }
-
   callSprintGame(hendler: RenderGamesPageHendler) {
-    document.addEventListener('DOMContentLoaded', () => {
-      this.mainWrapper = document.querySelector(MAIN_WRAPPER) as HTMLElement;
-      this.mainWrapper.addEventListener('click', (event) => {
-        const target = event.target as HTMLElement;
-        if (target.classList.contains(SPRINT_GAME_BTN) || target.closest(`.${SPRINT_GAME_BTN}`)) {
-          hendler();
-        }
-      });
+    this.mainWrapper.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.classList.contains(SPRINT_GAME_BTN) || target.closest(`.${SPRINT_GAME_BTN}`)) {
+        hendler();
+      }
     });
   }
 

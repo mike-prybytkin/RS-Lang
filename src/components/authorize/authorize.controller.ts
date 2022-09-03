@@ -36,7 +36,7 @@ class AuthorizeController implements IAuthorizeController {
     this.view.renderLogoutUser(this.logOutUser);
     this.view.checkRegistrationForm();
     this.view.checkLogInForm();
-    this.view.updateFormElement();
+    this.view.clearFormElements();
     this.view.closeModalWindow();
     this.checkLogInUser();
   }

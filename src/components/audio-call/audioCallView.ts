@@ -226,7 +226,7 @@ class AudioCallView implements IAudioCallView {
   private statisticStructure() {
     return `
     <div class="statistic-container">
-      <h1 class="statistic-title">Статистика игры</h1>
+      <h2 class="statistic-title">Статистика игры</h2>
       <div class="mistake-statistic-container">
         <h3 class="mistake-title">Ошибок <span class="count-mistake"></span></h3>
       </div>
@@ -244,7 +244,7 @@ class AudioCallView implements IAudioCallView {
   private startPageStructure() {
     return `
     <div class="start-page-container">
-      <h1 class="start-title">Выберите уровень сложности</h1>
+      <h2 class="start-title">Выберите уровень сложности</h2>
       <div class="difficulty-level-container">
         <button class="difficulty-level" id="level1">1</button>
         <button class="difficulty-level" id="level2">2</button>
@@ -253,6 +253,12 @@ class AudioCallView implements IAudioCallView {
         <button class="difficulty-level" id="level5">5</button>
         <button class="difficulty-level" id="level6">6</button>
       </div>
+    </div>
+    <div class="game-controls">
+      <p><em>Управление:</em></p>
+      <p><strong>1, 2, 3</strong> - выбор слова</p>
+      <p><strong>Space</strong> - повторить аудио</p>
+      <p><strong>Enter</strong> - следующее слово / не знаю</p>
     </div>
     `;
   }
@@ -266,6 +272,26 @@ class AudioCallView implements IAudioCallView {
         <div class="circle"></div>
       </div><div class="circle-clipper right">
         <div class="circle"></div>
+    </div>
+
+    <div class="spinner-layer spinner-yellow">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+
+    <div class="spinner-layer spinner-red">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
     </div>
     `;
     this.container = document.querySelector(Selector.MainWrapper) as HTMLElement;

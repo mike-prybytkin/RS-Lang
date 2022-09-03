@@ -21,17 +21,25 @@ import {
 } from '../../constants/constants';
 
 class AuthorizeView implements IAuthorizeView {
-  private userName;
+  private userName!: HTMLFormElement;
 
-  private emailRegistration;
+  private emailRegistration!: HTMLFormElement;
 
-  private passwordRegistration;
+  private passwordRegistration!: HTMLFormElement;
 
-  private passwordRegistrationConf;
+  private passwordRegistrationConf!: HTMLFormElement;
 
-  private emailLogIn;
+  private emailLogIn!: HTMLFormElement;
 
-  private passwordLogIn;
+  private passwordLogIn!: HTMLFormElement;
+
+  private loginButtonHeader!: HTMLElement;
+
+  private logInButton!: HTMLElement;
+
+  private registrationButton!: HTMLElement;
+
+  private modalWindow!: HTMLElement;
 
   constructor() {
     this.userName = document.getElementById(USER_NAME_SELECTOR) as HTMLFormElement;
@@ -40,23 +48,21 @@ class AuthorizeView implements IAuthorizeView {
     this.passwordRegistrationConf = document.getElementById(PASSWORD_REGISTRATION_CONFIRM) as HTMLFormElement;
     this.emailLogIn = document.getElementById(EMAIL_LOG_IN) as HTMLFormElement;
     this.passwordLogIn = document.getElementById(PASSWORD_LOG_IN) as HTMLFormElement;
+    this.loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
+    this.logInButton = document.querySelector(LOG_IN_BUTTON) as HTMLElement;
+    this.registrationButton = document.querySelector(REGISTRATON_BUTTON) as HTMLElement;
+    this.modalWindow = document.getElementById(MODAL_LOG_IN) as HTMLElement;
   }
 
-  updateFormElement() {
-    const loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
-    loginButtonHeader.addEventListener('focusout', () => {
-      this.userName = document.getElementById(USER_NAME_SELECTOR) as HTMLFormElement;
-      this.emailRegistration = document.getElementById(EMAIL_REGISTRATION) as HTMLFormElement;
-      this.passwordRegistration = document.getElementById(PASSWORD_REGISTRATION) as HTMLFormElement;
-      this.passwordRegistrationConf = document.getElementById(PASSWORD_REGISTRATION_CONFIRM) as HTMLFormElement;
-      this.emailLogIn = document.getElementById(EMAIL_LOG_IN) as HTMLFormElement;
-      this.passwordLogIn = document.getElementById(PASSWORD_LOG_IN) as HTMLFormElement;
+  clearFormElements() {
+    this.loginButtonHeader.addEventListener('click', () => {
+      this.clearRegistrationForm();
+      this.clearLogInForm();
     });
   }
 
   registrationUser(handler: RegistrationHandler) {
-    const registrationButton = document.querySelector(REGISTRATON_BUTTON) as HTMLElement;
-    registrationButton.addEventListener('click', () => {
+    this.registrationButton.addEventListener('click', () => {
       handler({
         email: this.emailRegistration.value,
         password: this.passwordRegistration.value,
@@ -67,8 +73,7 @@ class AuthorizeView implements IAuthorizeView {
   }
 
   logInUser(handler: LogInHandler) {
-    const logInButton = document.querySelector(LOG_IN_BUTTON) as HTMLElement;
-    logInButton.addEventListener('click', () => {
+    this.logInButton.addEventListener('click', () => {
       handler({
         email: this.emailLogIn.value,
         password: this.passwordLogIn.value,
@@ -78,19 +83,17 @@ class AuthorizeView implements IAuthorizeView {
   }
 
   renderLoginUser(name: string) {
-    const loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
-    loginButtonHeader.innerHTML = LOGOUT_TEMPLATE_BUTTON;
-    loginButtonHeader.classList.remove(MODAL_TRIGGER);
-    loginButtonHeader.classList.add(LOGOUT_USER, TOOLTIPPED);
-    loginButtonHeader.setAttribute('data-position', 'bottom');
-    loginButtonHeader.setAttribute('data-tooltip', `${name}, ${LOGOUT_MESSAGE}`);
+    this.loginButtonHeader.innerHTML = LOGOUT_TEMPLATE_BUTTON;
+    this.loginButtonHeader.classList.remove(MODAL_TRIGGER);
+    this.loginButtonHeader.classList.add(LOGOUT_USER, TOOLTIPPED);
+    this.loginButtonHeader.setAttribute('data-position', 'bottom');
+    this.loginButtonHeader.setAttribute('data-tooltip', `${name}, ${LOGOUT_MESSAGE}`);
     M.AutoInit();
   }
 
   renderLogoutUser(handler: RenderLogoutHendler) {
-    const loginButtonHeader = document.querySelector(LOGIN_BUTTON_HEADER) as HTMLElement;
-    loginButtonHeader.addEventListener('click', () => {
-      if (loginButtonHeader.classList.contains(LOGOUT_USER)) {
+    this.loginButtonHeader.addEventListener('click', () => {
+      if (this.loginButtonHeader.classList.contains(LOGOUT_USER)) {
         handler();
         document.location.reload();
       }
@@ -98,32 +101,26 @@ class AuthorizeView implements IAuthorizeView {
   }
 
   checkRegistrationForm() {
-    const modalWindow = document.getElementById(MODAL_LOG_IN) as HTMLElement;
-    const registrationButton = document.querySelector(REGISTRATON_BUTTON) as HTMLElement;
-
-    modalWindow.addEventListener('focusout', () => {
+    this.modalWindow.addEventListener('focusout', () => {
       if (
         this.userName.classList.contains('valid') &&
         this.emailRegistration.classList.contains('valid') &&
         this.passwordRegistration.classList.contains('valid') &&
         this.passwordRegistrationConf.value === this.passwordRegistration.value
       ) {
-        registrationButton.classList.remove('disabled');
+        this.registrationButton.classList.remove('disabled');
       } else {
-        registrationButton.classList.add('disabled');
+        this.registrationButton.classList.add('disabled');
       }
     });
   }
 
   checkLogInForm() {
-    const modalWindow = document.getElementById(MODAL_LOG_IN) as HTMLElement;
-    const logInButton = document.querySelector(LOG_IN_BUTTON) as HTMLElement;
-
-    modalWindow.addEventListener('focusout', () => {
+    this.modalWindow.addEventListener('focusout', () => {
       if (this.emailLogIn.classList.contains('valid') && this.passwordLogIn.classList.contains('valid')) {
-        logInButton.classList.remove('disabled');
+        this.logInButton.classList.remove('disabled');
       } else {
-        logInButton.classList.add('disabled');
+        this.logInButton.classList.add('disabled');
       }
     });
   }
@@ -151,6 +148,7 @@ class AuthorizeView implements IAuthorizeView {
     this.passwordRegistration.classList.remove('invalid');
     this.passwordRegistrationConf.classList.remove('invalid');
     this.passwordRegistration.classList.remove('invalid');
+    this.registrationButton.classList.add('disabled');
   }
 
   private clearLogInForm() {
@@ -160,6 +158,7 @@ class AuthorizeView implements IAuthorizeView {
     this.passwordLogIn.classList.remove('valid');
     this.emailLogIn.classList.remove('invalid');
     this.passwordLogIn.classList.remove('invalid');
+    this.logInButton.classList.add('disabled');
   }
 
   closeModalWindow() {

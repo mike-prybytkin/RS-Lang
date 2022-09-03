@@ -10,7 +10,7 @@ const userService = new UserService();
 const { baseUrl } = new FetchService();
 const lsS = new LocalStorageService();
 class TextbookView {
-  private user: UserAuthorizationType;
+  public user: UserAuthorizationType;
 
   constructor() {
     this.user = lsS.getItemLocalStorage('user');
@@ -36,6 +36,7 @@ class TextbookView {
       const wordTextExampleTranslate = card.querySelector('.word__text-example-translate');
       const wordAudio = card.querySelector('.word__audio');
       const wordHard = card.querySelector('.word__hard');
+      const wordStudied = card.querySelector('.word__studied');
       (wordImage as HTMLImageElement).src = `${baseUrl}/${word.image}`;
       (wordcard as HTMLElement).dataset.id = word.id;
       (wordText as HTMLElement).innerHTML = word.word;
@@ -48,12 +49,62 @@ class TextbookView {
       (wordAudio as HTMLElement).addEventListener('click', () => {
         this.playAudio([word.audio, word.audioMeaning, word.audioExample]);
       });
+      (wordStudied as HTMLElement).addEventListener('click', () => {
+        // this.deleteWordFromDifficult(String((wordcard as HTMLElement).dataset.id));
+        // this.addWordInStudied(word.id);
+        this.updateWordFromDifficult(word.id);
+      });
       (wordHard as HTMLElement).addEventListener('click', () => {
         this.addWordInDifficult(word.id);
       });
       wordsWrapper.append(card);
     });
     this.renderPageWithUser();
+  }
+
+  async renderDifficultPage(words: Promise<WordType>[]) {
+    const wordsWrapper = document.querySelector('.words__wrapper') as HTMLElement;
+    const cardTemplate = document.querySelector('#card__template') as HTMLTemplateElement;
+    wordsWrapper.innerHTML = ``;
+    const audio = document.createElement('audio');
+    audio.classList.add('audio');
+    wordsWrapper.append(audio);
+    (await words).forEach(async (word) => {
+      const card = cardTemplate.content.cloneNode(true) as HTMLTemplateElement;
+      const wordcard = card.querySelector('.word');
+      const wordImage = card.querySelector('.word__img');
+      const wordText = card.querySelector('.word__text');
+      const wordTextTranslate = card.querySelector('.word__text-translate');
+      const wordTranscription = card.querySelector('.word__transcription');
+      const wordTextMeaning = card.querySelector('.word__text-meaning');
+      const wordTextMeaningTranslate = card.querySelector('.word__text-meaning-translate');
+      const wordTextExample = card.querySelector('.word__text-example');
+      const wordTextExampleTranslate = card.querySelector('.word__text-example-translate');
+      const wordAudio = card.querySelector('.word__audio');
+      const wordControls = card.querySelector('.word__controls') as HTMLElement;
+      const deleteFromDifficulBtn = document.createElement('button') as HTMLButtonElement;
+      deleteFromDifficulBtn.textContent = 'Удалить';
+      deleteFromDifficulBtn.classList.add('deep-orange', 'word__btn', 'word__btn_active');
+      wordControls.append(deleteFromDifficulBtn);
+      (wordImage as HTMLImageElement).src = `${baseUrl}/${(await word).image}`;
+      (wordcard as HTMLElement).dataset.id = (await word).id;
+      (wordcard as HTMLElement).classList.add('word-difficult');
+      (wordText as HTMLElement).innerHTML = (await word).word;
+      (wordTranscription as HTMLElement).innerHTML = (await word).transcription;
+      (wordTextTranslate as HTMLElement).innerHTML = (await word).wordTranslate;
+      (wordTextMeaning as HTMLElement).innerHTML = (await word).textMeaning;
+      (wordTextMeaningTranslate as HTMLElement).innerHTML = (await word).textMeaningTranslate;
+      (wordTextExample as HTMLElement).innerHTML = (await word).textExample;
+      (wordTextExampleTranslate as HTMLElement).innerHTML = (await word).textExampleTranslate;
+      (wordAudio as HTMLElement).addEventListener('click', async () => {
+        this.playAudio([(await word).audio, (await word).audioMeaning, (await word).audioExample]);
+      });
+      wordControls.addEventListener('click', () => {
+        this.deleteWordFromDifficult(String((wordcard as HTMLElement).dataset.id));
+        (wordcard as HTMLElement).style.display = 'none';
+      });
+      wordsWrapper.append(card);
+    });
   }
 
   renderBaseStructure() {
@@ -129,6 +180,9 @@ class TextbookView {
     for (let i = 1; i <= groupCount; i += 1) {
       groupDropdown.innerHTML += `<li><a href="#!" class="deep-orange white-text group__item">Раздел ${i}</a></li>`;
     }
+    if (this.user) {
+      groupDropdown.innerHTML += `<li><a href="#!" class="deep-orange white-text group__item_difficult">Сложные слова</a></li>`;
+    }
   }
 
   initializePageDropdown(pageCount: number) {
@@ -143,8 +197,19 @@ class TextbookView {
   changeControlsCaption(group: number, page: number) {
     const currentPage = document.querySelector('.current-page') as HTMLElement;
     const currentGroup = document.querySelector('.group-dropdown-trigger.btn') as HTMLLinkElement;
+    const pageWrapper = document.querySelector('.page') as HTMLElement;
+    pageWrapper.style.display = 'flex';
     currentGroup.textContent = `Раздел ${group + 1}`;
     currentPage.textContent = `Страница ${page + 1}`;
+  }
+
+  changeControlsCaptionForDifficult() {
+    const pageWrapper = document.querySelector('.page') as HTMLElement;
+    const currentGroup = document.querySelector('.group-dropdown-trigger.btn') as HTMLLinkElement;
+    currentGroup.textContent = `Сложные слова`;
+    pageWrapper.style.display = 'none';
+    const audioPlayer = document.querySelector('.audio') as HTMLAudioElement;
+    audioPlayer.pause();
   }
 
   updatePage(group: number, page: number, words: Promise<WordType[]>) {
@@ -161,18 +226,30 @@ class TextbookView {
         btn.classList.add('word__btn_active');
       });
       const difWord = (await this.getUserDifficultWord()) as UserWordType[];
+      const learnedWord = (await this.getUserLearnedWord()) as UserWordType[];
+      console.log(difWord);
+      console.log(learnedWord);
       const wordCards = [...document.querySelectorAll('.word')];
       const hardWord: string[] = [];
+      const lWord: string[] = [];
       wordCards.forEach((crd) => {
         difWord.forEach((wrd) => {
           if ((crd as HTMLElement).dataset.id === wrd.wordId) {
             hardWord.push(String((crd as HTMLElement).dataset.id));
           }
         });
+        learnedWord.forEach((wrd) => {
+          if ((crd as HTMLElement).dataset.id === wrd.wordId) {
+            lWord.push(String((crd as HTMLElement).dataset.id));
+          }
+        });
       });
-      console.log(hardWord);
+      // console.log(hardWord);
       hardWord.forEach((wordId) => {
         (document.querySelector(`[data-id="${wordId}"]`) as HTMLElement).classList.add('word-difficult');
+      });
+      lWord.forEach((wordId) => {
+        (document.querySelector(`[data-id="${wordId}"]`) as HTMLElement).classList.add('word-learned');
       });
     }
   }
@@ -186,20 +263,54 @@ class TextbookView {
     }
   }
 
+  async addWordInStudied(wordId: string) {
+    if (await userService.getUserWord1(this.user.userId, this.user.token, wordId)) {
+      console.log('Данное слово уже добавлено в изученные');
+    } else {
+      userService.createLearnedUserWord1(this.user.userId, this.user.token, wordId);
+      (document.querySelector(`[data-id="${wordId}"]`) as HTMLElement).classList.add('word-learned');
+    }
+  }
+
+  async deleteWordFromDifficult(wordId: string) {
+    // console.log(userService.deleteUserWord1(this.user.userId, this.user.token, wordId));
+    userService.deleteUserWord1(this.user.userId, this.user.token, wordId);
+  }
+
+  async updateWordFromDifficult(wordId: string) {
+    const word = (await userService.getUserWord1(this.user.userId, this.user.token, wordId)) as UserWordType;
+    word.optional.learned = true;
+    userService.updateUserWord1(this.user.userId, this.user.token, wordId, word?.difficulty, word?.optional);
+    (document.querySelector(`[data-id="${wordId}"]`) as HTMLElement).classList.add('word-learned');
+  }
+
   changeStyleDifficultWord = (userWords: UserWordType[]) => {
     const wordCards = document.querySelectorAll('.word');
     userWords.forEach((word) => {
       wordCards.forEach((card) => {
         if (word.wordId === (card as HTMLElement).dataset.id) {
           card.classList.add('word-difficult');
-          // console.log(word.wordId, (card as HTMLElement).dataset.id);
         }
       });
     });
   };
 
-  getUserDifficultWord() {
-    return userService.getAllUserWords1(this.user.userId, this.user.token);
+  async getUserDifficultWord() {
+    const allWrd = await userService.getAllUserWords1(this.user.userId, this.user.token);
+    const difW: UserWordType[] = [];
+    allWrd?.forEach((item) => {
+      if (!item.optional.learned) difW.push(item);
+    });
+    return difW;
+  }
+
+  async getUserLearnedWord() {
+    const allWrd = await userService.getAllUserWords1(this.user.userId, this.user.token);
+    const learnedWrd: UserWordType[] = [];
+    allWrd?.forEach((item) => {
+      if (item.optional.learned) learnedWrd.push(item);
+    });
+    return learnedWrd;
   }
 }
 

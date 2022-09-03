@@ -38,6 +38,17 @@ class TextbookModel {
   async getUserDifficultWord() {
     return (await this.userService.getAllUserWords1(this.user.userId, this.user.token)) as UserWordType[];
   }
+
+  async getWordsFromDifficult() {
+    const diffWord = await this.getUserDifficultWord();
+    const word: Promise<WordType>[] = [];
+    diffWord.forEach((wrd) => {
+      if (!wrd.optional.learned) {
+        word.push(this.wordsService.getWordById(wrd.wordId) as Promise<WordType>);
+      }
+    });
+    return word;
+  }
 }
 
 export default TextbookModel;

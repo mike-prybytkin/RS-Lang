@@ -67,6 +67,14 @@ class TextbookController {
         );
       });
     });
+    if (this.textbookView.user) {
+      const groupDifficultWords = document.querySelector('.group__item_difficult');
+      (groupDifficultWords as HTMLElement).addEventListener('click', async () => {
+        // console.log(await this.textbookModel.getWordsFromDifficult());
+        this.textbookView.renderDifficultPage(await this.textbookModel.getWordsFromDifficult());
+        this.textbookView.changeControlsCaptionForDifficult();
+      });
+    }
   }
 
   private changePage() {

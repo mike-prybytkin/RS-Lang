@@ -34,6 +34,7 @@ class AudioCallModel implements IAudioCallModel {
 
   async getWords(group: number, pageNumber: number | undefined) {
     this.statistic = [];
+    this.variantsWords = [];
     if (pageNumber) {
       await this.getWordsFromVocabulary(group, pageNumber);
     } else {
@@ -42,7 +43,7 @@ class AudioCallModel implements IAudioCallModel {
   }
 
   async getWordsFromVocabulary(group: number, pageNumber: number) {
-    if (this.userService.token) {
+    if (!this.userService.token) {
       // кейс для незареганного юзера
       const words = await this.wordsService.getWords(group, pageNumber - 1);
       if (words) this.learnWords = words.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
@@ -51,17 +52,22 @@ class AudioCallModel implements IAudioCallModel {
       const filter = this.createFilterLearned(pageNumber - 1);
       const aggregatedWords = await this.userService.getAggregatedWords(group, this.wordsPerPage, filter);
       if (aggregatedWords) {
-        this.learnWords = aggregatedWords[0].paginatedResults;
+        this.learnWords = aggregatedWords[0].paginatedResults
+          .sort(() => Math.random() - 0.5)
+          .slice(0, this.countLearnWords);
         if (this.learnWords.length < this.countLearnWords) await this.increaseAggregatedWords(group, pageNumber);
       }
     }
-    const dataVariant = await this.userService.getAggregatedWords(group, 600);
-    if (dataVariant) {
-      this.variantsWords = dataVariant[0].paginatedResults
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 50)
-        .filter((item) => !this.learnWords.find((word) => word.word === item.word));
-    }
+    const allWordsRequest = Array.from({ length: 30 }, (_it, index) => this.wordsService.getWords(group, index));
+    const allWords = (await Promise.all(allWordsRequest).then((value) =>
+      value.filter((item) => !!item)
+    )) as WordType[][];
+    allWords.forEach((item) => {
+      this.variantsWords = this.variantsWords.concat(
+        item.filter((value) => !this.learnWords.find((word) => word.word === value.word))
+      );
+    });
+    this.variantsWords.sort(() => Math.random() - 0.5);
   }
 
   async increaseAggregatedWords(group: number, pageNumber: number) {
@@ -80,10 +86,10 @@ class AudioCallModel implements IAudioCallModel {
 
   async getWordsFromMenu(group: number) {
     const randomLearnPage = this.getRandomInteger(0, 29);
-    let randomVariantPage = this.getRandomInteger(0, 28);
-    while (randomLearnPage === randomVariantPage) {
-      randomVariantPage = this.getRandomInteger(0, 29);
-    }
+    // let randomVariantPage = this.getRandomInteger(0, 28);
+    // while (randomLearnPage === randomVariantPage || randomLearnPage === randomVariantPage + 1) {
+    //   randomVariantPage = this.getRandomInteger(0, 28);
+    // }
     if (!this.userService.token) {
       // кейс для незареганного юзера
       const randomLearnWords = await this.wordsService.getWords(group, randomLearnPage);
@@ -98,15 +104,17 @@ class AudioCallModel implements IAudioCallModel {
           .sort(() => Math.random() - 0.5)
           .slice(0, this.countLearnWords);
     }
-    const randomWords = [
-      this.wordsService.getWords(group, randomVariantPage),
-      this.wordsService.getWords(group, randomVariantPage + 1),
-    ];
-    await Promise.all(randomWords).then((value) => {
-      if (value[0] && value[1]) {
-        this.variantsWords = value[0].concat(value[1]).sort(() => Math.random() - 0.5);
-      }
+    const allWordsRequest = Array.from({ length: 30 }, (_it, index) => this.wordsService.getWords(group, index));
+    const allWords = (await Promise.all(allWordsRequest).then((value) =>
+      value.filter((item) => !!item)
+    )) as WordType[][];
+    allWords.forEach((item) => {
+      this.variantsWords = this.variantsWords.concat(
+        item.filter((value) => !this.learnWords.find((word) => word.word === value.word))
+      );
     });
+    this.variantsWords.sort(() => Math.random() - 0.5);
+    console.log(this.learnWords, this.variantsWords);
   }
 
   getRandomInteger(min: number, max: number) {
@@ -115,16 +123,17 @@ class AudioCallModel implements IAudioCallModel {
 
   createFilterLearned(pageNumber: number) {
     return pageNumber
-      ? `%7B%22%24and%22%3A%5B%7B%22page%22%3A${pageNumber}%2C%20%22%24or%22%3A%5B%7B%22userWord%22%3Anull%7D%2C%20%7B%22userWord.optional.learned%22%3Afalse%7D%5D%7D%5D%7D`
+      ? encodeURIComponent(`
+    {"$and":[{"page":${pageNumber}, "$or":[{"userWord":null}, {"userWord.optional.learned":false}]}]}`)
       : LEARNED_FILTER;
   }
 
   createFilterPage(pageNumber: number) {
-    return `%7B%22page%22%3A${pageNumber}%7D`;
+    return encodeURIComponent(`{"page":${pageNumber}}`);
   }
 
   getWordsPage(page: number) {
-    const randomIndexVariantAnswer = this.getRandomInteger(0, 38);
+    const randomIndexVariantAnswer = this.getRandomInteger(0, 588);
     return [this.learnWords[page]].concat(
       this.variantsWords.slice(randomIndexVariantAnswer, randomIndexVariantAnswer + 2)
     );

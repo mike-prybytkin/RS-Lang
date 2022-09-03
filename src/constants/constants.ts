@@ -109,6 +109,13 @@ export enum Selector {
   StatisticHomePageButton = '.statistic-home-page-button',
   LevelButton = '.difficulty-level',
   CorrectImageAudio = '.correct-image-audio',
+  SprintAudioIcon = '.sprint-audio-icon',
+  TextWord = '.text-word',
+  TextTranslate = '.text-translate',
+  ButtonVariant = '.button-variant',
+  NoVariant = '.no-variant',
+  YesVariant = '.yes-variant',
+  SprintContainer = '.sprint-container',
 }
 
 export const LEARNED_FILTER = `%7B%22%24or%22%3A%5B%7B%22userWord%22%3Anull%7D%2C%20%7B%22userWord.optional.learned%22%3Afalse%7D%5D%7D`;

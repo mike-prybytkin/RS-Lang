@@ -1,269 +1,100 @@
-.audio-call-container {
-    display: flex;
-    height: calc(100vh - 220px);
-    flex-direction: column;
-    justify-content: space-around;
-    width: 90%;
-}
-
-.studied-word-container {
+.sprint-container {
     display: flex;
     flex-direction: column;
+    width: 300px;
     align-items: center;
-    min-height: 230px;
-    white-space: normal;
-}
-
-.image-audio {
-    padding: 10px;
-    width: 150px;
-    height: 150px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 75px;
-}
-
-.image-word {
-    width: 225px;
-    height: 150px;
+    margin: 0 auto;
+    margin-top: 100px;
+    border: rgb(106, 106, 106) solid 2px;
     border-radius: 10px;
+    padding: 10px;
 }
 
-.image-word-container:hover, .audio-icon-container:hover, .navigation:hover, .ignorance:hover {
-    cursor: pointer;
+.border-animation-correct {
+    animation-name: border-correct;
+    animation-duration: 0.2s;
 }
 
-.correct-answer-container {
-    display: none;
+@keyframes border-correct {
+    50%   {
+        border-color:rgb(0, 255, 0);
+        box-shadow: 1px 1px 2px rgb(0, 255, 0), -1px -1px 2px rgb(0, 255, 0);
+        background-color: rgb(0, 255, 0, 0.3);
+    }
+  }
+
+  .border-animation-wrong {
+    animation-name: border-wrong;
+    animation-duration: 0.2s;
+}
+
+@keyframes border-wrong {
+    50%   {
+        border-color:rgb(255, 0, 0);
+        box-shadow: 1px 1px 2px rgb(255, 0, 0), -1px -1px 2px rgb(255, 05, 0);
+        background-color: rgb(255, 0, 0, 0.3);
+    }
+  }
+
+.study-sprint-container {
+    max-width: 30%;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px;
     justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    line-height: 0;
-    padding: 20px 0;
-    row-gap: 10px;
 }
 
-.audio-icon-container {
+.audio-image-container {
+    align-self: flex-end;
     padding: 2px;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 20px;
 }
 
-.text-answer {
-    font-size: 2.5rem;
-    padding-left: 10px;
-    line-height: 0;
-    font-weight: 500;
-    margin: 0;
-    white-space: normal;
+.word-container {
+    padding-top: 50px;
 }
 
-.visible-flex {
-    display: flex;
+.text-word {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 5px 0;
 }
 
-.variants-answers-container {
+.text-translate {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 5px 0;
+}
+
+.variants-sprint-container {
     display: flex;
     justify-content: space-around;
-    flex-wrap: wrap;
-    row-gap: 10px;
+    margin-top: 50px;
+    min-width: 300px;
 }
 
-.text-variant-container {
-    min-width: 130px;
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    line-height: 0;
-    font-size: 22px;
-    font-weight: 500;
-    border-radius: 10px;
-    padding: 0 7px;
+.yes-variant, .no-variant {
+    height: 40px;
+    width: 120px;
     border: none;
+    border-radius: 10px;
 }
 
-.text-variant-container:disabled {
-    color: black;
-}
-
-.text-variant-container:hover {
-    cursor: pointer;
-}
-
-.navigation, .ignorance {
-    align-self: center;
-}
-
-.navigation {
-    display: none;
-}
-
-.text-navigation, .text-ignorance {
-    padding: 5px;
-    background-color: rgba(0, 0, 0, 0.3);
-    color: #ffffff;
-    line-height: 20px;
+.sprint-text-variant {
+    margin: 0;
     font-size: 18px;
     font-weight: 400;
-    border-radius: 10px;
 }
 
-.correct-answer {
-    background-color: rgba(0, 255, 0, 0.9);
+.yes-variant {
+    background-color: rgb(33, 249, 0);
 }
 
-.wrong-answer {
-    background-color: rgba(255, 0, 0, 0.9);
+.no-variant {
+    background-color: red;
 }
 
-.image-word {
-    display: none;
-}
 
-.visible-block {
-    display: block;
-}
-
-.hidden {
-    display: none;
-}
-
-.statistic-container {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-}
-
-.mistake-statistic-container, .success-statistic-container {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 10px;
-}
-
-.statistic-navigation-container {
-    display: flex;
-    column-gap: 10px;
-    padding: 30px 0;
-}
-
-.statistic-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-top: 0;
-    align-self: center;
-}
-
-.mistake-title, .success-title {
-    font-size: 1.7rem;
-    font-weight: 600;
-    margin: 0;
-    align-self: center;
-}
-
-.statistic-container p {
-    font-size: 1.5rem;
-    font-size: 600;
-    margin: 0;
-}
-
-.mistake-statistic-container .statistic-word-span {
-    color:rgb(255, 0, 0);
-    font-weight: 500;
-}
-
-.success-statistic-container .statistic-word-span {
-    color:rgb(0, 220, 0);
-    font-weight: 500;
-}
-
-.count-mistake, .count-success {
-    display: inline-block;
-    padding: 3px 5px;
-    border-radius: 10px;
-    color: #ffffff;
-}
-
-.count-mistake {
-    background-color: rgb(255, 0, 0);
-}
-
-.count-success {
-    background-color: rgb(0, 220, 0);
-}
-
-.statistic-translate-span {
-    color:rgb(100, 100, 100);
-}
-
-.statistic-play-again-button, .statistic-home-page-button {
-    background-color: rgba(255, 255, 255, 0.7);
-    border: none;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-size: 1.5rem;
-    font-weight: 500;
-    color:rgb(75, 75, 75);
-}
-
-.statistic-play-again-button:hover, .statistic-home-page-button:hover {
-    cursor: pointer;
-}
-
-.start-page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    row-gap: 50px;
-    text-align: center;
-}
-
-.start-title {
-    font-size: 2rem;
-}
-
-.difficulty-level-container {
-    display: flex;
-    column-gap: 20px;
-    row-gap: 20px;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-}
-
-.difficulty-level {
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
-    background-color: rgba(255, 255, 255, 0.7);
-    font-size: 2.5rem;
-    border: none;
-}
-
-.difficulty-level:hover {
-    cursor: pointer;
-}
-
-#level1 {
-    background-color: rgba(255, 255, 255, 0.7);
-}
-
-#level2 {
-    background-color: #fefe93;
-}
-
-#level3 {
-    background-color: #e2e201;
-}
-
-#level4 {
-    background-color: #f19900;
-}
-
-#level5 {
-    background-color: #ff5555;
-}
-
-#level6 {
-    background-color: #980000;
-}

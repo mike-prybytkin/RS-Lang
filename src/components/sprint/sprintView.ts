@@ -5,7 +5,7 @@ import { Selector, TOAST } from '../../constants/constants';
 class SprintView implements ISprintView {
   container!: HTMLElement;
 
-  hasAnswer = false;
+  // hasAnswer = false;
 
   readonly baseUrl = 'https://rs-lang-prodaction.herokuapp.com';
 
@@ -22,24 +22,36 @@ class SprintView implements ISprintView {
   }
 
   renderGamePage(correctIndex: number, wordsPage: WordType[]) {
-    this.hasAnswer = false;
-    const correctWord = wordsPage[correctIndex];
+    // this.hasAnswer = false;
     this.container = document.querySelector(Selector.MainWrapper) as HTMLElement;
     this.container.innerHTML = this.pageStructure();
-    const imageWord = document.querySelector(Selector.IMAGE_WORD) as HTMLImageElement;
-    imageWord.src = `${this.baseUrl}/${correctWord.image}`;
-    const textVariantContainer = document.querySelectorAll(
-      Selector.TEXT_VARIANT_CONTAINER
-    ) as NodeListOf<HTMLParagraphElement>;
-    textVariantContainer.forEach((item, index) => {
-      if (index === correctIndex) {
-        item.classList.add('correct');
-      }
-      const textVariant = item.querySelector(Selector.TEXT_VARIANT) as HTMLParagraphElement;
-      textVariant.innerHTML = wordsPage[index].wordTranslate;
-    });
-    const textAnswer = document.querySelector(Selector.TEXT_ANSWER) as HTMLParagraphElement;
-    textAnswer.innerHTML = `${correctWord.word} - ${correctWord.wordTranslate}`;
+    const textWord = document.querySelector(Selector.TextWord) as HTMLParagraphElement;
+    textWord.innerHTML = `${wordsPage[correctIndex].word}`;
+    const textTranslate = document.querySelector(Selector.TextTranslate) as HTMLParagraphElement;
+    textTranslate.innerHTML = `${wordsPage[0].wordTranslate}`;
+    if (correctIndex === 0) {
+      const correctButtonVariant = document.querySelector(Selector.YesVariant) as HTMLButtonElement;
+      correctButtonVariant.classList.add('correct');
+    } else {
+      const correctButtonVariant = document.querySelector(Selector.NoVariant) as HTMLButtonElement;
+      correctButtonVariant.classList.add('correct');
+    }
+  }
+
+  renderNextWord(correctIndex: number, wordsPage: WordType[]) {
+    const wordContainer = document.querySelector(Selector.SprintContainer) as HTMLDivElement;
+    wordContainer.innerHTML = this.nextWordStructure();
+    const textWord = document.querySelector(Selector.TextWord) as HTMLParagraphElement;
+    textWord.innerHTML = `${wordsPage[correctIndex].word}`;
+    const textTranslate = document.querySelector(Selector.TextTranslate) as HTMLParagraphElement;
+    textTranslate.innerHTML = `${wordsPage[0].wordTranslate}`;
+    if (correctIndex === 0) {
+      const correctButtonVariant = document.querySelector(Selector.YesVariant) as HTMLButtonElement;
+      correctButtonVariant.classList.add('correct');
+    } else {
+      const correctButtonVariant = document.querySelector(Selector.NoVariant) as HTMLButtonElement;
+      correctButtonVariant.classList.add('correct');
+    }
   }
 
   renderStatisticPage(statisticWords: WordType[], countMistake: number, countSuccess: number) {
@@ -84,10 +96,10 @@ class SprintView implements ISprintView {
   //   });
   // }
 
-  // changeAudioImage() {
-  //   const image = document.querySelector(Selector.ImageAudio) as HTMLImageElement;
-  //   if (image) image.src = './assets/play.svg';
-  // }
+  changeAudioImage() {
+    const image = document.querySelector(Selector.SprintAudioIcon) as HTMLImageElement;
+    if (image) image.src = './assets/play.svg';
+  }
 
   addKeyDownListener(
     checkAnswer: (variantAnswer: HTMLButtonElement) => void,
@@ -99,11 +111,11 @@ class SprintView implements ISprintView {
       // let imageAudio: HTMLImageElement;
       if (element || event.key === ' ') {
         switch (event.key) {
-          case '1':
-          case '2':
-          case '3':
-            if (!this.hasAnswer) checkAnswer(element);
-            break;
+          // case '1':
+          // case '2':
+          // case '3':
+          //   if (!this.hasAnswer) checkAnswer(element);
+          //   break;
           case 'Enter':
             addUnknownWord();
             break;
@@ -125,11 +137,12 @@ class SprintView implements ISprintView {
   }
 
   addAnswerListener(handler: (variantAnswer: HTMLButtonElement) => void) {
-    const imageWordContainer = document.querySelectorAll(
-      `${Selector.TEXT_VARIANT_CONTAINER}`
-    ) as NodeListOf<HTMLButtonElement>;
-    imageWordContainer.forEach((item) => {
+    const buttonsAnswer = document.querySelectorAll(Selector.ButtonVariant) as NodeListOf<HTMLButtonElement>;
+    buttonsAnswer.forEach((item) => {
       item.addEventListener('click', (event) => {
+        const sprintContainer = document.querySelector(Selector.SprintContainer) as HTMLDivElement;
+        sprintContainer.classList.remove('border-animation-correct');
+        sprintContainer.classList.remove('border-animation-wrong');
         const variantAnswer = event.currentTarget as HTMLButtonElement;
         handler(variantAnswer);
       });
@@ -143,10 +156,10 @@ class SprintView implements ISprintView {
     statisticHomePageButton.addEventListener('click', goMainPage);
   }
 
-  hiddenIgnorance() {
-    const ignorance = document.querySelector(Selector.Ignorance) as HTMLDivElement;
-    ignorance.classList.add('hidden');
-  }
+  // hiddenIgnorance() {
+  //   const ignorance = document.querySelector(Selector.Ignorance) as HTMLDivElement;
+  //   ignorance.classList.add('hidden');
+  // }
 
   addNavigationListener(handler: () => void) {
     const navigation = document.querySelector(Selector.Navigation) as HTMLDivElement;
@@ -158,23 +171,26 @@ class SprintView implements ISprintView {
     ignorance.addEventListener('click', handler);
   }
 
-  showCorrectAnswer(variantAnswer: HTMLButtonElement, style: string) {
-    const imageAudio = document.querySelector(Selector.ImageAudio) as HTMLImageElement;
-    imageAudio.classList.add('hidden');
-    const imageWord = document.querySelector(Selector.IMAGE_WORD) as HTMLImageElement;
-    imageWord.classList.add('visible-block');
-    const correctAnswerContainer = document.querySelector(Selector.CorrectAnswerContainer) as HTMLButtonElement;
-    correctAnswerContainer.classList.add('visible-flex');
-    const navigation = document.querySelector(Selector.Navigation) as HTMLParagraphElement;
-    navigation.classList.add('visible-block');
-    variantAnswer.classList.add(style);
+  showCorrectAnswer(style: string) {
+    const sprintContainer = document.querySelector(Selector.SprintContainer) as HTMLDivElement;
+    if (style === 'correct-answer') {
+      sprintContainer.classList.add('border-animation-correct');
+    } else {
+      sprintContainer.classList.add('border-animation-wrong');
+    }
+
+    // const imageWord = document.querySelector(Selector.IMAGE_WORD) as HTMLImageElement;
+    // imageWord.classList.add('visible-block');
+    // const correctAnswerContainer = document.querySelector(Selector.CorrectAnswerContainer) as HTMLButtonElement;
+    // correctAnswerContainer.classList.add('visible-flex');
+    // const navigation = document.querySelector(Selector.Navigation) as HTMLParagraphElement;
+    // navigation.classList.add('visible-block');
+    // variantAnswer.classList.add(style);
   }
 
   removeListener() {
-    const textVariantContainer = document.querySelectorAll(
-      Selector.TEXT_VARIANT_CONTAINER
-    ) as NodeListOf<HTMLButtonElement>;
-    textVariantContainer.forEach((item) => {
+    const buttonsAnswer = document.querySelectorAll(Selector.ButtonVariant) as NodeListOf<HTMLButtonElement>;
+    buttonsAnswer.forEach((item) => {
       const temp = item;
       temp.disabled = true;
     });
@@ -189,37 +205,47 @@ class SprintView implements ISprintView {
 
   pageStructure() {
     return `
-    <div class="audio-call-container">
-    <div class="studied-word-container">
-      <div class="image-word-container">
-        <img src="" alt="word-image" class="image-word">
-        <img src="./assets/audio.svg" alt="play-image" class="image-audio" id="button ">
-      </div>
-      <div class="correct-answer-container">
-        <div class="audio-icon-container">
-          <img src="./assets/play.svg" alt="audio-image" class="correct-image-audio">
+    <div class="sprint-container">
+      <div class="study-sprint-container">
+        <div class="audio-image-container">
+          <img src="./assets/play.svg" alt="audio-image" class="sprint-audio-icon">
         </div>
-        <p class="text-answer">Answer</p>
+        <div class="word-container">
+          <p class="text-word">Word</p>
+          <p class="text-translate">translate</p>
+        </div>
+      </div>
+      <div class="variants-sprint-container">
+        <button class="no-variant button-variant">
+          <p class="sprint-text-variant">&larr; Неверно</p>
+        </button>
+        <button class="yes-variant button-variant">
+          <p class="sprint-text-variant">Верно &rarr;</p>
+        </button>
       </div>
     </div>
-    <div class="variants-answers-container">
-      <button class="text-variant-container" id="button1">
-        <p class="text-variant">Varian1</p>
-      </button>
-      <button class="text-variant-container" id="button2">
-        <p class="text-variant">Varian2</p>
-      </button>
-      <button class="text-variant-container" id="button3">
-        <p class="text-variant">Varian3</p>
-      </button>
-    </div>
-    <div class="ignorance" id="buttonEnter">
-      <p class="text-navigation">Не знаю</p>
-    </div>
-    <div class="navigation">
-      <p class="text-navigation">Следующее слово</p>
-    </div>
-    </div>
+    `;
+  }
+
+  nextWordStructure() {
+    return `
+      <div class="study-sprint-container">
+        <div class="audio-image-container">
+          <img src="./assets/play.svg" alt="audio-image" class="sprint-audio-icon">
+        </div>
+        <div class="word-container">
+          <p class="text-word">Word</p>
+          <p class="text-translate">translate</p>
+        </div>
+      </div>
+      <div class="variants-sprint-container">
+        <button class="no-variant button-variant">
+          <p class="sprint-text-variant">&larr; Неверно</p>
+        </button>
+        <button class="yes-variant button-variant">
+          <p class="sprint-text-variant">Верно &rarr;</p>
+        </button>
+      </div>
     `;
   }
 

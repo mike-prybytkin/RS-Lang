@@ -10,7 +10,7 @@ class SprintController implements ISprintController {
 
   gamePage: number;
 
-  // audio: HTMLAudioElement;
+  audio: HTMLAudioElement;
 
   correctWord!: WordType;
 
@@ -25,29 +25,29 @@ class SprintController implements ISprintController {
     this.model = new SprintModel();
     this.gamePage = 0;
     this.countPages = 0;
-    // this.audio = new Audio();
-    // this.audio.addEventListener('ended', () => {
-    //   this.view.changeAudioImage();
-    // });
-    this.view.addKeyDownListener(this.checkAnswer, this.addUnknownWord /* , this.playAudio */);
+    this.audio = new Audio();
+    this.audio.addEventListener('ended', () => {
+      this.view.changeAudioImage();
+    });
+    // this.view.addKeyDownListener(this.checkAnswer, this.addUnknownWord /* , this.playAudio */);
   }
 
-  init() {
+  init = () => {
     this.view.renderStartPage();
     this.view.addStartListeners(this.runStart);
-  }
+  };
 
   runStart = (event: Event) => {
     const buttonLevel = event.currentTarget as HTMLButtonElement;
     const group = +buttonLevel.id.slice(-1) - 1;
-    this.start(group, 9);
+    this.start(group, 1);
   };
 
   async start(group: number, pageNumber?: number) {
     this.group = group;
     if (pageNumber) this.pageNumber = pageNumber;
     this.gamePage = 0;
-    await this.model.getWords(group, pageNumber); // stay here
+    await this.model.getWords(group, pageNumber);
     this.countPages = this.model.learnWords.length;
     if (this.countPages) {
       this.createPage();
@@ -58,16 +58,30 @@ class SprintController implements ISprintController {
 
   createPage() {
     const wordsPage = this.model.getWordsPage(this.gamePage);
-    console.log(wordsPage);
     [this.correctWord] = wordsPage;
+    console.log(this.correctWord.word, this.correctWord.wordTranslate, wordsPage);
     wordsPage.sort(() => Math.random() - 0.5);
-    const correctIndex = wordsPage.findIndex((item) => item.id === this.correctWord.id);
+    const correctIndex = wordsPage.findIndex((item) => item.word === this.correctWord.word); // stay here
     // this.addSourceAudio(wordsPage[correctIndex].audio);
     this.view.renderGamePage(correctIndex, wordsPage);
     // this.view.addAudioListener(this.playAudio);
     this.view.addAnswerListener(this.checkAnswer);
-    this.view.addIgnoranceListener(this.addUnknownWord);
-    this.view.addNavigationListener(this.nextPage);
+    // this.view.addIgnoranceListener(this.addUnknownWord);
+    // this.view.addNavigationListener(this.nextPage);
+  }
+
+  nextWord() {
+    const wordsPage = this.model.getWordsPage(this.gamePage);
+    [this.correctWord] = wordsPage;
+    console.log(this.correctWord.word, this.correctWord.wordTranslate, wordsPage);
+    wordsPage.sort(() => Math.random() - 0.5);
+    const correctIndex = wordsPage.findIndex((item) => item.word === this.correctWord.word); // stay here
+    // this.addSourceAudio(wordsPage[correctIndex].audio);
+    this.view.renderNextWord(correctIndex, wordsPage);
+    // this.view.addAudioListener(this.playAudio);
+    this.view.addAnswerListener(this.checkAnswer);
+    // this.view.addIgnoranceListener(this.addUnknownWord);
+    // this.view.addNavigationListener(this.nextPage);
   }
 
   // addSourceAudio(endpoint: string) {
@@ -89,18 +103,27 @@ class SprintController implements ISprintController {
   // };
 
   checkAnswer = (variantAnswer: HTMLButtonElement) => {
-    const style = variantAnswer.classList.contains('correct') ? 'correct-answer' : 'wrong-answer';
-    this.view.hasAnswer = true;
-    this.model.updateStatistic(this.correctWord, style);
-    this.view.hiddenIgnorance();
-    this.view.showCorrectAnswer(variantAnswer, style);
     this.view.removeListener();
+    const style = variantAnswer.classList.contains('correct') ? 'correct-answer' : 'wrong-answer';
+    if (style === 'correct-answer') {
+      this.audio.src = '../../assets/piu.mp3';
+      this.audio.play();
+    } else {
+      this.audio.src = '../../assets/mistake.mp3';
+      this.audio.play();
+    }
+    // this.view.hasAnswer = true;
+    this.model.updateStatistic(this.correctWord, style);
+    // this.view.hiddenIgnorance();
+    this.view.showCorrectAnswer(style);
+    this.view.removeListener();
+    this.nextPage();
   };
 
   nextPage = () => {
     if (this.gamePage < this.countPages - 1) {
       this.gamePage += 1;
-      this.createPage();
+      this.nextWord();
     } else {
       const countMistake = this.model.statistic.filter((item) => item.answer === 'wrong-answer').length;
       const countSuccess = this.model.statistic.filter((item) => item.answer === 'correct-answer').length;
@@ -109,12 +132,12 @@ class SprintController implements ISprintController {
     }
   };
 
-  addUnknownWord = () => {
-    if (!this.view.hasAnswer) {
-      this.model.updateStatistic(this.correctWord, 'wrong-answer');
-    }
-    this.nextPage();
-  };
+  // addUnknownWord = () => {
+  //   if (!this.view.hasAnswer) {
+  //     this.model.updateStatistic(this.correctWord, 'wrong-answer');
+  //   }
+  //   this.nextPage();
+  // };
 
   playAgain = () => {
     this.init();

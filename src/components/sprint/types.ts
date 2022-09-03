@@ -16,14 +16,14 @@ export interface ISprintModel {
   getWordsFromMenu(group: number): void;
   getRandomInteger(min: number, max: number): number;
   createFilterLearned(pageNumber: number): string;
-  createFilterPage(pageNumber: number): string;
+  // createFilterPage(pageNumber: number): string;
   getWordsPage(page: number): WordType[];
   updateStatistic(word: WordType, answer: Answer): void;
 }
 
 export interface ISprintView {
   container: HTMLElement;
-  hasAnswer: boolean;
+  // hasAnswer: boolean;
   baseUrl: string;
   renderStartPage(): void;
   addStartListeners(handler: (event: Event) => void): void;
@@ -34,10 +34,10 @@ export interface ISprintView {
   getElementByKey(key: string): HTMLButtonElement;
   addAnswerListener(handler: (variantAnswer: HTMLButtonElement) => void): void;
   addStatisticListener(playAgainHandler: () => void, goMainPage: () => void): void;
-  hiddenIgnorance(): void;
+  // hiddenIgnorance(): void;
   addNavigationListener(handler: () => void): void;
   addIgnoranceListener(handler: () => void): void;
-  showCorrectAnswer(variantAnswer: HTMLButtonElement, style: string): void;
+  showCorrectAnswer(style: string): void;
   removeListener(): void;
   showToastMessage(): void;
   pageStructure(): string;

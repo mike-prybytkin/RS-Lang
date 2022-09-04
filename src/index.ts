@@ -6,8 +6,10 @@ import TextbookController from './components/textbook/textbook.controller';
 const app = new AppController();
 app.initApp();
 const tbController = new TextbookController();
-const text = document.querySelector('.textbook');
-// tbController.init();
-(text as HTMLElement).addEventListener('click', () => {
-  tbController.init();
+
+const text = document.querySelectorAll('.textbook');
+text.forEach((txt) => {
+  (txt as HTMLElement).addEventListener('click', () => {
+    tbController.init();
+  });
 });

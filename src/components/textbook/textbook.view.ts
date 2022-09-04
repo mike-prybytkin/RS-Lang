@@ -23,6 +23,8 @@ class TextbookView {
     const audio = document.createElement('audio');
     audio.classList.add('audio');
     wordsWrapper.append(audio);
+    const difWord = (await this.getUserDifficultWord()) as UserWordType[];
+    const learnedWord = (await this.getUserLearnedWord()) as UserWordType[];
     (await words).forEach(async (word) => {
       const card = cardTemplate.content.cloneNode(true) as HTMLTemplateElement;
       const wordcard = card.querySelector('.word');
@@ -50,16 +52,27 @@ class TextbookView {
         this.playAudio([word.audio, word.audioMeaning, word.audioExample]);
       });
       (wordStudied as HTMLElement).addEventListener('click', () => {
-        // this.deleteWordFromDifficult(String((wordcard as HTMLElement).dataset.id));
-        // this.addWordInStudied(word.id);
         this.updateWordFromDifficult(word.id);
       });
       (wordHard as HTMLElement).addEventListener('click', () => {
         this.addWordInDifficult(word.id);
       });
+      if (this.user) {
+        (wordHard as HTMLElement).classList.add('word__btn_active');
+        (wordStudied as HTMLElement).classList.add('word__btn_active');
+        learnedWord.forEach((wrd) => {
+          if ((wordcard as HTMLElement).dataset.id === wrd.wordId) {
+            (wordcard as HTMLElement).classList.add('word-learned');
+          }
+        });
+        difWord.forEach((wrd) => {
+          if ((wordcard as HTMLElement).dataset.id === wrd.wordId) {
+            (wordcard as HTMLElement).classList.add('word-difficult');
+          }
+        });
+      }
       wordsWrapper.append(card);
     });
-    this.renderPageWithUser();
   }
 
   async renderDifficultPage(words: Promise<WordType>[]) {
@@ -111,10 +124,10 @@ class TextbookView {
     (document.querySelector('.main-wrapper') as HTMLElement).innerHTML = `
   <div class="container">
   <div class="controls">
-  <a class='group-dropdown-trigger waves-effect waves-light btn deep-orange' href='#' data-target='group-dropdown'>Раздел 1</a>
+  <a class='group-dropdown-trigger waves-effect waves-light btn deep-orange controls__item' href='#' data-target='group-dropdown'>Раздел 1</a>
   <ul id='group-dropdown' class='dropdown-content'>
   </ul>
-  <div class="page">
+  <div class="page controls__item">
     <button class="waves-effect waves-light btn deep-orange prev-btn"><</button>
     <a class='page-dropdown-trigger waves-effect waves-light btn deep-orange current-page' href='#' data-target='page-dropdown'>Страница 1</a>
     <ul id='page-dropdown' class='dropdown-content'>
@@ -122,33 +135,35 @@ class TextbookView {
     </ul>
     <button class="waves-effect waves-light btn deep-orange next-btn">></button>
   </div>
-  <button class="waves-effect waves-light btn deep-orange game__btn game__btn-audiocall">Аудиовызов</button>
-  <button class="waves-effect waves-light btn deep-orange game__btn game__btn-sprint">Спринт</button>
+  <button class="waves-effect waves-light btn deep-orange game__btn game__btn-audiocall controls__item">Аудиовызов</button>
+  <button class="waves-effect waves-light btn deep-orange game__btn game__btn-sprint controls__item">Спринт</button>
 </div>
   <div class="words__wrapper">
 </div></div>
   <template id="card__template">
   <div class="word">
     <img alt="img" class="word__img">
+    <div class="word__content">
     <div class="word__descr">
-      <div class="word__header">
-        <div class="word__text"></div>
-        <div class="word__transcription"></div>
-        <div class="word__text-translate"></div>
-      </div>
-      <div class="word__text-meaning"></div>
-      <div class="word__text-meaning-translate"></div>
-      <div class="word__text-example"></div>
-      <div class="word__text-example-translate"></div>
+    <div class="word__header">
+      <div class="word__text"></div>
+      <div class="word__transcription"></div>
+      <div class="word__text-translate"></div>
     </div>
-    <div class="word__controls">
-      <button class="deep-orange word__audio">
-        <img src="../../assets/icons/play.png" class="word__audio-img">
-      </button>
-      <button class="deep-orange word__btn word__hard">В сложные</button>
-      <button class="deep-orange word__btn word__studied">Изучено</button>
-    </div>
+    <div class="word__text-meaning"></div>
+    <div class="word__text-meaning-translate"></div>
+    <div class="word__text-example"></div>
+    <div class="word__text-example-translate"></div>
   </div>
+  <div class="word__controls">
+    <button class="deep-orange word__audio">
+      <img src="../../assets/icons/play.png" class="word__audio-img">
+    </button>
+    <button class="deep-orange word__btn word__hard">В сложные</button>
+    <button class="deep-orange word__btn word__studied">Изучено</button>
+  </div>
+</div>
+    </div>
 </template>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>`;
   }
@@ -217,41 +232,6 @@ class TextbookView {
     this.changeControlsCaption(group, page);
     const audioPlayer = document.querySelector('.audio') as HTMLAudioElement;
     audioPlayer.pause();
-  }
-
-  async renderPageWithUser() {
-    if (this.user) {
-      const wordBtn = document.querySelectorAll('.word__btn');
-      wordBtn.forEach((btn) => {
-        btn.classList.add('word__btn_active');
-      });
-      const difWord = (await this.getUserDifficultWord()) as UserWordType[];
-      const learnedWord = (await this.getUserLearnedWord()) as UserWordType[];
-      console.log(difWord);
-      console.log(learnedWord);
-      const wordCards = [...document.querySelectorAll('.word')];
-      const hardWord: string[] = [];
-      const lWord: string[] = [];
-      wordCards.forEach((crd) => {
-        difWord.forEach((wrd) => {
-          if ((crd as HTMLElement).dataset.id === wrd.wordId) {
-            hardWord.push(String((crd as HTMLElement).dataset.id));
-          }
-        });
-        learnedWord.forEach((wrd) => {
-          if ((crd as HTMLElement).dataset.id === wrd.wordId) {
-            lWord.push(String((crd as HTMLElement).dataset.id));
-          }
-        });
-      });
-      // console.log(hardWord);
-      hardWord.forEach((wordId) => {
-        (document.querySelector(`[data-id="${wordId}"]`) as HTMLElement).classList.add('word-difficult');
-      });
-      lWord.forEach((wordId) => {
-        (document.querySelector(`[data-id="${wordId}"]`) as HTMLElement).classList.add('word-learned');
-      });
-    }
   }
 
   async addWordInDifficult(wordId: string) {

@@ -5,6 +5,7 @@ import AppView from './app.view';
 import { IAppController } from './types';
 import AudioCallController from '../audio-call/audioCallController';
 import SprintController from '../sprint/sprintController';
+import AboutPageController from '../about-page/about-page.controller';
 
 class AppController implements IAppController {
   private authorizeController;
@@ -19,6 +20,8 @@ class AppController implements IAppController {
 
   sprint: SprintController;
 
+  private aboutPageController;
+
   constructor() {
     this.view = new AppView();
     this.view.initAppView();
@@ -30,6 +33,7 @@ class AppController implements IAppController {
     this.view.listnerGamesButton();
     this.view.callAudioChallengeGame(this.audioCall.init);
     this.view.callSprintGame(this.sprint.init);
+    this.aboutPageController = new AboutPageController();
   }
 
   initApp() {

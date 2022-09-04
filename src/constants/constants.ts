@@ -39,6 +39,7 @@ const DARK_THEME = 'dark-theme';
 const GAMES_BUTTON = '.games';
 const AUDIO_CHALLENGE_GAME_BTN = 'audio-challenge-game';
 const SPRINT_GAME_BTN = 'sprint-game';
+const ABOUT_BUTTON = '.about';
 
 export {
   DARK_THEME,
@@ -82,6 +83,7 @@ export {
   GAMES_BUTTON,
   AUDIO_CHALLENGE_GAME_BTN,
   SPRINT_GAME_BTN,
+  ABOUT_BUTTON,
 };
 
 export enum Selector {

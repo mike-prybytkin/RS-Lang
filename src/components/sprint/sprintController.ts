@@ -1,7 +1,7 @@
 import SprintModel from './sprintModel';
 import SprintView from './sprintView';
 import { ISprintController } from './types';
-import { WordType } from '../../service/words-service/types';
+import { Answer, WordType } from '../../service/words-service/types';
 import { Selector } from '../../constants/constants';
 
 class SprintController implements ISprintController {
@@ -141,12 +141,18 @@ class SprintController implements ISprintController {
       this.audioGame.play();
       this.view.clearCircles();
     }
+    this.updateUserWord(this.correctWord, style);
     this.view.renderScore(this.commonScore, this.answerPoints);
     this.model.updateStatistic(this.correctWord, style);
     this.view.showCorrectAnswer(style);
     this.view.removeListener();
     this.nextPage();
   };
+
+  updateUserWord(word: WordType, style: Answer) {
+    const id = this.model.userService.token ? '_id' : 'id';
+    console.log(style, word[id]);
+  }
 
   checkCountCorrectAnswers() {
     if (this.countCorrectAnswer === 3) {

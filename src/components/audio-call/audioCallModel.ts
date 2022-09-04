@@ -43,7 +43,7 @@ class AudioCallModel implements IAudioCallModel {
   }
 
   async getWordsFromVocabulary(group: number, pageNumber: number) {
-    if (!this.userService.token) {
+    if (!this.hasToken()) {
       const words = await this.wordsService.getWords(group, pageNumber - 1);
       if (words) this.learnWords = words.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
     } else {
@@ -84,7 +84,7 @@ class AudioCallModel implements IAudioCallModel {
 
   async getWordsFromMenu(group: number) {
     const randomLearnPage = this.getRandomInteger(0, 29);
-    if (!this.userService.token) {
+    if (!this.hasToken()) {
       const randomLearnWords = await this.wordsService.getWords(group, randomLearnPage);
       if (randomLearnWords)
         this.learnWords = randomLearnWords.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
@@ -107,6 +107,10 @@ class AudioCallModel implements IAudioCallModel {
     });
     this.variantsWords.sort(() => Math.random() - 0.5);
     console.log(this.learnWords, this.variantsWords);
+  }
+
+  hasToken() {
+    return this.userService.token;
   }
 
   getRandomInteger(min: number, max: number) {

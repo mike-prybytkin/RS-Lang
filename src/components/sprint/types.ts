@@ -30,19 +30,20 @@ export interface ISprintView {
   renderGamePage(correctIndex: number, wordsPage: WordType[]): void;
   renderStatisticPage(statisticWords: WordType[], countMistake: number, countSuccess: number): void;
   renderStatisticWord(word: WordType): void;
-  addKeyDownListener(checkAnswer: (variantAnswer: HTMLButtonElement) => void, addUnknownWord: () => void): void;
-  getElementByKey(key: string): HTMLButtonElement;
+  addKeyDownListener(checkAnswer: (variantAnswer: HTMLButtonElement) => void, toggleAudio: () => void): void;
+  // getElementByKey(key: string): HTMLButtonElement;
   addAnswerListener(handler: (variantAnswer: HTMLButtonElement) => void): void;
   addStatisticListener(playAgainHandler: () => void, goMainPage: () => void): void;
   // hiddenIgnorance(): void;
-  addNavigationListener(handler: () => void): void;
-  addIgnoranceListener(handler: () => void): void;
+  // addNavigationListener(handler: () => void): void;
+  // addIgnoranceListener(handler: () => void): void;
   showCorrectAnswer(style: string): void;
   removeListener(): void;
   showToastMessage(): void;
   pageStructure(): string;
   statisticStructure(): string;
   startPageStructure(): string;
+  renderTime(time: number): void;
 }
 
 export interface ISprintController {

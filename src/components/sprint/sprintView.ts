@@ -5,8 +5,6 @@ import { Selector, TOAST } from '../../constants/constants';
 class SprintView implements ISprintView {
   container!: HTMLElement;
 
-  // hasAnswer = false;
-
   readonly baseUrl = 'https://rs-lang-prodaction.herokuapp.com';
 
   renderStartPage() {
@@ -22,7 +20,6 @@ class SprintView implements ISprintView {
   }
 
   renderGamePage(correctIndex: number, wordsPage: WordType[]) {
-    // this.hasAnswer = false;
     this.container = document.querySelector(Selector.MainWrapper) as HTMLElement;
     this.container.innerHTML = this.pageStructure();
     const textWord = document.querySelector(Selector.TextWord) as HTMLParagraphElement;
@@ -39,8 +36,8 @@ class SprintView implements ISprintView {
   }
 
   renderNextWord(correctIndex: number, wordsPage: WordType[]) {
-    const wordContainer = document.querySelector(Selector.SprintContainer) as HTMLDivElement;
-    wordContainer.innerHTML = this.nextWordStructure();
+    const mainGame = document.querySelector(Selector.MainGame) as HTMLDivElement;
+    mainGame.innerHTML = this.nextWordStructure();
     const textWord = document.querySelector(Selector.TextWord) as HTMLParagraphElement;
     textWord.innerHTML = `${wordsPage[correctIndex].word}`;
     const textTranslate = document.querySelector(Selector.TextTranslate) as HTMLParagraphElement;
@@ -84,56 +81,49 @@ class SprintView implements ISprintView {
     }
   }
 
-  // addAudioListener(handler: (element: HTMLImageElement) => void) {
-  //   const imageWordContainer = document.querySelectorAll(
-  //     `${Selector.IMAGE_WORD_CONTAINER}, ${Selector.AUDIO_ICON_CONTAINER}`
-  //   ) as NodeListOf<HTMLParagraphElement>;
-  //   imageWordContainer.forEach((item) => {
-  //     item.addEventListener('click', (event) => {
-  //       const element = event.target as HTMLImageElement;
-  //       handler(element);
-  //     });
-  //   });
-  // }
+  addAudioListener(handler: (element: HTMLImageElement) => void) {
+    const audioImageContainer = document.querySelector(Selector.AudioImageContainer) as HTMLDivElement;
+    audioImageContainer.addEventListener('click', (event) => {
+      const element = event.target as HTMLImageElement;
+      handler(element);
+    });
+  }
 
   changeAudioImage() {
     const image = document.querySelector(Selector.SprintAudioIcon) as HTMLImageElement;
     if (image) image.src = './assets/play.svg';
   }
 
-  addKeyDownListener(
-    checkAnswer: (variantAnswer: HTMLButtonElement) => void,
-    addUnknownWord: () => void /* ,
-    playAudio: (element: HTMLImageElement) => void */
-  ) {
+  addTimerListener(handler: () => void) {
+    const timer = document.querySelector(Selector.Timer) as HTMLDivElement;
+    timer.addEventListener('click', handler);
+  }
+
+  renderTimer(inner: string) {
+    const timer = document.querySelector(Selector.Timer) as HTMLDivElement;
+    timer.innerHTML = inner;
+  }
+
+  addKeyDownListener(checkAnswer: (variantAnswer: HTMLButtonElement) => void, toggleAudio: () => void) {
     document.addEventListener('keydown', (event: KeyboardEvent) => {
-      const element = this.getElementByKey(event.key) as HTMLButtonElement;
-      // let imageAudio: HTMLImageElement;
-      if (element || event.key === ' ') {
-        switch (event.key) {
-          // case '1':
-          // case '2':
-          // case '3':
-          //   if (!this.hasAnswer) checkAnswer(element);
-          //   break;
-          case 'Enter':
-            addUnknownWord();
+      const element = document.querySelector(`#${event.code}`) as HTMLButtonElement;
+      if (element || event.code === 'Space') {
+        const sprintContainer = document.querySelector(Selector.SprintContainer) as HTMLDivElement;
+        sprintContainer.classList.remove('border-animation-correct');
+        sprintContainer.classList.remove('border-animation-wrong');
+        switch (event.code) {
+          case 'ArrowLeft':
+          case 'ArrowRight':
+            checkAnswer(element);
             break;
-          case ' ':
-            // imageAudio = !this.hasAnswer
-            //   ? (document.querySelector(Selector.ImageAudio) as HTMLImageElement)
-            //   : (document.querySelector(Selector.CorrectImageAudio) as HTMLImageElement);
-            // if (imageAudio) playAudio(imageAudio);
+          case 'Space':
+            toggleAudio();
             break;
           default:
             break;
         }
       }
     });
-  }
-
-  getElementByKey(key: string) {
-    return document.querySelector(`#button${key}`) as HTMLButtonElement;
   }
 
   addAnswerListener(handler: (variantAnswer: HTMLButtonElement) => void) {
@@ -156,21 +146,6 @@ class SprintView implements ISprintView {
     statisticHomePageButton.addEventListener('click', goMainPage);
   }
 
-  // hiddenIgnorance() {
-  //   const ignorance = document.querySelector(Selector.Ignorance) as HTMLDivElement;
-  //   ignorance.classList.add('hidden');
-  // }
-
-  addNavigationListener(handler: () => void) {
-    const navigation = document.querySelector(Selector.Navigation) as HTMLDivElement;
-    navigation.addEventListener('click', handler);
-  }
-
-  addIgnoranceListener(handler: () => void) {
-    const ignorance = document.querySelector(Selector.Ignorance) as HTMLDivElement;
-    ignorance.addEventListener('click', handler);
-  }
-
   showCorrectAnswer(style: string) {
     const sprintContainer = document.querySelector(Selector.SprintContainer) as HTMLDivElement;
     if (style === 'correct-answer') {
@@ -178,14 +153,6 @@ class SprintView implements ISprintView {
     } else {
       sprintContainer.classList.add('border-animation-wrong');
     }
-
-    // const imageWord = document.querySelector(Selector.IMAGE_WORD) as HTMLImageElement;
-    // imageWord.classList.add('visible-block');
-    // const correctAnswerContainer = document.querySelector(Selector.CorrectAnswerContainer) as HTMLButtonElement;
-    // correctAnswerContainer.classList.add('visible-flex');
-    // const navigation = document.querySelector(Selector.Navigation) as HTMLParagraphElement;
-    // navigation.classList.add('visible-block');
-    // variantAnswer.classList.add(style);
   }
 
   removeListener() {
@@ -196,6 +163,14 @@ class SprintView implements ISprintView {
     });
   }
 
+  addVisibleButtons() {
+    const buttonsAnswer = document.querySelectorAll(Selector.ButtonVariant) as NodeListOf<HTMLButtonElement>;
+    buttonsAnswer.forEach((item) => {
+      const temp = item;
+      temp.disabled = false;
+    });
+  }
+
   showToastMessage() {
     const toastHTML = `<span>Не найдены слова для изучения</span>`;
     M.toast({ html: toastHTML });
@@ -203,46 +178,94 @@ class SprintView implements ISprintView {
     toast.style.backgroundColor = 'red';
   }
 
+  renderTime(time: number) {
+    const timeContainer = document.querySelector(Selector.Timer) as HTMLDivElement;
+    if (timeContainer) {
+      timeContainer.innerHTML = `${time}`;
+    }
+  }
+
+  renderScore(score: number, points: number) {
+    const scoreContainer = document.querySelector(Selector.Score) as HTMLDivElement;
+    if (scoreContainer) {
+      scoreContainer.innerHTML = `${score}`;
+    }
+    const pointsSpan = document.querySelector(Selector.CountPoints) as HTMLSpanElement;
+    if (pointsSpan) {
+      pointsSpan.innerHTML = `${points}`;
+    }
+  }
+
+  showCorrectCircle(id: string) {
+    const correctCircle = document.querySelector(`#circle${id}`) as HTMLDivElement;
+    console.log(correctCircle);
+    if (correctCircle) {
+      correctCircle.classList.add('correct-circle');
+      correctCircle.innerHTML = '&#10003;';
+    }
+  }
+
+  clearCircles() {
+    const allCircles = document.querySelectorAll(Selector.AnswerCircle) as NodeListOf<HTMLDivElement>;
+    allCircles.forEach((item) => {
+      item.classList.remove('correct-circle');
+      const circle = item;
+      circle.innerHTML = '';
+    });
+  }
+
   pageStructure() {
     return `
-    <div class="sprint-container">
+    <div class="game-tools-container">
+    <div class="timer">60</div>
+    <div class="score">0</div>
+    <div class="cross-container">X</div>
+  </div>
+  <div class="sprint-container">
+    <div class="header-game">
+      <div class="answer-circle-container">
+        <div class="answer-circle" id="circle1"></div>
+        <div class="answer-circle" id="circle2"></div>
+        <div class="answer-circle" id="circle3"></div>
+        <p class="text-points">+<span class="count-points">10</span> очков за слово</p>
+      </div>
+      <div class="audio-image-container">
+        <img src="./assets/play.svg" alt="audio-image" class="sprint-audio-icon">
+      </div>
+    </div>
+    <div class="main-game">
       <div class="study-sprint-container">
-        <div class="audio-image-container">
-          <img src="./assets/play.svg" alt="audio-image" class="sprint-audio-icon">
-        </div>
         <div class="word-container">
           <p class="text-word">Word</p>
           <p class="text-translate">translate</p>
         </div>
       </div>
       <div class="variants-sprint-container">
-        <button class="no-variant button-variant">
+        <button class="no-variant button-variant" id="ArrowLeft">
           <p class="sprint-text-variant">&larr; Неверно</p>
         </button>
-        <button class="yes-variant button-variant">
+        <button class="yes-variant button-variant" id="ArrowRight">
           <p class="sprint-text-variant">Верно &rarr;</p>
         </button>
       </div>
     </div>
+  </div>
     `;
   }
 
   nextWordStructure() {
     return `
       <div class="study-sprint-container">
-        <div class="audio-image-container">
-          <img src="./assets/play.svg" alt="audio-image" class="sprint-audio-icon">
-        </div>
         <div class="word-container">
           <p class="text-word">Word</p>
           <p class="text-translate">translate</p>
         </div>
       </div>
       <div class="variants-sprint-container">
-        <button class="no-variant button-variant">
+        <button class="no-variant button-variant" id="ArrowLeft">
           <p class="sprint-text-variant">&larr; Неверно</p>
         </button>
-        <button class="yes-variant button-variant">
+        <button class="yes-variant button-variant" id="ArrowRight">
           <p class="sprint-text-variant">Верно &rarr;</p>
         </button>
       </div>

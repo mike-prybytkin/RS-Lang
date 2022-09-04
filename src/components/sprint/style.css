@@ -2,12 +2,51 @@
     display: flex;
     flex-direction: column;
     width: 300px;
+    height: 300px;
     align-items: center;
+    justify-content: space-between;
     margin: 0 auto;
-    margin-top: 100px;
+    margin-top: 30px;
     border: rgb(106, 106, 106) solid 2px;
     border-radius: 10px;
     padding: 10px;
+}
+
+.header-game {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    padding-left: 80px;
+    /* align-items: center; */
+    min-width: 280px;
+}
+
+.main-game {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 200px;
+    justify-self: flex-end;
+
+}
+
+.answer-circle-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 120px;
+}
+
+.answer-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: rgb(106, 106, 106); 
+}
+
+.text-points {
+    font-size: 12px;
 }
 
 .border-animation-correct {
@@ -45,16 +84,12 @@
 }
 
 .audio-image-container {
-    align-self: flex-end;
+    margin-left: auto;
     padding: 2px;
     width: 30px;
     height: 30px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 20px;
-}
-
-.word-container {
-    padding-top: 50px;
 }
 
 .text-word {
@@ -72,7 +107,7 @@
 .variants-sprint-container {
     display: flex;
     justify-content: space-around;
-    margin-top: 50px;
+    margin-top: 20px;
     min-width: 300px;
 }
 
@@ -97,4 +132,55 @@
     background-color: red;
 }
 
+.button-variant {
+    transition: all 0.2s;
+}
+
+.button-variant:disabled {
+    color: black;
+}
+
+.button-variant:hover {
+    cursor: pointer;
+    box-shadow: inset 0px 0px 2px 1px #ffffff;
+}
+
+.game-tools-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+
+.timer {
+    border:rgba(100, 100, 100) solid 2px;
+    border-radius: 30px;
+    padding: 5px 10px;
+    font-size: 26px;
+    font-weight: 400;
+    color: rgb(100, 100, 100);
+    width: 55px;
+    height: 55px;
+    text-align: center;
+}
+
+.timer:hover {
+    cursor: pointer;
+}
+
+.score {
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.cross-container {
+    font-size: 26px;
+    font-weight: 400;
+    color: rgb(100, 100, 100);
+}
+
+.correct-circle {
+    background-color: #00ff00;
+    color:#ffffff;
+}
 

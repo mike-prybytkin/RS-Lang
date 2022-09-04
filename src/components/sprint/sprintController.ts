@@ -2,6 +2,7 @@ import SprintModel from './sprintModel';
 import SprintView from './sprintView';
 import { ISprintController } from './types';
 import { WordType } from '../../service/words-service/types';
+import { Selector } from '../../constants/constants';
 
 class SprintController implements ISprintController {
   view: SprintView;
@@ -38,7 +39,9 @@ class SprintController implements ISprintController {
 
   isPause: boolean;
 
-  constructor() {
+  renderHomePage: () => void;
+
+  constructor(renderHomePage: () => void) {
     this.view = new SprintView();
     this.model = new SprintModel();
     this.gamePage = 0;
@@ -47,14 +50,15 @@ class SprintController implements ISprintController {
     this.audioWord = new Audio();
     this.audioTimer = new Audio();
     this.audioFinal = new Audio();
-    this.audioTimer.src = '../../assets/audio/timer.mp3';
-    this.audioFinal.src = '../../assets/audio/final.mp3';
+    this.audioTimer.src = './assets/audio/timer.mp3';
+    this.audioFinal.src = './assets/audio/final.mp3';
     this.time = 60;
     this.commonScore = 0;
     this.answerPoints = 10;
     this.countCorrectAnswer = 0;
     this.view.addKeyDownListener(this.checkAnswer, this.toggleAudio);
     this.isPause = false;
+    this.renderHomePage = renderHomePage;
   }
 
   init = () => {
@@ -91,6 +95,7 @@ class SprintController implements ISprintController {
     this.view.addAudioListener(this.playAudio);
     this.view.addAnswerListener(this.checkAnswer);
     this.view.addTimerListener(this.toggleAudio);
+    this.view.addCrossListener(this.goHomePage);
     this.time = 60;
     this.timerId = setInterval(this.changeTime, 1000);
   }
@@ -125,14 +130,14 @@ class SprintController implements ISprintController {
     this.view.removeListener();
     const style = variantAnswer.classList.contains('correct') ? 'correct-answer' : 'wrong-answer';
     if (style === 'correct-answer') {
-      this.audioGame.src = '../../assets/audio/piu.mp3';
+      this.audioGame.src = './assets/audio/piu.mp3';
       this.audioGame.play();
       this.checkCountCorrectAnswers();
       this.commonScore += this.answerPoints;
     } else {
       this.countCorrectAnswer = 0;
       this.answerPoints = 10;
-      this.audioGame.src = '../../assets/audio/mistake.mp3';
+      this.audioGame.src = './assets/audio/mistake.mp3';
       this.audioGame.play();
       this.view.clearCircles();
     }
@@ -175,11 +180,12 @@ class SprintController implements ISprintController {
   };
 
   goHomePage = () => {
-    window.location.reload(); // исправить на вызов функции, которая передаcтся при создании моего класса
+    clearInterval(this.timerId);
+    this.renderHomePage();
   };
 
   changeTime = () => {
-    if (!this.isPause) {
+    if (!this.isPause && document.querySelector(Selector.Timer)) {
       this.time -= 1;
       this.checkTime();
     }

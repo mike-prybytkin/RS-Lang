@@ -43,8 +43,7 @@ class SprintModel implements ISprintModel {
   }
 
   async getWordsFromVocabulary(group: number, pageNumber: number) {
-    if (!this.userService.token) {
-      // кейс для незареганного юзера
+    if (!this.hasToken()) {
       const words = await this.wordsService.getWords(group, pageNumber - 1);
       if (words) this.learnWords = words.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
       const allWordsResponse = Array.from({ length: 30 }, (_it, index) => this.wordsService.getWords(group, index));
@@ -62,7 +61,6 @@ class SprintModel implements ISprintModel {
         this.learnWords = this.learnWords.concat(item);
       });
     } else {
-      // кейс для зареганного юзера
       const filter = this.createFilterLearned(pageNumber - 1);
       const aggregatedWords = await this.userService.getAggregatedWords(group, this.wordsPerPage, filter);
       if (aggregatedWords) {
@@ -74,6 +72,10 @@ class SprintModel implements ISprintModel {
         this.variantsWords = dataVariant[0].paginatedResults.sort(() => Math.random() - 0.5);
       }
     }
+  }
+
+  hasToken() {
+    return this.userService.token;
   }
 
   async increaseAggregatedWords(group: number, pageNumber: number) {
@@ -91,13 +93,7 @@ class SprintModel implements ISprintModel {
   }
 
   async getWordsFromMenu(group: number) {
-    // const randomLearnPage = this.getRandomInteger(0, 29);
-    // let randomVariantPage = this.getRandomInteger(0, 28);
-    // while (randomLearnPage === randomVariantPage) {
-    //   randomVariantPage = this.getRandomInteger(0, 29);
-    // }
-    if (!this.userService.token) {
-      // кейс для незареганного юзера
+    if (!this.hasToken()) {
       const allWordsResponse = Array.from({ length: 30 }, (_it, index) => this.wordsService.getWords(group, index));
       const allWords = (await Promise.all(allWordsResponse).then((value) =>
         value.filter((item) => !!item)
@@ -107,7 +103,6 @@ class SprintModel implements ISprintModel {
         this.learnWords = this.variantsWords;
       });
     } else {
-      // кейс для зареганного юзера
       const allWords = await this.userService.getAggregatedWords(group, this.countLearnWords);
       if (allWords) {
         this.variantsWords = allWords[0].paginatedResults.sort(() => Math.random() - 0.5);
@@ -127,10 +122,6 @@ class SprintModel implements ISprintModel {
     {"$and":[{"page":${pageNumber}, "$or":[{"userWord":null}, {"userWord.optional.learned":false}]}]}`)
       : LEARNED_FILTER;
   }
-
-  // createFilterPage(pageNumber: number) {
-  //   return encodeURIComponent(`{"page":${pageNumber}}`);
-  // }
 
   getWordsPage(page: number) {
     let randomVariantIndex = this.getRandomInteger(0, 598);

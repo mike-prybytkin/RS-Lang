@@ -184,3 +184,7 @@
     color:#ffffff;
 }
 
+.cross-container:hover {
+    cursor: pointer;
+}
+

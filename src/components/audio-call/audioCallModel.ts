@@ -44,11 +44,9 @@ class AudioCallModel implements IAudioCallModel {
 
   async getWordsFromVocabulary(group: number, pageNumber: number) {
     if (!this.userService.token) {
-      // кейс для незареганного юзера
       const words = await this.wordsService.getWords(group, pageNumber - 1);
       if (words) this.learnWords = words.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
     } else {
-      // кейс для зареганного юзера
       const filter = this.createFilterLearned(pageNumber - 1);
       const aggregatedWords = await this.userService.getAggregatedWords(group, this.wordsPerPage, filter);
       if (aggregatedWords) {
@@ -86,17 +84,11 @@ class AudioCallModel implements IAudioCallModel {
 
   async getWordsFromMenu(group: number) {
     const randomLearnPage = this.getRandomInteger(0, 29);
-    // let randomVariantPage = this.getRandomInteger(0, 28);
-    // while (randomLearnPage === randomVariantPage || randomLearnPage === randomVariantPage + 1) {
-    //   randomVariantPage = this.getRandomInteger(0, 28);
-    // }
     if (!this.userService.token) {
-      // кейс для незареганного юзера
       const randomLearnWords = await this.wordsService.getWords(group, randomLearnPage);
       if (randomLearnWords)
         this.learnWords = randomLearnWords.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
     } else {
-      // кейс для зареганного юзера
       const filter = this.createFilterPage(randomLearnPage);
       const randomLearnWords = await this.userService.getAggregatedWords(group, this.countLearnWords, filter);
       if (randomLearnWords)

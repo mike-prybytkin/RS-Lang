@@ -23,7 +23,6 @@ export interface ISprintModel {
 
 export interface ISprintView {
   container: HTMLElement;
-  // hasAnswer: boolean;
   baseUrl: string;
   renderStartPage(): void;
   addStartListeners(handler: (event: Event) => void): void;
@@ -31,12 +30,8 @@ export interface ISprintView {
   renderStatisticPage(statisticWords: WordType[], countMistake: number, countSuccess: number): void;
   renderStatisticWord(word: WordType): void;
   addKeyDownListener(checkAnswer: (variantAnswer: HTMLButtonElement) => void, toggleAudio: () => void): void;
-  // getElementByKey(key: string): HTMLButtonElement;
   addAnswerListener(handler: (variantAnswer: HTMLButtonElement) => void): void;
   addStatisticListener(playAgainHandler: () => void, goMainPage: () => void): void;
-  // hiddenIgnorance(): void;
-  // addNavigationListener(handler: () => void): void;
-  // addIgnoranceListener(handler: () => void): void;
   showCorrectAnswer(style: string): void;
   removeListener(): void;
   showToastMessage(): void;
@@ -50,7 +45,6 @@ export interface ISprintController {
   view: ISprintView;
   model: ISprintModel;
   gamePage: number;
-  // audio: HTMLAudioElement;
   correctWord: WordType;
   group: number;
   pageNumber: number;

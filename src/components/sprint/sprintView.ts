@@ -139,6 +139,11 @@ class SprintView implements ISprintView {
     });
   }
 
+  addCrossListener(handler: () => void) {
+    const cross = document.querySelector(Selector.CrossContainer) as HTMLDivElement;
+    cross.addEventListener('click', handler);
+  }
+
   addStatisticListener(playAgainHandler: () => void, goMainPage: () => void) {
     const playAgainButton = document.querySelector(Selector.StatisticPlayAgainButton) as HTMLButtonElement;
     playAgainButton.addEventListener('click', playAgainHandler);

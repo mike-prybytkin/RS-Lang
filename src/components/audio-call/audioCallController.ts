@@ -20,7 +20,9 @@ class AudioCallController implements IAudioCallController {
 
   countPages: number;
 
-  constructor() {
+  renderHomePage: () => void;
+
+  constructor(renderHomePage: () => void) {
     this.view = new AudioCallView();
     this.model = new AudioCallModel();
     this.gamePage = 0;
@@ -30,6 +32,7 @@ class AudioCallController implements IAudioCallController {
       this.view.changeAudioImage();
     });
     this.view.addKeyDownListener(this.checkAnswer, this.addUnknownWord, this.playAudio);
+    this.renderHomePage = renderHomePage;
   }
 
   init = () => {
@@ -122,7 +125,7 @@ class AudioCallController implements IAudioCallController {
   };
 
   goHomePage = () => {
-    window.location.reload(); // исправить на вызов функции, которая передасться при создании моего класса
+    this.renderHomePage();
   };
 }
 

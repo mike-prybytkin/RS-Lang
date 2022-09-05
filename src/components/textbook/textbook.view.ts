@@ -56,7 +56,11 @@ class TextbookView {
         this.playAudio([word.audio, word.audioMeaning, word.audioExample]);
       });
       (wordStudied as HTMLElement).addEventListener('click', () => {
-        this.updateWordFromDifficult(word.id);
+        if ((wordcard as HTMLElement).classList.contains('word-difficult')) {
+          this.updateWordFromDifficult(word.id);
+        } else {
+          this.addWordInStudied(word.id);
+        }
       });
       (wordHard as HTMLElement).addEventListener('click', () => {
         this.addWordInDifficult(word.id);
@@ -77,6 +81,7 @@ class TextbookView {
       }
       wordsWrapper.append(card);
     });
+    this.checkPageForFamiliarity();
   }
 
   async renderDifficultPage(words: Promise<WordType>[]) {
@@ -193,14 +198,24 @@ class TextbookView {
   }
 
   initializeGroupDropdown(groupCount: number) {
+    const colors = [
+      'deep-orange lighten-4',
+      'deep-orange lighten-3',
+      'deep-orange lighten-2',
+      'deep-orange lighten-1',
+      'deep-orange',
+      'deep-orange darken-1',
+    ];
     const elems = document.querySelectorAll('.group-dropdown-trigger');
     M.Dropdown.init(elems);
     const groupDropdown = document.getElementById('group-dropdown') as HTMLElement;
     for (let i = 1; i <= groupCount; i += 1) {
-      groupDropdown.innerHTML += `<li><a href="#!" class="deep-orange white-text group__item">Раздел ${i}</a></li>`;
+      groupDropdown.innerHTML += `<li><a href="#!" class="${
+        colors[i - 1]
+      }  white-text group__item">Раздел ${i}</a></li>`;
     }
     if (this.user) {
-      groupDropdown.innerHTML += `<li><a href="#!" class="deep-orange white-text group__item_difficult">Сложные слова</a></li>`;
+      groupDropdown.innerHTML += `<li><a href="#!" class="deep-orange darken-4 white-text group__item_difficult">Сложные слова</a></li>`;
     }
   }
 
@@ -240,6 +255,25 @@ class TextbookView {
     this.changeControlsCaption(group, page);
     const audioPlayer = document.querySelector('.audio') as HTMLAudioElement;
     audioPlayer.pause();
+  }
+
+  private checkPageForFamiliarity() {
+    const cardWrapper = document.querySelector('.words__wrapper');
+    const allCards = document.querySelectorAll('.word');
+    const learnedCards = document.querySelectorAll('.word-learned');
+    const difficultCards = document.querySelectorAll('.word-difficult');
+    const gameBtn = document.querySelectorAll('.game__btn') as NodeListOf<HTMLButtonElement>;
+    if (allCards.length === learnedCards.length + difficultCards.length) {
+      cardWrapper?.classList.add('page-learned');
+      gameBtn.forEach((item) => {
+        item.setAttribute('disabled', 'true');
+      });
+    } else {
+      cardWrapper?.classList.remove('page-learned');
+      gameBtn.forEach((item) => {
+        item.removeAttribute('disabled');
+      });
+    }
   }
 
   async addWordInDifficult(wordId: string) {

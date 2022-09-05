@@ -25,10 +25,10 @@ class AppController implements IAppController {
   constructor() {
     this.view = new AppView();
     this.view.initAppView();
-    this.audioCall = new AudioCallController();
-    this.sprint = new SprintController();
-    this.authorizeController = new AuthorizeController(this.audioCall, this.sprint);
     this.homePageController = new HomePageController();
+    this.audioCall = new AudioCallController(this.homePageController.renderHomePage);
+    this.sprint = new SprintController(this.homePageController.renderHomePage);
+    this.authorizeController = new AuthorizeController(this.audioCall, this.sprint);
     this.switchThemeController = new SwitchThemeController();
     this.view.listnerGamesButton();
     this.view.callAudioChallengeGame(this.audioCall.init);

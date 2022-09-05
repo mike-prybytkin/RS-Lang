@@ -1,7 +1,8 @@
 import AudioCallModel from './audioCallModel';
 import AudioCallView from './audioCallView';
 import { IAudioCallController } from './types';
-import { WordType } from '../../service/words-service/types';
+import { WordType, Answer } from '../../service/words-service/types';
+import { OptionalType } from '../../service/user-service/types';
 
 class AudioCallController implements IAudioCallController {
   view: AudioCallView;
@@ -20,7 +21,9 @@ class AudioCallController implements IAudioCallController {
 
   countPages: number;
 
-  constructor() {
+  renderHomePage: () => void;
+
+  constructor(renderHomePage: () => void) {
     this.view = new AudioCallView();
     this.model = new AudioCallModel();
     this.gamePage = 0;
@@ -30,6 +33,7 @@ class AudioCallController implements IAudioCallController {
       this.view.changeAudioImage();
     });
     this.view.addKeyDownListener(this.checkAnswer, this.addUnknownWord, this.playAudio);
+    this.renderHomePage = renderHomePage;
   }
 
   init = () => {
@@ -59,7 +63,6 @@ class AudioCallController implements IAudioCallController {
 
   createPage() {
     const wordsPage = this.model.getWordsPage(this.gamePage);
-    console.log(wordsPage);
     [this.correctWord] = wordsPage;
     wordsPage.sort(() => Math.random() - 0.5);
     const correctIndex = wordsPage.findIndex((item) => item.id === this.correctWord.id);
@@ -96,7 +99,70 @@ class AudioCallController implements IAudioCallController {
     this.view.hiddenIgnorance();
     this.view.showCorrectAnswer(variantAnswer, style);
     this.view.removeListener();
+    this.updateUserWord(this.correctWord, style);
   };
+
+  async updateUserWord(word: WordType, style: Answer) {
+    let id: '_id' | 'id';
+    if (this.model.userService.token) {
+      id = '_id';
+    } else {
+      id = 'id';
+      return;
+    }
+    const userWord = await this.model.userService.getUserWord(word[id]);
+    if (userWord) {
+      const difficultyProperty = userWord.difficulty;
+      const optionalProperty = userWord.optional;
+      const body = this.updateOptional(difficultyProperty, optionalProperty, style);
+      this.model.userService.updateUserWord(word[id], body.difficultyProperty, body.optional);
+    } else {
+      const optional = this.createOptionalNewUserWord(style);
+      this.model.userService.createNewUserWord(word[id], optional);
+    }
+  }
+
+  updateOptional(difficultyProperty: string, optionalProperty: OptionalType, style: Answer) {
+    const optional = optionalProperty;
+    if (style === 'wrong-answer') {
+      optional.learned = false;
+      optional.successAnswersSequence = 0;
+      optional.wrongAttempt += 1;
+      return { difficultyProperty, optional };
+    }
+    if (difficultyProperty === 'false' && optionalProperty.successAnswersSequence === 2) {
+      optional.learned = true;
+      optional.successAnswersSequence = 3;
+      optional.successAttempt += 1;
+      return { difficultyProperty, optional };
+    }
+    if (difficultyProperty === 'true' && optionalProperty.successAnswersSequence === 4) {
+      optional.learned = true;
+      optional.successAnswersSequence = 5;
+      optional.successAttempt += 1;
+      return { difficultyProperty: 'false', optional };
+    }
+    optional.successAnswersSequence += 1;
+    optional.successAttempt += 1;
+    return { difficultyProperty, optional };
+  }
+
+  createOptionalNewUserWord(style: Answer) {
+    if (style === 'correct-answer') {
+      return {
+        learned: false,
+        successAnswersSequence: 1,
+        successAttempt: 1,
+        wrongAttempt: 0,
+      };
+    }
+    return {
+      learned: false,
+      successAnswersSequence: 0,
+      successAttempt: 0,
+      wrongAttempt: 1,
+    };
+  }
 
   nextPage = () => {
     if (this.gamePage < this.countPages - 1) {
@@ -122,7 +188,7 @@ class AudioCallController implements IAudioCallController {
   };
 
   goHomePage = () => {
-    window.location.reload(); // исправить на вызов функции, которая передасться при создании моего класса
+    this.renderHomePage();
   };
 }
 

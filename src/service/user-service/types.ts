@@ -12,6 +12,7 @@ export interface IUserService {
   getNewUserTokens(): Promise<NewTokenType | null>;
   createDifficultUserWord(wordId: string): Promise<UserWordType | null>;
   createLearnedUserWord(wordId: string): Promise<UserWordType | null>;
+  createNewUserWord(wordId: string, optional: OptionalType): Promise<UserWordType | null>;
   getUserWord(wordId: string): Promise<UserWordType | null>;
   getAllUserWords(): Promise<UserWordType[] | null>;
   updateUserWord(wordId: string, difficulty: string, optional: OptionalType): Promise<UserWordType | null>;

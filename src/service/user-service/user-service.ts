@@ -26,11 +26,6 @@ class UserService extends FetchService implements IUserService {
     const endPoint = 'signin';
     const body = { email, password };
     const data = await this.postData<UserAuthorizationType, LoginBodyType>(endPoint, this.token, body);
-    // if (data) {
-    //   this.token = data.token;
-    //   this.refreshToken = data.refreshToken;
-    //   this.userId = data.userId;
-    // }
     return data;
   }
 
@@ -92,6 +87,16 @@ class UserService extends FetchService implements IUserService {
     return data;
   }
 
+  public async createNewUserWord(wordId: string, optional: OptionalType) {
+    const endPoint = `users/${this.userId}/words/${wordId}`;
+    const body = {
+      difficulty: 'false',
+      optional,
+    };
+    const data = await this.postData<UserWordType, UserWordBodyType>(endPoint, this.token, body);
+    return data;
+  }
+
   public async getUserWord(wordId: string) {
     const endPoint = `users/${this.userId}/words/${wordId}`;
     const data = await this.getData<UserWordType>(endPoint, this.token);
@@ -127,7 +132,7 @@ class UserService extends FetchService implements IUserService {
 
   public async getAggregatedWord(wordId: string) {
     const endPoint = `users/${this.userId}/aggregatedWords/${wordId}`;
-    const data = await this.getData<WordType[]>(endPoint, this.token); // переделать тип WordType - убрать UserWord и создать AggregatedWordType c UserWord
+    const data = await this.getData<WordType[]>(endPoint, this.token);
     return data;
   }
 

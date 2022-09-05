@@ -1,6 +1,5 @@
 import FetchService from '../fetch-service/fetch-service';
 import { IWordsService, WordType } from './types';
-// import { WordType /*, PostBodyType*/ } from '../car-service/types';
 
 class WordsService extends FetchService implements IWordsService {
   public async getWords(group: number, page: number): Promise<WordType[] | null> {

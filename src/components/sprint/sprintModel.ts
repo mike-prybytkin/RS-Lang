@@ -34,6 +34,7 @@ class SprintModel implements ISprintModel {
 
   async getWords(group: number, pageNumber: number | undefined) {
     this.statistic = [];
+    this.variantsWords = [];
     if (pageNumber) {
       await this.getWordsFromVocabulary(group, pageNumber);
     } else {
@@ -42,36 +43,39 @@ class SprintModel implements ISprintModel {
   }
 
   async getWordsFromVocabulary(group: number, pageNumber: number) {
-    if (this.userService.token) {
-      // кейс для незареганного юзера
+    if (!this.hasToken()) {
       const words = await this.wordsService.getWords(group, pageNumber - 1);
       if (words) this.learnWords = words.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
-      const learnWords = Array.from({ length: 30 }, (_it, index) => this.wordsService.getWords(group, index));
-      const deficit = await Promise.all(learnWords).then((value) => {
-        return value
-          .sort((a, b) => (a && b ? b[0].page - a[0].page : 0))
-          .filter((item) => (item ? item[0].page < pageNumber - 1 : false))
-          .map((item) => (item ? item.sort(() => Math.random() - 0.5) : item));
+      const allWordsResponse = Array.from({ length: 30 }, (_it, index) => this.wordsService.getWords(group, index));
+      const allWords = (await Promise.all(allWordsResponse).then((value) =>
+        value.filter((item) => !!item)
+      )) as WordType[][];
+      allWords.forEach((item) => {
+        this.variantsWords = this.variantsWords.concat(item);
       });
+      const deficit = allWords
+        .filter((item) => item[0].page < pageNumber - 1)
+        .sort((a, b) => b[0].page - a[0].page)
+        .map((item) => item.sort(() => Math.random() - 0.5));
       deficit.forEach((item) => {
-        if (item) this.learnWords.concat(item);
+        this.learnWords = this.learnWords.concat(item);
       });
-      console.log(this.learnWords);
     } else {
-      // кейс для зареганного юзера
       const filter = this.createFilterLearned(pageNumber - 1);
       const aggregatedWords = await this.userService.getAggregatedWords(group, this.wordsPerPage, filter);
       if (aggregatedWords) {
-        this.learnWords = aggregatedWords[0].paginatedResults;
+        this.learnWords = aggregatedWords[0].paginatedResults.sort(() => Math.random() - 0.5);
         if (this.learnWords.length < this.countLearnWords) await this.increaseAggregatedWords(group, pageNumber);
       }
+      const dataVariant = await this.userService.getAggregatedWords(group, 600);
+      if (dataVariant) {
+        this.variantsWords = dataVariant[0].paginatedResults.sort(() => Math.random() - 0.5);
+      }
     }
-    const dataVariant = await this.userService.getAggregatedWords(group, 600);
-    if (dataVariant) {
-      this.variantsWords = dataVariant[0].paginatedResults.sort(() => Math.random() - 0.5);
-      /* .slice(0, 50)
-      .filter((item) => !this.learnWords.find((word) => word.word === item.word)) */
-    }
+  }
+
+  hasToken() {
+    return this.userService.token;
   }
 
   async increaseAggregatedWords(group: number, pageNumber: number) {
@@ -89,34 +93,23 @@ class SprintModel implements ISprintModel {
   }
 
   async getWordsFromMenu(group: number) {
-    const randomLearnPage = this.getRandomInteger(0, 29);
-    let randomVariantPage = this.getRandomInteger(0, 28);
-    while (randomLearnPage === randomVariantPage) {
-      randomVariantPage = this.getRandomInteger(0, 29);
-    }
-    if (!this.userService.token) {
-      // кейс для незареганного юзера
-      const randomLearnWords = await this.wordsService.getWords(group, randomLearnPage);
-      if (randomLearnWords)
-        this.learnWords = randomLearnWords.sort(() => Math.random() - 0.5).slice(0, this.countLearnWords);
+    if (!this.hasToken()) {
+      const allWordsResponse = Array.from({ length: 30 }, (_it, index) => this.wordsService.getWords(group, index));
+      const allWords = (await Promise.all(allWordsResponse).then((value) =>
+        value.filter((item) => !!item)
+      )) as WordType[][];
+      allWords.forEach((item) => {
+        this.variantsWords = this.variantsWords.concat(item).sort(() => Math.random() - 0.5);
+        this.learnWords = this.variantsWords;
+      });
     } else {
-      // кейс для зареганного юзера
-      const filter = this.createFilterPage(randomLearnPage);
-      const randomLearnWords = await this.userService.getAggregatedWords(group, this.countLearnWords, filter);
-      if (randomLearnWords)
-        this.learnWords = randomLearnWords[0].paginatedResults
-          .sort(() => Math.random() - 0.5)
-          .slice(0, this.countLearnWords);
-    }
-    const randomWords = [
-      this.wordsService.getWords(group, randomVariantPage),
-      this.wordsService.getWords(group, randomVariantPage + 1),
-    ];
-    await Promise.all(randomWords).then((value) => {
-      if (value[0] && value[1]) {
-        this.variantsWords = value[0].concat(value[1]).sort(() => Math.random() - 0.5);
+      const allWords = await this.userService.getAggregatedWords(group, this.countLearnWords);
+      if (allWords) {
+        this.variantsWords = allWords[0].paginatedResults.sort(() => Math.random() - 0.5);
+        this.learnWords = this.variantsWords;
       }
-    });
+    }
+    this.variantsWords.sort(() => Math.random() - 0.5);
   }
 
   getRandomInteger(min: number, max: number) {
@@ -125,26 +118,23 @@ class SprintModel implements ISprintModel {
 
   createFilterLearned(pageNumber: number) {
     return pageNumber
-      ? `%7B%22%24and%22%3A%5B%7B%22page%22%3A${pageNumber}%2C%20%22%24or%22%3A%5B%7B%22userWord%22%3Anull%7D%2C%20%7B%22userWord.optional.learned%22%3Afalse%7D%5D%7D%5D%7D`
+      ? encodeURIComponent(`
+    {"$and":[{"page":${pageNumber}, "$or":[{"userWord":null}, {"userWord.optional.learned":false}]}]}`)
       : LEARNED_FILTER;
   }
 
-  createFilterPage(pageNumber: number) {
-    return `%7B%22page%22%3A${pageNumber}%7D`;
-  }
-
   getWordsPage(page: number) {
-    const randomIndexVariantAnswer = this.getRandomInteger(0, 38);
-    return [this.learnWords[page]].concat(
-      this.variantsWords.slice(randomIndexVariantAnswer, randomIndexVariantAnswer + 2)
-    );
+    let randomVariantIndex = this.getRandomInteger(0, 598);
+    while (this.learnWords[page].word === this.variantsWords[randomVariantIndex].word) {
+      randomVariantIndex = this.getRandomInteger(0, 598);
+    }
+    return [this.learnWords[page]].concat(this.variantsWords[randomVariantIndex]);
   }
 
   updateStatistic(word: WordType, answer: Answer) {
     const wordStatistic = word;
     wordStatistic.answer = answer;
     this.statistic.push(wordStatistic);
-    console.log(this.statistic);
   }
 }
 

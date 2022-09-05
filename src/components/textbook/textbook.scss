@@ -82,6 +82,7 @@
 
   &__header {
     display: flex;
+    flex-wrap: wrap;
     font-weight: 400;
     gap: 0 10px;
     font-size: 30px;
@@ -96,21 +97,25 @@
       color: rgba(0, 0, 0, 0.8);
       font-size: 16px;
       overflow-wrap: anywhere;
+      text-align: left;
     }
     &-example,
     &-example-translate {
       color: rgba(0, 0, 0, 0.54);
       font-size: 14px;
       overflow-wrap: anywhere;
+      text-align: left;
     }
     &-example {
       margin-top: 20px;
       overflow-wrap: anywhere;
+      text-align: left;
     }
   }
   &__transcription {
     color: rgba(0, 0, 0, 0.54);
     overflow-wrap: anywhere;
+    text-align: left;
   }
   &__controls {
     margin-left: auto;

@@ -23,8 +23,12 @@ class TextbookView {
     const audio = document.createElement('audio');
     audio.classList.add('audio');
     wordsWrapper.append(audio);
-    const difWord = (await this.getUserDifficultWord()) as UserWordType[];
-    const learnedWord = (await this.getUserLearnedWord()) as UserWordType[];
+    let difWord: UserWordType[];
+    let learnedWord: UserWordType[];
+    if (this.user) {
+      difWord = (await this.getUserDifficultWord()) as UserWordType[];
+      learnedWord = (await this.getUserLearnedWord()) as UserWordType[];
+    }
     (await words).forEach(async (word) => {
       const card = cardTemplate.content.cloneNode(true) as HTMLTemplateElement;
       const wordcard = card.querySelector('.word');
@@ -97,7 +101,7 @@ class TextbookView {
       const wordControls = card.querySelector('.word__controls') as HTMLElement;
       const deleteFromDifficulBtn = document.createElement('button') as HTMLButtonElement;
       deleteFromDifficulBtn.textContent = 'Удалить';
-      deleteFromDifficulBtn.classList.add('deep-orange', 'word__btn', 'word__btn_active');
+      deleteFromDifficulBtn.classList.add('deep-orange', 'word__btn', 'word__btn_active', 'word__btn_delete');
       wordControls.append(deleteFromDifficulBtn);
       (wordImage as HTMLImageElement).src = `${baseUrl}/${(await word).image}`;
       (wordcard as HTMLElement).dataset.id = (await word).id;
@@ -112,7 +116,7 @@ class TextbookView {
       (wordAudio as HTMLElement).addEventListener('click', async () => {
         this.playAudio([(await word).audio, (await word).audioMeaning, (await word).audioExample]);
       });
-      wordControls.addEventListener('click', () => {
+      deleteFromDifficulBtn.addEventListener('click', () => {
         this.deleteWordFromDifficult(String((wordcard as HTMLElement).dataset.id));
         (wordcard as HTMLElement).style.display = 'none';
       });
@@ -216,6 +220,8 @@ class TextbookView {
     pageWrapper.style.display = 'flex';
     currentGroup.textContent = `Раздел ${group + 1}`;
     currentPage.textContent = `Страница ${page + 1}`;
+    (document.querySelector('.game__btn-audiocall') as HTMLElement).style.display = 'block';
+    (document.querySelector('.game__btn-sprint') as HTMLElement).style.display = 'block';
   }
 
   changeControlsCaptionForDifficult() {
@@ -224,6 +230,8 @@ class TextbookView {
     currentGroup.textContent = `Сложные слова`;
     pageWrapper.style.display = 'none';
     const audioPlayer = document.querySelector('.audio') as HTMLAudioElement;
+    (document.querySelector('.game__btn-audiocall') as HTMLElement).style.display = 'none';
+    (document.querySelector('.game__btn-sprint') as HTMLElement).style.display = 'none';
     audioPlayer.pause();
   }
 
@@ -253,7 +261,6 @@ class TextbookView {
   }
 
   async deleteWordFromDifficult(wordId: string) {
-    // console.log(userService.deleteUserWord1(this.user.userId, this.user.token, wordId));
     userService.deleteUserWord1(this.user.userId, this.user.token, wordId);
   }
 

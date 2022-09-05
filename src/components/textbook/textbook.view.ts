@@ -87,7 +87,7 @@ class TextbookView {
   async renderDifficultPage(words: Promise<WordType>[]) {
     const wordsWrapper = document.querySelector('.words__wrapper') as HTMLElement;
     const cardTemplate = document.querySelector('#card__template') as HTMLTemplateElement;
-    wordsWrapper.innerHTML = ``;
+    wordsWrapper.innerHTML = '';
     const audio = document.createElement('audio');
     audio.classList.add('audio');
     wordsWrapper.append(audio);
@@ -214,6 +214,7 @@ class TextbookView {
         colors[i - 1]
       }  white-text group__item">Раздел ${i}</a></li>`;
     }
+    this.user = lsS.getItemLocalStorage('user');
     if (this.user) {
       groupDropdown.innerHTML += `<li><a href="#!" class="deep-orange darken-4 white-text group__item_difficult">Сложные слова</a></li>`;
     }

@@ -70,7 +70,7 @@ class SprintController implements ISprintController {
   runStart = (event: Event) => {
     const buttonLevel = event.currentTarget as HTMLButtonElement;
     const group = +buttonLevel.id.slice(-1) - 1;
-    this.start(group, 1);
+    this.start(group);
   };
 
   async start(group: number, pageNumber?: number) {

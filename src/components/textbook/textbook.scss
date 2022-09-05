@@ -20,7 +20,7 @@
 .words__wrapper {
   display: flex;
   flex-wrap: wrap;
-  padding: 30px 0;
+  margin: 30px 0;
   gap: 20px 0;
   align-items: center;
   flex-direction: column
@@ -168,7 +168,7 @@
 .group__item:hover,
 .page__item:hover,
 .group__item_difficult:hover {
-  background-color: #fc7349 !important;
+  background-color: #ffcc80 !important;
 }
 #page-dropdown {
   max-height: 500px !important;
@@ -180,6 +180,17 @@
 
 .group-dropdown-trigger {
   width: 180px;
+}
+
+.page-learned {
+  background-color: rgba(153, 255, 153, 0.5);
+}
+.page-learned::before {
+  content: 'Страница изучена!';
+  top: 0;
+  left: 0;
+  font-size: 20px;
+  text-transform: uppercase;
 }
 
 @media (max-width: 1200px) {
@@ -245,6 +256,18 @@
     &__btn {
       width: 85px;
     }
+    &__text {
+      &-meaning,
+      &-meaning-translate {
+        text-align: center;
+      }
+      &-example,
+      &-example-translate {
+        text-align: center;
+      }
+      &-example {
+        text-align: center;
+      }
   }
   .controls {
     gap: 20px 0;
@@ -252,4 +275,4 @@
       width: 100%;
     }
   }
-}
+}}

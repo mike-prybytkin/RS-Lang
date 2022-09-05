@@ -11,6 +11,7 @@
 
     .home-page__title {
       width: 30vw;
+      color: $text-grey-darken-4;
 
       @media (max-width: $tablet-width) {
         width: 100%;
@@ -41,6 +42,40 @@
 
     @media (max-width: $mobile-width) {
       width: 100%;
+    }
+  }
+
+  .home-page-advantages {
+    color: $text-grey-darken-4;
+    .home-page-advantages__quote {
+      margin-bottom: 0;
+      font-size: 1.4rem;
+    }
+    .advantages-list {
+      list-style-type: disc;
+      .advantages-item {
+        display: inline-block;
+        list-style-type: disc;
+        margin: 2px 8px;
+        &::before {
+          content: '🚀';
+        }
+      }
+    }
+  }
+}
+
+
+
+.dark-theme {
+  .main-wrapper {
+    .home-page {
+      .home-page__title {
+        color: $text-light-color;
+      }
+    }
+    .home-page-advantages {
+      color: $text-light-color;
     }
   }
 }

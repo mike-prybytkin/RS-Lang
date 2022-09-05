@@ -26,7 +26,7 @@ export interface ISprintView {
   renderStartPage(): void;
   addStartListeners(handler: (event: Event) => void): void;
   renderGamePage(correctIndex: number, wordsPage: WordType[]): void;
-  renderStatisticPage(statisticWords: WordType[], countMistake: number, countSuccess: number): void;
+  renderStatisticPage(statisticWords: WordType[], countMistake: number, countSuccess: number, score: number): void;
   renderStatisticWord(word: WordType): void;
   addKeyDownListener(checkAnswer: (variantAnswer: HTMLButtonElement) => void, toggleAudio: () => void): void;
   addAnswerListener(handler: (variantAnswer: HTMLButtonElement) => void): void;

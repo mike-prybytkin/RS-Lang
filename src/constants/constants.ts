@@ -125,6 +125,7 @@ export enum Selector {
   CountPoints = '.count-points',
   AnswerCircle = '.answer-circle',
   CrossContainer = '.cross-container',
+  StatisticScore = '.statistic-score',
 }
 
 export const LEARNED_FILTER = `%7B%22%24or%22%3A%5B%7B%22userWord%22%3Anull%7D%2C%20%7B%22userWord.optional.learned%22%3Afalse%7D%5D%7D`;

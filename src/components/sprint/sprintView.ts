@@ -51,9 +51,11 @@ class SprintView implements ISprintView {
     }
   }
 
-  renderStatisticPage(statisticWords: WordType[], countMistake: number, countSuccess: number) {
+  renderStatisticPage(statisticWords: WordType[], countMistake: number, countSuccess: number, score: number) {
     this.container = document.querySelector(Selector.MainWrapper) as HTMLElement;
     this.container.innerHTML = this.statisticStructure();
+    const statisticScore = this.container.querySelector(Selector.StatisticScore) as HTMLSpanElement;
+    statisticScore.innerHTML = `${score}`;
     const countMistakeSpan = this.container.querySelector(Selector.CountMistake) as HTMLSpanElement;
     countMistakeSpan.innerHTML = `${countMistake}`;
     const countSuccessSpan = this.container.querySelector(Selector.CountSuccess) as HTMLSpanElement;
@@ -280,6 +282,7 @@ class SprintView implements ISprintView {
     return `
     <div class="statistic-container">
       <h1 class="statistic-title">Статистика игры</h1>
+      <h3 class="score-title">Заработанно баллов <span class="statistic-score"></span></h3>
       <div class="mistake-statistic-container">
         <h3 class="mistake-title">Ошибок <span class="count-mistake"></span></h3>
       </div>
@@ -306,6 +309,11 @@ class SprintView implements ISprintView {
         <button class="difficulty-level" id="level5">5</button>
         <button class="difficulty-level" id="level6">6</button>
       </div>
+    </div>
+    <div class="game-controls">
+      <p><em>Управление:</em></p>
+      <p><strong>&#129136; , &#129138;</strong> - выбор ответа</p>
+      <p><strong>Space</strong> - пауза, отмена паузы</p>
     </div>
     `;
   }

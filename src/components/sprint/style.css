@@ -188,3 +188,17 @@
     cursor: pointer;
 }
 
+.score-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.statistic-score {
+    display: inline-block;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 1);
+}
+

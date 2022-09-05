@@ -166,7 +166,7 @@ class TextbookView {
   </div>
   <div class="word__controls">
     <button class="deep-orange word__audio">
-      <img src="../../assets/icons/play.png" class="word__audio-img">
+      <img src="./assets/icons/play.png" class="word__audio-img">
     </button>
     <button class="deep-orange word__btn word__hard">В сложные</button>
     <button class="deep-orange word__btn word__studied">Изучено</button>

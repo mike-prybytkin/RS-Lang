@@ -2,6 +2,7 @@ import SprintModel from './sprintModel';
 import SprintView from './sprintView';
 import { ISprintController } from './types';
 import { Answer, WordType } from '../../service/words-service/types';
+import { OptionalType } from '../../service/user-service/types';
 import { Selector } from '../../constants/constants';
 
 class SprintController implements ISprintController {
@@ -69,7 +70,7 @@ class SprintController implements ISprintController {
   runStart = (event: Event) => {
     const buttonLevel = event.currentTarget as HTMLButtonElement;
     const group = +buttonLevel.id.slice(-1) - 1;
-    this.start(group);
+    this.start(group, 3);
   };
 
   async start(group: number, pageNumber?: number) {
@@ -141,17 +142,74 @@ class SprintController implements ISprintController {
       this.audioGame.play();
       this.view.clearCircles();
     }
-    this.updateUserWord(this.correctWord, style);
     this.view.renderScore(this.commonScore, this.answerPoints);
     this.model.updateStatistic(this.correctWord, style);
     this.view.showCorrectAnswer(style);
     this.view.removeListener();
     this.nextPage();
+    this.updateUserWord(this.correctWord, style);
   };
 
-  updateUserWord(word: WordType, style: Answer) {
-    const id = this.model.userService.token ? '_id' : 'id';
-    console.log(style, word[id]);
+  async updateUserWord(word: WordType, style: Answer) {
+    let id: '_id' | 'id';
+    if (this.model.userService.token) {
+      id = '_id';
+    } else {
+      id = 'id';
+      return;
+    }
+    const userWord = await this.model.userService.getUserWord(word[id]);
+    if (userWord) {
+      const difficultyProperty = userWord.difficulty;
+      const optionalProperty = userWord.optional;
+      const body = this.updateOptional(difficultyProperty, optionalProperty, style);
+      this.model.userService.updateUserWord(word[id], body.difficultyProperty, body.optional);
+    } else {
+      const optional = this.createOptionalNewUserWord(style);
+      this.model.userService.createNewUserWord(word[id], optional);
+    }
+  }
+
+  updateOptional(difficultyProperty: string, optionalProperty: OptionalType, style: Answer) {
+    const optional = optionalProperty;
+    if (style === 'wrong-answer') {
+      optional.learned = false;
+      optional.successAnswersSequence = 0;
+      optional.wrongAttempt += 1;
+      return { difficultyProperty, optional };
+    }
+    if (difficultyProperty === 'false' && optionalProperty.successAnswersSequence === 2) {
+      optional.learned = true;
+      optional.successAnswersSequence = 3;
+      optional.successAttempt += 1;
+      return { difficultyProperty, optional };
+    }
+    if (difficultyProperty === 'true' && optionalProperty.successAnswersSequence === 4) {
+      optional.learned = true;
+      optional.successAnswersSequence = 5;
+      optional.successAttempt += 1;
+      return { difficultyProperty: 'false', optional };
+    }
+    optional.successAnswersSequence += 1;
+    optional.successAttempt += 1;
+    return { difficultyProperty, optional };
+  }
+
+  createOptionalNewUserWord(style: Answer) {
+    if (style === 'correct-answer') {
+      return {
+        learned: false,
+        successAnswersSequence: 1,
+        successAttempt: 1,
+        wrongAttempt: 0,
+      };
+    }
+    return {
+      learned: false,
+      successAnswersSequence: 0,
+      successAttempt: 0,
+      wrongAttempt: 1,
+    };
   }
 
   checkCountCorrectAnswers() {
@@ -170,6 +228,7 @@ class SprintController implements ISprintController {
       this.gamePage += 1;
       this.nextWord();
     } else {
+      clearInterval(this.timerId);
       this.runStatistic();
     }
   };
@@ -219,7 +278,6 @@ class SprintController implements ISprintController {
       this.view.addVisibleButtons();
     }
     this.view.renderTimer(innerTimer);
-    console.log(this.isPause);
   };
 }
 

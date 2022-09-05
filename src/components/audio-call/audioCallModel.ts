@@ -106,7 +106,6 @@ class AudioCallModel implements IAudioCallModel {
       );
     });
     this.variantsWords.sort(() => Math.random() - 0.5);
-    console.log(this.learnWords, this.variantsWords);
   }
 
   hasToken() {
@@ -139,7 +138,6 @@ class AudioCallModel implements IAudioCallModel {
     const wordStatistic = word;
     wordStatistic.answer = answer;
     this.statistic.push(wordStatistic);
-    console.log(this.statistic);
   }
 }
 

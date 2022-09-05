@@ -203,7 +203,6 @@ class SprintView implements ISprintView {
 
   showCorrectCircle(id: string) {
     const correctCircle = document.querySelector(`#circle${id}`) as HTMLDivElement;
-    console.log(correctCircle);
     if (correctCircle) {
       correctCircle.classList.add('correct-circle');
       correctCircle.innerHTML = '&#10003;';

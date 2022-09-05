@@ -135,7 +135,6 @@ class SprintModel implements ISprintModel {
     const wordStatistic = word;
     wordStatistic.answer = answer;
     this.statistic.push(wordStatistic);
-    console.log(this.statistic);
   }
 }
 

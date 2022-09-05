@@ -16,7 +16,6 @@ export interface ISprintModel {
   getWordsFromMenu(group: number): void;
   getRandomInteger(min: number, max: number): number;
   createFilterLearned(pageNumber: number): string;
-  // createFilterPage(pageNumber: number): string;
   getWordsPage(page: number): WordType[];
   updateStatistic(word: WordType, answer: Answer): void;
 }

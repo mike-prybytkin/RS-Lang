@@ -99,6 +99,7 @@ body.dark-theme {
   flex-direction: column;
 
   .games-page__header {
+    color: $text-grey-darken-4;
     @media (max-width: $tablet-mobile-width) {
       font-size: 2.5rem;
     }
@@ -148,6 +149,14 @@ body.dark-theme {
 
     .games-page__image {
       height: 40vh;
+    }
+  }
+}
+
+.dark-theme {
+  .games-page {
+    .games-page__header {
+      color: $text-light-color;
     }
   }
 }

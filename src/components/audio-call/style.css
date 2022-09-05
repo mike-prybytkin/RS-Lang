@@ -267,6 +267,11 @@
 
 .start-title {
     font-size: 2rem;
+    color: #212121;
+}
+
+.dark-theme .start-title {
+    color: #ffffff;
 }
 
 .difficulty-level-container {
@@ -328,6 +333,11 @@
     width: 300px;
     bottom: 45px;
     left: calc(50% - 150px);
+    color: #212121;
+}
+
+.dark-theme .game-controls {
+    color: #ffffff;
 }
 
 .game-controls p {

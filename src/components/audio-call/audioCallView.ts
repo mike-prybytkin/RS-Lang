@@ -22,6 +22,8 @@ class AudioCallView implements IAudioCallView {
   }
 
   renderGamePage(correctIndex: number, wordsPage: WordType[]) {
+    const footer = document.querySelector(Selector.FOOTER) as HTMLElement;
+    footer.style.display = 'none';
     this.hasAnswer = false;
     const correctWord = wordsPage[correctIndex];
     this.container = document.querySelector(Selector.MainWrapper) as HTMLElement;
@@ -140,7 +142,11 @@ class AudioCallView implements IAudioCallView {
     const playAgainButton = document.querySelector(Selector.StatisticPlayAgainButton) as HTMLButtonElement;
     playAgainButton.addEventListener('click', playAgainHandler);
     const statisticHomePageButton = document.querySelector(Selector.StatisticHomePageButton) as HTMLButtonElement;
-    statisticHomePageButton.addEventListener('click', goMainPage);
+    statisticHomePageButton.addEventListener('click', () => {
+      goMainPage();
+      const footer = document.querySelector(Selector.FOOTER) as HTMLElement;
+      footer.style.display = 'block';
+    });
   }
 
   hiddenIgnorance() {

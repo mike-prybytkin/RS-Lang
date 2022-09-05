@@ -54,7 +54,7 @@ class AppView implements IAppView {
   private gamePageTemplate() {
     return `
     <div class="games-page">
-      <h3 class="games-page__header grey-text text-darken-4">Выберите <span>игру</span></h3>
+      <h3 class="games-page__header">Выберите <span>игру</span></h3>
       <div class="games-page__buttons">
         <a href="#games/audio-challenge" class="right deep-orange darken-1 waves-effect waves-light btn btn-large audio-challenge-game"><i class="large material-icons left">volume_up</i>Аудиовызов</a>
         <a href="#games/sprint" class="right deep-orange darken-1 waves-effect waves-light btn btn-large sprint-game"><i class="large material-icons left">directions_run</i>Спринт</a>
@@ -79,19 +79,17 @@ class AppView implements IAppView {
               class="material-icons grey-text text-darken-4">menu</i></a>
           <ul class="nav-items right hide-on-med-and-down">
             <li><a class="grey-text text-darken-4 textbook" href="#textbook">Учебник</a></li>
-            <li><a class="grey-text text-darken-4 dictionary" href="#dictionary">Словарь</a></li>
             <li><a class="grey-text text-darken-4 games" href="#games">Игры</a></li>
             <li><a class="grey-text text-darken-4 statistic" href="#statistic">Статистика</a></li>
-            <li><a class="grey-text text-darken-4 about" href="#about">О проекте</a></li>
+            <li><a class="grey-text text-darken-4 about" href="#about">О команде</a></li>
           </ul>
         </div>
       </nav>
       <ul class="sidenav sidenav-close app-navigation red lighten-5" id="mobile-demo">
         <li><a class="grey-text text-darken-4 textbook" href="#textbook"><i class="material-icons">book</i>Учебник</a></li>
-        <li><a class="grey-text text-darken-4 dictionary" href="#dictionary"><i class="material-icons">description</i>Словарь</a></li>
         <li><a class="grey-text text-darken-4 games" href="#games"><i class="material-icons">games</i>Игры</a></li>
         <li><a class="grey-text text-darken-4 statistic" href="#statistic"><i class="material-icons">assessment</i>Статистика</a></li>
-        <li><a class="grey-text text-darken-4 about" href="#about"><i class="material-icons">business_center</i>О проекте</a></li>
+        <li><a class="grey-text text-darken-4 about" href="#about"><i class="material-icons">business_center</i>О команде</a></li>
         <li><img class="hide-on-med-only mobile-school-logo" src="./assets/rs-lang-logo.svg" alt="rs lang logo"
             title="RS Lang"></a></li>
       </ul>

@@ -20,6 +20,8 @@ class SprintView implements ISprintView {
   }
 
   renderGamePage(correctIndex: number, wordsPage: WordType[]) {
+    const footer = document.querySelector(Selector.FOOTER) as HTMLElement;
+    footer.style.display = 'none';
     this.container = document.querySelector(Selector.MainWrapper) as HTMLElement;
     this.container.innerHTML = this.pageStructure();
     const textWord = document.querySelector(Selector.TextWord) as HTMLParagraphElement;
@@ -150,7 +152,11 @@ class SprintView implements ISprintView {
     const playAgainButton = document.querySelector(Selector.StatisticPlayAgainButton) as HTMLButtonElement;
     playAgainButton.addEventListener('click', playAgainHandler);
     const statisticHomePageButton = document.querySelector(Selector.StatisticHomePageButton) as HTMLButtonElement;
-    statisticHomePageButton.addEventListener('click', goMainPage);
+    statisticHomePageButton.addEventListener('click', () => {
+      goMainPage();
+      const footer = document.querySelector(Selector.FOOTER) as HTMLElement;
+      footer.style.display = 'block';
+    });
   }
 
   showCorrectAnswer(style: string) {
@@ -316,6 +322,44 @@ class SprintView implements ISprintView {
       <p><strong>Space</strong> - пауза, отмена паузы</p>
     </div>
     `;
+  }
+
+  addPreloader() {
+    const preloaderTemplate = `
+    <div class="spinner-layer spinner-blue">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+    </div>
+
+    <div class="spinner-layer spinner-yellow">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+
+    <div class="spinner-layer spinner-red">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+    `;
+    this.container = document.querySelector(Selector.MainWrapper) as HTMLElement;
+    const preloader = document.createElement('div');
+    preloader.className = 'preloader-wrapper big active';
+    preloader.innerHTML = preloaderTemplate;
+    this.container.append(preloader);
   }
 }
 

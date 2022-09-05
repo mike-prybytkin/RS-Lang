@@ -40,6 +40,7 @@ const GAMES_BUTTON = '.games';
 const AUDIO_CHALLENGE_GAME_BTN = 'audio-challenge-game';
 const SPRINT_GAME_BTN = 'sprint-game';
 const ABOUT_BUTTON = '.about';
+const STATISTIC_BUTTON = '.statistic';
 
 export {
   DARK_THEME,
@@ -84,6 +85,7 @@ export {
   AUDIO_CHALLENGE_GAME_BTN,
   SPRINT_GAME_BTN,
   ABOUT_BUTTON,
+  STATISTIC_BUTTON,
 };
 
 export enum Selector {
@@ -125,6 +127,7 @@ export enum Selector {
   CountPoints = '.count-points',
   AnswerCircle = '.answer-circle',
   CrossContainer = '.cross-container',
+  FOOTER = '.footer',
   StatisticScore = '.statistic-score',
 }
 

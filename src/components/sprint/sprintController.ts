@@ -68,6 +68,7 @@ class SprintController implements ISprintController {
   };
 
   runStart = (event: Event) => {
+    this.view.addPreloader();
     const buttonLevel = event.currentTarget as HTMLButtonElement;
     const group = +buttonLevel.id.slice(-1) - 1;
     this.start(group);

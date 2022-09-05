@@ -72,6 +72,66 @@ class UserService extends FetchService implements IUserService {
     return data;
   }
 
+  public async createDifficultUserWord1(userId: string, token: string, wordId: string) {
+    const endPoint = `users/${userId}/words/${wordId}`;
+    const body = {
+      difficulty: 'true',
+      optional: {
+        learned: false,
+        successAnswersSequence: 0,
+        successAttempt: 0,
+        wrongAttempt: 0,
+      },
+    };
+    const data = await this.postData<UserWordType, UserWordBodyType>(endPoint, token, body);
+    return data;
+  }
+
+  public async createLearnedUserWord1(userId: string, token: string, wordId: string) {
+    const endPoint = `users/${userId}/words/${wordId}`;
+    const body = {
+      difficulty: 'false',
+      optional: {
+        learned: true,
+        successAnswersSequence: 0,
+        successAttempt: 0,
+        wrongAttempt: 0,
+      },
+    };
+    const data = await this.postData<UserWordType, UserWordBodyType>(endPoint, token, body);
+    return data;
+  }
+
+  public async getAllUserWords1(userId: string, token: string) {
+    const endPoint = `users/${userId}/words`;
+    const data = await this.getData<UserWordType[]>(endPoint, token);
+    return data;
+  }
+
+  public async getUserWord1(userId: string, token: string, wordId: string) {
+    const endPoint = `users/${userId}/words/${wordId}`;
+    const data = await this.getData<UserWordType>(endPoint, token);
+    return data;
+  }
+
+  public async deleteUserWord1(userId: string, token: string, wordId: string) {
+    const endPoint = `users/${userId}/words/${wordId}`;
+    await this.deleteData(endPoint, token);
+  }
+
+  public async updateUserWord1(
+    userId: string,
+    token: string,
+    wordId: string,
+    difficulty: string,
+    optional: OptionalType
+  ) {
+    const endPoint = `users/${userId}/words/${wordId}`;
+    const body = { difficulty, optional };
+    const data = await this.putData<UserWordType, UserWordBodyType>(endPoint, token, body);
+    return data;
+  }
+
   public async createLearnedUserWord(wordId: string) {
     const endPoint = `users/${this.userId}/words/${wordId}`;
     const body = {

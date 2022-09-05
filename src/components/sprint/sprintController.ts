@@ -71,7 +71,7 @@ class SprintController implements ISprintController {
     this.view.addPreloader();
     const buttonLevel = event.currentTarget as HTMLButtonElement;
     const group = +buttonLevel.id.slice(-1) - 1;
-    this.start(group, 3);
+    this.start(group);
   };
 
   async start(group: number, pageNumber?: number) {
@@ -237,7 +237,7 @@ class SprintController implements ISprintController {
   runStatistic = () => {
     const countMistake = this.model.statistic.filter((item) => item.answer === 'wrong-answer').length;
     const countSuccess = this.model.statistic.filter((item) => item.answer === 'correct-answer').length;
-    this.view.renderStatisticPage(this.model.statistic, countMistake, countSuccess);
+    this.view.renderStatisticPage(this.model.statistic, countMistake, countSuccess, this.commonScore);
     this.view.addStatisticListener(this.playAgain, this.goHomePage);
   };
 

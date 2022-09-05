@@ -38,6 +38,7 @@ export interface ISprintView {
   statisticStructure(): string;
   startPageStructure(): string;
   renderTime(time: number): void;
+  addPreloader(): void;
 }
 
 export interface ISprintController {
@@ -50,5 +51,3 @@ export interface ISprintController {
   countPages: number;
   init(): void;
 }
-
-

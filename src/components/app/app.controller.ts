@@ -6,6 +6,7 @@ import { IAppController } from './types';
 import AudioCallController from '../audio-call/audioCallController';
 import SprintController from '../sprint/sprintController';
 import AboutPageController from '../about-page/about-page.controller';
+import TextbookController from '../textbook/textbook.controller';
 
 class AppController implements IAppController {
   private authorizeController;
@@ -22,6 +23,8 @@ class AppController implements IAppController {
 
   private aboutPageController;
 
+  textbook;
+
   constructor() {
     this.view = new AppView();
     this.view.initAppView();
@@ -34,11 +37,15 @@ class AppController implements IAppController {
     this.view.callAudioChallengeGame(this.audioCall.init);
     this.view.callSprintGame(this.sprint.init);
     this.aboutPageController = new AboutPageController();
+    this.textbook = new TextbookController();
+    this.textbook.audiocall = this.audioCall;
+    this.textbook.sprint = this.sprint;
   }
 
   initApp() {
     this.authorizeController.init();
     this.switchThemeController.init();
+    this.textbook.in();
   }
 }
 

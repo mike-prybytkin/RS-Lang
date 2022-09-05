@@ -127,7 +127,7 @@ class AuthorizeView implements IAuthorizeView {
 
   showToastMessage(message: string, color: string) {
     const toastHTML = `<span>${message}</span>`;
-    M.toast({ html: toastHTML });
+    M.toast({ html: toastHTML, completeCallback: () => document.location.reload() });
     const toast = document.querySelector(TOAST) as HTMLElement;
     toast.style.backgroundColor = color;
   }

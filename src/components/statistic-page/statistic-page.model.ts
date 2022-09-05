@@ -1,7 +1,8 @@
 import LocalStorageService from '../../service/localStorage-service/localStorage-service';
 import { UserType } from '../../shared/shared';
+import { IStatisticPageModel } from './types';
 
-class StatisticPageModel {
+class StatisticPageModel implements IStatisticPageModel {
   private localStorageService;
 
   constructor() {

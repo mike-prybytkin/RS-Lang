@@ -75,6 +75,11 @@ class SprintController implements ISprintController {
   };
 
   async start(group: number, pageNumber?: number) {
+    this.time = 60;
+    this.commonScore = 0;
+    this.answerPoints = 10;
+    this.countCorrectAnswer = 0;
+    clearInterval(this.timerId);
     this.group = group;
     if (pageNumber) this.pageNumber = pageNumber;
     this.gamePage = 0;

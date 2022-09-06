@@ -1,0 +1,17 @@
+$dark-theme-background-color: #5d5d5d;
+$button-color: #f4511e;
+$button-background-color: #0000004d;
+$text-grey-darken-4: #212121;
+$text-light-color: #ffffff;
+
+$desktop-width: 1200px;
+$tablet-width: 767px;
+$tablet-mobile-width: 600px;
+$mobile-width: 420px;
+
+@mixin flex ($justify: center, $align: flex-start) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+}
+

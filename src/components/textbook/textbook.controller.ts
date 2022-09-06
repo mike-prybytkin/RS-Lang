@@ -32,9 +32,6 @@ class TextbookController {
 
   init() {
     this.textbookView.renderBaseStructure();
-    this.textbookView.renderPage(
-      this.textbookModel.getWords(this.textbookModel.currGroup, this.textbookModel.currPage)
-    );
     this.textbookView.initializeGroupDropdown(6);
     this.textbookView.initializePageDropdown(30);
     this.changeGroup();

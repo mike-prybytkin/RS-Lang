@@ -87,7 +87,9 @@ class TextbookView {
   async renderDifficultPage(words: Promise<WordType>[]) {
     const wordsWrapper = document.querySelector('.words__wrapper') as HTMLElement;
     const cardTemplate = document.querySelector('#card__template') as HTMLTemplateElement;
-    wordsWrapper.innerHTML = ``;
+    const cardWrapper = document.querySelector('.words__wrapper');
+    cardWrapper?.classList.remove('page-learned');
+    wordsWrapper.innerHTML = '';
     const audio = document.createElement('audio');
     audio.classList.add('audio');
     wordsWrapper.append(audio);
@@ -166,7 +168,7 @@ class TextbookView {
   </div>
   <div class="word__controls">
     <button class="deep-orange word__audio">
-      <img src="../../assets/icons/play.png" class="word__audio-img">
+      <img src="./assets/icons/play.png" class="word__audio-img">
     </button>
     <button class="deep-orange word__btn word__hard">В сложные</button>
     <button class="deep-orange word__btn word__studied">Изучено</button>
@@ -214,6 +216,7 @@ class TextbookView {
         colors[i - 1]
       }  white-text group__item">Раздел ${i}</a></li>`;
     }
+    this.user = lsS.getItemLocalStorage('user');
     if (this.user) {
       groupDropdown.innerHTML += `<li><a href="#!" class="deep-orange darken-4 white-text group__item_difficult">Сложные слова</a></li>`;
     }

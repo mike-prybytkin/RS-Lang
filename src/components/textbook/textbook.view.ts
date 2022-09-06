@@ -87,6 +87,8 @@ class TextbookView {
   async renderDifficultPage(words: Promise<WordType>[]) {
     const wordsWrapper = document.querySelector('.words__wrapper') as HTMLElement;
     const cardTemplate = document.querySelector('#card__template') as HTMLTemplateElement;
+    const cardWrapper = document.querySelector('.words__wrapper');
+    cardWrapper?.classList.remove('page-learned');
     wordsWrapper.innerHTML = '';
     const audio = document.createElement('audio');
     audio.classList.add('audio');

@@ -4,3 +4,5 @@
     :heavy_minus_sign: Снижает скорость разработки  
     :heavy_minus_sign: Требует компиляции  
     :heavy_minus_sign: Повышает порог входа  
+    
+    :heavy_plus_sign: Типизация

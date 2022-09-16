@@ -17,9 +17,9 @@
     :heavy_minus_sign: Дополнительное время для изучения  
     
 3. **SCSS**  
-    :heavy_plus_sign: Повышает скорость разработки
-    :heavy_plus_sign: Полная совместимость с CSS
-    :heavy_plus_sign: Богатая функциональность
+    :heavy_plus_sign: Повышает скорость разработки  
+    :heavy_plus_sign: Полная совместимость с CSS  
+    :heavy_plus_sign: Богатая функциональность  
     
-    :heavy_minus_sign: Требует компиляции
+    :heavy_minus_sign: Требует компиляции  
     

@@ -9,5 +9,5 @@
     :heavy_plus_sign: Поддержка многими популярными IDE  
     :heavy_plus_sign: TypeScript — надмножество JavaScript, поэтому любой код на JavaScript будет выполнен и в TypeScript  
     
-2. Materializecss
+2. Materializecss  
     :heavy_plus_sign: Не нужно писать css код для реализации дизайна

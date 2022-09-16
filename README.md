@@ -12,7 +12,7 @@
 2. Materializecss  
     :heavy_plus_sign: Не нужно писать css код для реализации дизайна  
     :heavy_plus_sign: Плавные анимации  
-    :heavy_plus_sign: Большое множество готовых компонентов 
+    :heavy_plus_sign: Большое выбор готовых компонентов 
     
     :heavy_minus_sign: Дополнительное время для изучения
     

@@ -64,7 +64,6 @@ class AuthorizeController implements IAuthorizeController {
       } else {
         this.view.showToastMessage(`${FAILING_LOGIN_MESSAGE}`, `${FAILING_COLOR}`);
       }
-      document.location.reload();
     });
   };
 
